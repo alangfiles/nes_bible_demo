@@ -6487,11 +6487,11 @@ _level0_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
-	.byte	$3B
+	.byte	$3D
 	.byte	$00
 	.byte	$04
 	.byte	$40
-	.byte	$3B
+	.byte	$3D
 	.byte	$40
 	.byte	$40
 	.byte	$3C
@@ -6506,17 +6506,17 @@ _level0_0:
 	.byte	$09
 	.byte	$00
 	.byte	$04
-	.byte	$3A
-	.byte	$37
+	.byte	$3B
+	.byte	$38
 	.byte	$39
-	.byte	$37
-	.byte	$37
+	.byte	$38
+	.byte	$3B
 	.byte	$39
-	.byte	$37
-	.byte	$37
-	.byte	$37
+	.byte	$38
 	.byte	$3A
 	.byte	$38
+	.byte	$3A
+	.byte	$3B
 	.byte	$05
 	.byte	$01
 	.byte	$01
@@ -6525,11 +6525,11 @@ _level0_0:
 	.byte	$07
 	.byte	$08
 	.byte	$0A
-	.byte	$37
-	.byte	$37
-	.byte	$37
 	.byte	$38
-	.byte	$37
+	.byte	$3A
+	.byte	$38
+	.byte	$38
+	.byte	$38
 	.byte	$07
 	.byte	$08
 	.byte	$0A
@@ -6541,10 +6541,10 @@ _level0_0:
 	.byte	$01
 	.byte	$01
 	.byte	$06
-	.byte	$37
+	.byte	$39
 	.byte	$38
 	.byte	$3A
-	.byte	$37
+	.byte	$38
 	.byte	$39
 	.byte	$05
 	.byte	$01
@@ -6606,17 +6606,21 @@ _level0_1:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$0B
-	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$03
-	.byte	$00
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -6624,15 +6628,15 @@ _level0_1:
 	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$0B
+	.byte	$0C
 	.byte	$40
 	.byte	$40
 	.byte	$70
-	.byte	$71
 	.byte	$03
-	.byte	$00
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -6640,64 +6644,76 @@ _level0_1:
 	.byte	$40
 	.byte	$34
 	.byte	$40
+	.byte	$0D
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$03
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$34
 	.byte	$20
 	.byte	$21
 	.byte	$22
 	.byte	$23
 	.byte	$40
-	.byte	$40
 	.byte	$03
-	.byte	$00
-	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$34
-	.byte	$40
-	.byte	$40
-	.byte	$24
-	.byte	$25
-	.byte	$26
-	.byte	$27
-	.byte	$40
-	.byte	$40
-	.byte	$03
-	.byte	$00
 	.byte	$71
 	.byte	$72
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
+	.byte	$24
+	.byte	$25
+	.byte	$26
+	.byte	$27
+	.byte	$40
+	.byte	$03
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$34
 	.byte	$28
 	.byte	$29
 	.byte	$CA
 	.byte	$2A
 	.byte	$C9
-	.byte	$40
 	.byte	$03
-	.byte	$00
 	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$3C
-	.byte	$34
-	.byte	$3B
 	.byte	$40
+	.byte	$3D
+	.byte	$40
+	.byte	$40
+	.byte	$34
 	.byte	$2C
 	.byte	$2D
 	.byte	$C7
 	.byte	$2B
-	.byte	$3B
-	.byte	$40
+	.byte	$3D
 	.byte	$03
-	.byte	$00
-	.byte	$40
+	.byte	$3C
 	.byte	$40
 	.byte	$40
 	.byte	$07
@@ -6710,12 +6726,12 @@ _level0_1:
 	.byte	$09
 	.byte	$09
 	.byte	$09
+	.byte	$09
 	.byte	$0A
 	.byte	$03
-	.byte	$00
-	.byte	$3C
-	.byte	$40
-	.byte	$40
+	.byte	$08
+	.byte	$09
+	.byte	$0A
 	.byte	$05
 	.byte	$01
 	.byte	$01
@@ -6727,23 +6743,7 @@ _level0_1:
 	.byte	$01
 	.byte	$01
 	.byte	$01
-	.byte	$00
-	.byte	$00
-	.byte	$08
-	.byte	$09
-	.byte	$0A
-	.byte	$03
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
-	.byte	$00
+	.byte	$01
 	.byte	$00
 	.byte	$01
 	.byte	$01
@@ -6847,13 +6847,13 @@ _level1_0:
 	.byte	$58
 	.byte	$CF
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$0B
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$C6
 	.byte	$98
@@ -6863,15 +6863,15 @@ _level1_0:
 	.byte	$A4
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$0B
 	.byte	$70
-	.byte	$71
+	.byte	$0B
 	.byte	$72
-	.byte	$DF
+	.byte	$D8
 	.byte	$68
 	.byte	$41
 	.byte	$41
@@ -6879,42 +6879,43 @@ _level1_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$0B
 	.byte	$C9
 	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$DF
+	.byte	$D8
 	.byte	$6E
 	.byte	$59
 	.byte	$B8
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$1B
 	.byte	$15
-	.byte	$16
 	.byte	$17
 	.byte	$1A
-	.byte	$40
 	.byte	$48
 	.byte	$45
 	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -6922,18 +6923,18 @@ _level1_0:
 	.byte	$0C
 	.byte	$40
 	.byte	$40
-	.byte	$40
 	.byte	$70
 	.byte	$71
 	.byte	$72
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$70
+	.byte	$71
 	.byte	$71
 	.byte	$0D
 	.byte	$72
@@ -6943,10 +6944,10 @@ _level1_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -6959,10 +6960,10 @@ _level1_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -6975,10 +6976,10 @@ _level1_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -6991,12 +6992,12 @@ _level1_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$18
-	.byte	$13
 	.byte	$13
 	.byte	$13
 	.byte	$19
@@ -7007,13 +7008,12 @@ _level1_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$0C
-	.byte	$C8
-	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -7022,10 +7022,12 @@ _level1_0:
 	.byte	$40
 	.byte	$40
 	.byte	$70
+	.byte	$71
 	.byte	$72
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$0C
 	.byte	$40
@@ -7039,17 +7041,19 @@ _level1_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$0C
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$3C
 	.byte	$40
 	.byte	$40
-	.byte	$3B
+	.byte	$40
+	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -7057,15 +7061,15 @@ _level1_0:
 	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$0C
-	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$07
-	.byte	$08
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -7073,15 +7077,11 @@ _level1_0:
 	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$0C
 	.byte	$40
 	.byte	$40
 	.byte	$40
-	.byte	$40
 	.byte	$05
-	.byte	$01
 _level2_0:
 	.byte	$40
 	.byte	$40
@@ -7110,7 +7110,7 @@ _level2_0:
 	.byte	$40
 	.byte	$40
 	.byte	$34
-	.byte	$DF
+	.byte	$D8
 	.byte	$6C
 	.byte	$59
 	.byte	$0C
@@ -7133,8 +7133,8 @@ _level2_0:
 	.byte	$6C
 	.byte	$92
 	.byte	$18
-	.byte	$13
-	.byte	$13
+	.byte	$12
+	.byte	$36
 	.byte	$13
 	.byte	$1C
 	.byte	$C9
@@ -7146,11 +7146,11 @@ _level2_0:
 	.byte	$40
 	.byte	$C7
 	.byte	$0C
-	.byte	$DF
+	.byte	$D8
 	.byte	$41
 	.byte	$0B
 	.byte	$C8
-	.byte	$40
+	.byte	$34
 	.byte	$CA
 	.byte	$1D
 	.byte	$13
@@ -7166,7 +7166,7 @@ _level2_0:
 	.byte	$6D
 	.byte	$0B
 	.byte	$40
-	.byte	$40
+	.byte	$34
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -7182,7 +7182,7 @@ _level2_0:
 	.byte	$49
 	.byte	$0B
 	.byte	$40
-	.byte	$40
+	.byte	$34
 	.byte	$70
 	.byte	$71
 	.byte	$71
@@ -7198,7 +7198,7 @@ _level2_0:
 	.byte	$40
 	.byte	$0D
 	.byte	$40
-	.byte	$40
+	.byte	$34
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -7214,7 +7214,7 @@ _level2_0:
 	.byte	$40
 	.byte	$0C
 	.byte	$40
-	.byte	$40
+	.byte	$34
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -7230,7 +7230,7 @@ _level2_0:
 	.byte	$40
 	.byte	$0D
 	.byte	$40
-	.byte	$40
+	.byte	$34
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -7246,7 +7246,7 @@ _level2_0:
 	.byte	$40
 	.byte	$0C
 	.byte	$C9
-	.byte	$40
+	.byte	$34
 	.byte	$40
 	.byte	$40
 	.byte	$40
@@ -7264,11 +7264,11 @@ _level2_0:
 	.byte	$16
 	.byte	$17
 	.byte	$15
-	.byte	$35
+	.byte	$16
 	.byte	$17
 	.byte	$16
 	.byte	$15
-	.byte	$15
+	.byte	$35
 	.byte	$17
 	.byte	$15
 	.byte	$16
@@ -7280,13 +7280,13 @@ _level2_0:
 	.byte	$40
 	.byte	$40
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$18
-	.byte	$13
-	.byte	$13
 	.byte	$13
 	.byte	$13
 	.byte	$13
@@ -7296,15 +7296,15 @@ _level2_0:
 	.byte	$A5
 	.byte	$40
 	.byte	$40
-	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
-	.byte	$0C
-	.byte	$C8
 	.byte	$70
 	.byte	$71
 	.byte	$72
+	.byte	$34
+	.byte	$40
+	.byte	$0C
+	.byte	$C8
+	.byte	$40
 	.byte	$40
 	.byte	$77
 	.byte	$41
@@ -7312,13 +7312,13 @@ _level2_0:
 	.byte	$8E
 	.byte	$BF
 	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
+	.byte	$40
 	.byte	$34
 	.byte	$40
-	.byte	$40
-	.byte	$40
 	.byte	$0C
-	.byte	$40
-	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$78
@@ -7348,7 +7348,7 @@ _level3_0:
 	.byte	$6F
 	.byte	$AF
 	.byte	$45
-	.byte	$DF
+	.byte	$D8
 	.byte	$56
 	.byte	$5A
 	.byte	$68
@@ -7613,7 +7613,7 @@ _level3_1:
 	.byte	$41
 	.byte	$41
 	.byte	$41
-	.byte	$DF
+	.byte	$D8
 	.byte	$42
 	.byte	$AD
 	.byte	$40
@@ -7641,9 +7641,9 @@ _level3_1:
 	.byte	$40
 	.byte	$40
 	.byte	$40
-	.byte	$DF
+	.byte	$D8
 	.byte	$6C
-	.byte	$32
+	.byte	$59
 	.byte	$6F
 	.byte	$40
 	.byte	$40

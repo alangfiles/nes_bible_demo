@@ -5,7 +5,7 @@
 CC65 = cc65
 CA65 = ca65
 LD65 = ld65
-NAME = nes_bible
+NAME = nes_bible_demo
 CFG = nrom_32k_vert.cfg
 
 
@@ -27,7 +27,7 @@ crt0.o: crt0.s biblemanstage2.chr
 $(NAME).o: $(NAME).s
 	$(CA65) $(NAME).s -g
 
-$(NAME).s: $(NAME).c Sprites.h nes_bible.h
+$(NAME).s: $(NAME).c Sprites.h nes_bible_demo.h
 	$(CC65) -Oirs $(NAME).c --add-source
 
 clean:

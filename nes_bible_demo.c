@@ -21,7 +21,7 @@ TODO List:
 #include "LIB/neslib.h"
 #include "LIB/nesdoug.h"
 #include "Sprites.h" // holds our metasprite data
-#include "nes_bible.h"
+#include "nes_bible_demo.h"
 #include "enemy_stats.h"
 #include "collision.c"
 #include "player_sprites.c"
