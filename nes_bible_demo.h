@@ -225,9 +225,9 @@ unsigned char entity_frames;
 // 5 bytes per metatile definition, tile TL, TR, BL, BR, palette 0-3
 // T means top, B means bottom, L left,R right
 // 51 maximum # of metatiles = 255 bytes
-#include "NES_ST/metatile2.h"
+#include "NES_ST/metatile.h"
 
-#include "BG/Stage2/Stage2.c"
+#include "BG/Stage1/Stage1.c"
 // data is exactly 240 bytes, 16 * 15
 // doubles as the collision map data
 

@@ -289,4 +289,4 @@ sounds_data:
 
 .segment "CHARS"
 
-	.incbin "biblemanstage2.chr"
+	.incbin "stage1.chr"

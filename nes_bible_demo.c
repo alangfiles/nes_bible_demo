@@ -271,7 +271,7 @@ void reset(void)
 
 	ppu_mask(0); // grayscale mode
 	// load the palettes
-	pal_bg(palette_bg_level2);
+	pal_bg(palette_bg);
 	pal_spr(palette_sp);
 
 	// use the second set of tiles for sprites
@@ -356,17 +356,17 @@ void handle_scrolling(void)
 		--r_scroll_frames;
 	}
 	else if (l_scroll_frames)
-	{
+	{  
 		draw_screen_L();
 		--l_scroll_frames;
 	}
-}
+}  
 
-void load_room(void)
+void load_room(void)     
 {
 	offset = level_offsets[level];
 	offset += room_to_load;
-	set_data_pointer(stage2_levels_list[offset]);
+	set_data_pointer(stage1_levels_list[offset]);
 	set_mt_pointer(metatile);
 	for (y = 0;; y += 0x20)
 	{
@@ -385,7 +385,7 @@ void load_room(void)
 
 	ppu_off();
 	// a little bit in the next room
-	set_data_pointer(stage2_levels_list[offset + 1]);
+	set_data_pointer(stage1_levels_list[offset + 1]);
 	for (y = 0;; y += 0x20)
 	{
 		x = 0;
@@ -398,7 +398,7 @@ void load_room(void)
 			break;
 	}
 	// a little bit in the previous room
-	set_data_pointer(stage2_levels_list[offset - 1]);
+	set_data_pointer(stage1_levels_list[offset - 1]);
 	for (y = 0;; y += 0x20)
 	{
 		x = 240;
@@ -419,13 +419,13 @@ void load_room(void)
 	map = room_to_load & 1; // even or odd?
 	if (!map)
 	{
-		memcpy(c_map, stage2_levels_list[offset], 240);
-		memcpy(c_map2, stage2_levels_list[offset - 1], 240);
+		memcpy(c_map, stage1_levels_list[offset], 240);
+		memcpy(c_map2, stage1_levels_list[offset - 1], 240);
 	}
 	else
 	{
-		memcpy(c_map2, stage2_levels_list[offset], 240);
-		memcpy(c_map, stage2_levels_list[offset - 1], 240);
+		memcpy(c_map2, stage1_levels_list[offset], 240);
+		memcpy(c_map, stage1_levels_list[offset - 1], 240);
 	}
 
 	// init the max_room and max_scroll
@@ -976,7 +976,7 @@ void draw_screen_L(void)
 	offset = level_offsets[level];
 	offset += temp1; // in place of room?!?
 
-	set_data_pointer(stage2_levels_list[offset]);
+	set_data_pointer(stage1_levels_list[offset]);
 	nt = temp1 & 1;
 	x = pseudo_scroll_x & 0xff;
 
@@ -1036,7 +1036,7 @@ void draw_screen_R(void)
 	offset = level_offsets[level];
 	offset += temp1; // in place of room?!?
 
-	set_data_pointer(stage2_levels_list[offset]);
+	set_data_pointer(stage1_levels_list[offset]);
 	nt = temp1 & 1;
 	x = pseudo_scroll_x & 0xff;
 
@@ -1096,11 +1096,11 @@ void new_cmap(void)
 	map = room_to_load & 1; // even or odd?
 	if (!map)
 	{
-		memcpy(c_map, stage2_levels_list[offset], 240);
+		memcpy(c_map, stage1_levels_list[offset], 240);
 	}
 	else
 	{
-		memcpy(c_map2, stage2_levels_list[offset], 240);
+		memcpy(c_map2, stage1_levels_list[offset], 240);
 	}
 }
 
