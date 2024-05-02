@@ -51,6 +51,7 @@ void main(void)
 				// music_play(song); //no music yet
 				ppu_on_all();
 				pal_bright(4); // back to normal brightness
+				
 			}
 		}
 		while (game_mode == MODE_GAME)
@@ -246,7 +247,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 0;				// debug, change starting level
+	level = 1;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -1362,7 +1363,7 @@ void enemy_owl_behavior(void)
 	}
 	else
 	{
-		if (enemy_frames[index] < 10)
+		if (enemy_frames[index] < 4)
 		{
 			if (enemy_dir[index] == LEFT)
 			{
@@ -1373,7 +1374,7 @@ void enemy_owl_behavior(void)
 				enemy_anim[index] = animate_hootyowl1right_data;
 			}
 		}
-		else if (enemy_frames[index] < 20)
+		else if (enemy_frames[index] < 8)
 		{
 			if (enemy_dir[index] == LEFT)
 			{
@@ -1384,7 +1385,7 @@ void enemy_owl_behavior(void)
 				enemy_anim[index] = animate_hootyowl2right_data;
 			}
 		}
-		else if (enemy_frames[index] < 30)
+		else if (enemy_frames[index] < 12)
 		{
 			if (enemy_dir[index] == LEFT)
 			{
@@ -1395,7 +1396,7 @@ void enemy_owl_behavior(void)
 				enemy_anim[index] = animate_hootyowl3right_data;
 			}
 		}
-		else if (enemy_frames[index] < 40)
+		else if (enemy_frames[index] < 16)
 		{
 			if (enemy_dir[index] == LEFT)
 			{
@@ -1406,7 +1407,7 @@ void enemy_owl_behavior(void)
 				enemy_anim[index] = animate_hootyowl4right_data;
 			}
 		}
-		else if (enemy_frames[index] < 50)
+		else if (enemy_frames[index] < 20)
 		{
 			if (enemy_dir[index] == LEFT)
 			{
@@ -1417,13 +1418,13 @@ void enemy_owl_behavior(void)
 				enemy_anim[index] = animate_hootyowl3right_data;
 			}
 		}
-		else if (enemy_frames[index] < 60)
+		else if (enemy_frames[index] < 24)
 		{
 			if (enemy_dir[index] == LEFT)
 			{
 				enemy_anim[index] = animate_hootyowl2left_data;
 			}
-			else
+			else  
 			{
 				enemy_anim[index] = animate_hootyowl2right_data;
 			}
@@ -1443,7 +1444,7 @@ void enemy_owl_behavior(void)
 	}
     
 	// enemy movement   
-	if (enemy_frames[index] % 2 == 0 && enemy_mode[index] == 1) // he moves every 3 frames after activated
+	if (enemy_mode[index] == 1) // he moves every 3 frames after activated
 	{
 		if (enemy_x[index] > Generic2.x) // enemy is right of player
 		{
@@ -1520,6 +1521,7 @@ void sprite_obj_init(void)
 	for (++index; index < MAX_ENEMY; ++index)
 	{
 		enemy_y[index] = TURN_OFF;
+		enemy_mode[index] = 0;
 	}
 }
 
@@ -1541,8 +1543,16 @@ void entity_collisions(void)
 				Generic2.width = 64;
 				Generic2.height = 8;
 				break;
-			case ENTITY_SPIKE_WIDE_64:
-				Generic2.width = 64;
+			case ENTITY_SPIKE_WIDE_64:  
+				Generic2.width = 64;  
+				Generic2.height = 8;
+				break;
+			case ENTITY_LEVEL_DOWN_WIDE_256:
+				Generic2.width = 255;
+				Generic2.height = 8;
+				break;
+			case ENTITY_LEVEL_UP_WIDE_256:
+				Generic2.width = 255;
 				Generic2.height = 8;
 				break;
 			default:
@@ -1581,8 +1591,13 @@ void entity_collisions(void)
 				switch (entity_type[index])
 				{
 				case ENTITY_PIT_WIDE_64:
-					// ppu_off();
 					death_flag = 30; // 30 frames the player can die in
+					break;
+				case ENTITY_LEVEL_UP_WIDE_256:
+					++level_up;
+					break;
+				case ENTITY_LEVEL_DOWN_WIDE_256:
+					++level_down;
 					break;
 				case ENTITY_LEVEL_UP:
 					++level_up;
