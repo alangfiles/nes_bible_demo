@@ -201,13 +201,14 @@ const unsigned char palette_sp[] = {
 unsigned char enemy_x[MAX_ENEMY];
 unsigned char enemy_y[MAX_ENEMY];
 unsigned char enemy_active[MAX_ENEMY];
+unsigned char enemy_mode[MAX_ENEMY];
 unsigned char enemy_health[MAX_ENEMY];
 unsigned char enemy_room[MAX_ENEMY];
 unsigned char enemy_actual_x[MAX_ENEMY];
 unsigned char enemy_type[MAX_ENEMY];
 unsigned char enemy_dir[MAX_ENEMY];
 const unsigned char *enemy_anim[MAX_ENEMY];
-unsigned char enemy_frames;
+unsigned char enemy_frames[MAX_ENEMY];
 
 #define MAX_ENTITY 16
 unsigned char entity_x[MAX_ENTITY];
@@ -225,7 +226,7 @@ unsigned char entity_frames;
 // 5 bytes per metatile definition, tile TL, TR, BL, BR, palette 0-3
 // T means top, B means bottom, L left,R right
 // 51 maximum # of metatiles = 255 bytes
-#include "NES_ST/metatile.h"
+#include "BG/Stage1/metatile.h"
 
 #include "BG/Stage1/Stage1.c"
 // data is exactly 240 bytes, 16 * 15
@@ -253,6 +254,9 @@ void entity_obj_init(void);
 void init_death(void);
 void init_mode_switch(void);
 void level_down_routine(void);
+void enemy_snail_behavior(void);
+void enemy_owl_behavior(void);
+void enemy_bear_behavior(void);
 
 char bg_coll_L(void);
 char bg_coll_R(void);

@@ -289,4 +289,4 @@ sounds_data:
 
 .segment "CHARS"
 
-	.incbin "stage1.chr"
+	.incbin "BG/Stage1/stage1.chr"

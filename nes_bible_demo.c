@@ -192,7 +192,7 @@ void main(void)
 			ppu_wait_nmi();
 			++bright_count;
 			if (bright_count >= 0x10)
-			{ // fade out  
+			{ // fade out
 				bright_count = 0;
 				--bright;
 				if (bright != 0xff)
@@ -356,13 +356,13 @@ void handle_scrolling(void)
 		--r_scroll_frames;
 	}
 	else if (l_scroll_frames)
-	{  
+	{
 		draw_screen_L();
 		--l_scroll_frames;
 	}
-}  
+}
 
-void load_room(void)     
+void load_room(void)
 {
 	offset = level_offsets[level];
 	offset += room_to_load;
@@ -1138,7 +1138,6 @@ void check_entity_objects(void)
 
 void check_spr_objects(void)
 {
-	++enemy_frames;
 	Generic2.x = high_byte(BoxGuy1.x);
 	// mark each object "active" if they are, and get the screen x
 
@@ -1167,7 +1166,7 @@ void entity_obj_init(void)
 	{
 		entity_y[index] = TURN_OFF; // turn off all objects
 	}
-
+  
 	for (index = 0, index2 = 0; index < MAX_ENTITY; ++index)
 	{
 
@@ -1202,6 +1201,7 @@ void entity_obj_init(void)
 
 void enemy_moves(void)
 {
+	enemy_frames[index] += 1;
 
 	// check enemy collision with projectiles
 	for (temp1 = 0; temp1 < MAX_PROJECTILES; ++temp1)
@@ -1225,101 +1225,250 @@ void enemy_moves(void)
 
 	if (enemy_type[index] == ENEMY_SNAIL)
 	{
-		// for bg collisions
-		Generic.x = enemy_x[index];
-		Generic.y = enemy_y[index] + 6; // mid point
-		Generic.width = ENEMY_SNAIL_WIDTH;
-		Generic.height = ENEMY_SNAIL_HEIGHT;
+		enemy_snail_behavior();
+	}
+	if (enemy_type[index] == ENEMY_OWL)
+	{
+		enemy_owl_behavior();
+	}
+}
 
-		// set animation:
-		if (enemy_frames < 10)
+void enemy_snail_behavior(void)
+{
+	// for bg collisions
+	Generic.x = enemy_x[index];
+	Generic.y = enemy_y[index] + 6; // mid point
+	Generic.width = ENEMY_SNAIL_WIDTH;
+	Generic.height = ENEMY_SNAIL_HEIGHT;
+
+	// set animation:
+	if (enemy_frames[index] < 10)
+	{
+		if (enemy_dir[index] == LEFT)
 		{
-			if (enemy_dir[index] == LEFT)
+			enemy_anim[index] = animate_snail1left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_snail1right_data;
+		}
+	}
+	else if (enemy_frames[index] < 20)
+	{
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_snail2left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_snail2right_data;
+		}
+	}
+	else if (enemy_frames[index] < 30)
+	{
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_snail3left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_snail3right_data;
+		}
+	}
+	else
+	{
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_snail3left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_snail3right_data;
+		}
+		enemy_frames[index] = 0;
+	}
+
+	// actual movement
+	if (enemy_frames[index] % 3 == 0)
+	{
+
+		// note, Generic2 is the hero's x position
+		if (enemy_x[index] > Generic2.x)
+		{
+			Generic.x -= 1; // test going left
+			bg_collision_fast();
+			if (collision_L)
+				return;
+			if (collision_D) // needs ground under it
 			{
-				enemy_anim[index] = animate_snail1left_data;
-			}
-			else
-			{
-				enemy_anim[index] = animate_snail1right_data;
+
+				if (enemy_actual_x[index] == 0)
+				{
+					--enemy_room[index];
+				}
+				--enemy_actual_x[index];
+				enemy_dir[index] = LEFT;
 			}
 		}
-		else if (enemy_frames < 20)
+		else if (enemy_x[index] < Generic2.x)
 		{
-			if (enemy_dir[index] == LEFT)
+
+			Generic.x += 1; // test going right
+
+			bg_collision_fast();
+			if (collision_R)
+				return;
+			if (collision_D)
 			{
-				enemy_anim[index] = animate_snail2left_data;
-			}
-			else
-			{
-				enemy_anim[index] = animate_snail2right_data;
+				++enemy_actual_x[index];
+				if (enemy_actual_x[index] == 0)
+				{
+					++enemy_room[index];
+				}
+				
+				enemy_dir[index] = RIGHT;
 			}
 		}
-		else if (enemy_frames < 30)
-		{
+	}
+}
+
+void enemy_owl_behavior(void)
+{
+	// no collision for owl, he just swoops down and out.
+	// mode 0 is idle, mode 1 is attacking
+
+	if(enemy_x[index] > Generic2.x // enemy right of player
+		&& enemy_x[index] - Generic2.x < 50) // and close
+	{
+		enemy_mode[index] = 1;
+	}
+	if(enemy_x[index] < Generic2.x // enemy left of player
+		&& Generic2.x - enemy_x[index] < 50) // and close
+	{
+		enemy_mode[index] = 1;
+	}
+
+	// animation
+	if (enemy_mode[index] == 0)
+	{
 			if (enemy_dir[index] == LEFT)
 			{
-				enemy_anim[index] = animate_snail3left_data;
+				enemy_anim[index] = animate_hootyowl5left_data;
 			}
 			else
 			{
-				enemy_anim[index] = animate_snail3right_data;
+				enemy_anim[index] = animate_hootyowl5right_data;
+			}
+	}
+	else
+	{
+		if (enemy_frames[index] < 10)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_hootyowl1left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_hootyowl1right_data;
+			}
+		}
+		else if (enemy_frames[index] < 20)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_hootyowl2left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_hootyowl2right_data;
+			}
+		}
+		else if (enemy_frames[index] < 30)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_hootyowl3left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_hootyowl3right_data;
+			}
+		}
+		else if (enemy_frames[index] < 40)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_hootyowl4left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_hootyowl4right_data;
+			}
+		}
+		else if (enemy_frames[index] < 50)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_hootyowl3left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_hootyowl3right_data;
+			}
+		}
+		else if (enemy_frames[index] < 60)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_hootyowl2left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_hootyowl2right_data;
 			}
 		}
 		else
 		{
 			if (enemy_dir[index] == LEFT)
 			{
-				enemy_anim[index] = animate_snail3left_data;
+				enemy_anim[index] = animate_hootyowl1left_data;
 			}
 			else
 			{
-				enemy_anim[index] = animate_snail3right_data;
+				enemy_anim[index] = animate_hootyowl1right_data;
 			}
-			enemy_frames = 0;
+			enemy_frames[index] = 0;
 		}
-
-		// actual movement
-		if (frame_counter % 3 == 0)
+	}
+    
+	// enemy movement   
+	if (enemy_frames[index] % 2 == 0 && enemy_mode[index] == 1) // he moves every 3 frames after activated
+	{
+		if (enemy_x[index] > Generic2.x) // enemy is right of player
+		{
+			if (enemy_actual_x[index] == 0)
+			{
+				--enemy_room[index]; //I think there's a bug here
+			}
+			--enemy_actual_x[index];
+			++enemy_y[index];
+			enemy_dir[index] = LEFT;
+		}
+		else if (enemy_x[index] < Generic2.x) // enemy is left of player
 		{
 
-			// note, Generic2 is the hero's x position
-			if (enemy_x[index] > Generic2.x)
+			++enemy_actual_x[index];
+			if (enemy_actual_x[index] == 0)
 			{
-				Generic.x -= 1; // test going left
-				bg_collision_fast();
-				if (collision_L)
-					return;
-				if (collision_D) // needs ground under it
-				{
-
-					if (enemy_actual_x[index] == 0)
-					{
-						--enemy_room[index];
-					}
-					--enemy_actual_x[index];
-					enemy_dir[index] = LEFT;
-				}
+				++enemy_room[index];  //I think there's a bug here
 			}
-			else if (enemy_x[index] < Generic2.x)
-			{
-
-				Generic.x += 1; // test going right
-
-				bg_collision_fast();
-				if (collision_R)
-					return;
-				if (collision_D)
-				{
-
-					if (enemy_actual_x[index] == 0)
-					{
-						++enemy_room[index];
-					}
-					++enemy_actual_x[index];
-					enemy_dir[index] = RIGHT;
-				}
-			}
+			
+			++enemy_y[index];
+			enemy_dir[index] = RIGHT;
 		}
+
+		// if you're at the same Y as the player, then fly upwards and away
 	}
 }
 
@@ -1359,6 +1508,10 @@ void sprite_obj_init(void)
 		if (enemy_type[index] == ENEMY_SNAIL)
 		{
 			enemy_health[index] = ENEMY_SNAIL_HEALTH; // set enemy health here
+		}
+		if (enemy_type[index] == ENEMY_OWL)
+		{
+			enemy_health[index] = ENEMY_OWL_HEALTH; // set enemy health here
 		}
 
 		++index2;
@@ -1477,6 +1630,18 @@ void sprite_collisions(void)
 						BoxGuy1.health -= ENEMY_SNAIL_DAMAGE; // check for overflow
 						player_in_hitstun = ENEMY_SNAIL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_SNAIL_PLAYER_INVUL;
+					}
+					break;
+				case ENEMY_OWL:
+
+					// check for player collision:
+					if (invul_frames == 0)
+					{
+						hit_direction = enemy_dir[index];
+						// enemy_health[index] -= 1;  // hit the enemy running into it?
+						BoxGuy1.health -= ENEMY_OWL_DAMAGE; // check for overflow
+						player_in_hitstun = ENEMY_OWL_PLAYER_HITSTUN;
+						invul_frames = ENEMY_OWL_PLAYER_INVUL;
 					}
 					break;
 				default:

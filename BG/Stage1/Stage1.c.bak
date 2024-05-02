@@ -41,14 +41,13 @@ enum
 // NOTE MAX_ENEMY = 10
 
 // NOTE, after testing, we can only handle 4 enemies on the same screen
-#define LEVEL_BOTTOM 230
-#define LEVEL_TOP 0
+
 // y, room, x, type,
 // y = TURN_OFF end of list
 const unsigned char level_0_enemies[] = {
-    48, 1, 96,  ENEMY_OWL,
-    16, 1, 192,  ENEMY_OWL,
-    32, 3, 160,  ENEMY_OWL,
+    // 48, 1, 96,  ENEMY_OWL,
+    // 16, 1, 192,  ENEMY_OWL,
+    // 32, 3, 160,  ENEMY_OWL,
     192, 1, 160, ENEMY_SNAIL,
     128, 3, 16, ENEMY_SNAIL,
     128, 5, 80, ENEMY_SNAIL,
@@ -64,26 +63,27 @@ const unsigned char level_2_enemies[] = {
     96, 2, 128, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_3_enemies[] = {
-    48, 0, 48,  ENEMY_OWL,
+    // 48, 0, 48,  ENEMY_OWL,
     128, 0, 176, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_4_enemies[] = {
-    0, 0, 160,  ENEMY_OWL,
+    // 0, 0, 160,  ENEMY_OWL,
     128, 0, 224, ENEMY_SNAIL,
-    48, 0, 224,  ENEMY_OWL,
+    // 48, 0, 224,  ENEMY_OWL,
     192, 1, 176, ENEMY_SNAIL,
-    32, 2, LEVEL_BOTTOM,  ENEMY_OWL,
-    96, 3, LEVEL_BOTTOM,  ENEMY_OWL,
+    // 32, 2, LEVEL_BOTTOM,  ENEMY_OWL,
+    // 96, 3, LEVEL_BOTTOM,  ENEMY_OWL,
     96, 4, 192, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_5_enemies[] = {
-    80, 0, 112,  ENEMY_OWL,
+    // 80, 0, 112,  ENEMY_OWL,
 
     TURN_OFF};
 const unsigned char level_6_enemies[] = {
     TURN_OFF};
 
-
+#define LEVEL_BOTTOM 230
+#define LEVEL_TOP 0
 
 const unsigned char *const Enemy_list[] = {
     level_0_enemies, level_1_enemies, level_2_enemies,
@@ -129,7 +129,6 @@ const unsigned char level_4_entities[] = {
 const unsigned char level_5_entities[] = {
     LEVEL_BOTTOM, 0, 176, ENTITY_LEVEL_DOWN,
     // LEVEL_BOTTOM, 0, 0, ENTITY_LEVEL_DOWN_WIDE_256,
-    LEVEL_TOP, 0, 176, ENTITY_LEVEL_UP,
     TURN_OFF};
 const unsigned char level_6_entities[] = {
     TURN_OFF};

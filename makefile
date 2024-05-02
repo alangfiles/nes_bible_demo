@@ -21,7 +21,7 @@ $(NAME).nes: $(NAME).o crt0.o $(CFG)
 	rm *.o
 	@echo $(NAME).nes created
 
-crt0.o: crt0.s stage1.chr
+crt0.o: crt0.s BG/Stage1/stage1.chr
 	$(CA65) crt0.s
 
 $(NAME).o: $(NAME).s
