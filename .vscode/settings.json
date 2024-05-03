@@ -4,6 +4,7 @@
     "nesdoug.h": "c",
     "bible_game.h": "c",
     "metatiles1.h": "c",
-    "neslib.h": "c"
+    "neslib.h": "c",
+    "title.h": "c"
   }
 }

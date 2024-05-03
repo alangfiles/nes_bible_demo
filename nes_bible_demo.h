@@ -248,6 +248,7 @@ void check_spr_objects(void);
 void check_entity_objects(void);
 void sprite_collisions(void);
 void entity_collisions(void);
+void load_title(void);
 
 void enemy_moves(void);
 void reset(void);

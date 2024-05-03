@@ -112,8 +112,7 @@ const unsigned char level_0_entities[] = {
     TURN_OFF};
 const unsigned char level_1_entities[] = {
     LEVEL_BOTTOM, 0, 0xA0, ENTITY_LEVEL_DOWN,
-    LEVEL_BOTTOM, 0, 0, ENTITY_LEVEL_DOWN_WIDE_256,
-    LEVEL_TOP, 0, 0x80, ENTITY_LEVEL_UP,
+    LEVEL_TOP, 0, 0x28, ENTITY_LEVEL_UP,
     TURN_OFF};
 const unsigned char level_2_entities[] = {
     LEVEL_BOTTOM, 0, 128, ENTITY_LEVEL_DOWN,

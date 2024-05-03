@@ -6,10 +6,10 @@
 #define PLAYER_LADDER_1_FRAMES 15
 #define PLAYER_LADDER_2_FRAMES 30
 
-void draw_boss_health_meter()
+void draw_health_meter()
 {
   // draw health meter
-  switch (enemy_health[index])
+  switch (temp)
   {
   case 28:
     tempint2 = animate_meter28_data;
@@ -99,111 +99,15 @@ void draw_boss_health_meter()
     tempint2 = animate_meter0_data;
     break;
   }
-
-  oam_meta_spr(0x48, 0x16, tempint2);
-}
-
-void draw_player_health_meter()
-{
-  // draw health meter
-  switch (BoxGuy1.health)
-  {
-  case 28:
-    tempint2 = animate_meter28_data;
-    break;
-  case 27:
-    tempint2 = animate_meter27_data;
-    break;
-  case 26:
-    tempint2 = animate_meter26_data;
-    break;
-  case 25:
-    tempint2 = animate_meter25_data;
-    break;
-  case 24:
-    tempint2 = animate_meter24_data;
-    break;
-  case 23:
-    tempint2 = animate_meter23_data;
-    break;
-  case 22:
-    tempint2 = animate_meter22_data;
-    break;
-  case 21:
-    tempint2 = animate_meter21_data;
-    break;
-  case 20:
-    tempint2 = animate_meter20_data;
-    break;
-  case 19:
-    tempint2 = animate_meter19_data;
-    break;
-  case 18:
-    tempint2 = animate_meter18_data;
-    break;
-  case 17:
-    tempint2 = animate_meter17_data;
-    break;
-  case 16:
-    tempint2 = animate_meter16_data;
-    break;
-  case 15:
-    tempint2 = animate_meter15_data;
-    break;
-  case 14:
-    tempint2 = animate_meter14_data;
-    break;
-  case 13:
-    tempint2 = animate_meter13_data;
-    break;
-  case 12:
-    tempint2 = animate_meter12_data;
-    break;
-  case 11:
-    tempint2 = animate_meter11_data;
-    break;
-  case 10:
-    tempint2 = animate_meter10_data;
-    break;
-  case 9:
-    tempint2 = animate_meter9_data;
-    break;
-  case 8:
-    tempint2 = animate_meter8_data;
-    break;
-  case 7:
-    tempint2 = animate_meter7_data;
-    break;
-  case 6:
-    tempint2 = animate_meter6_data;
-    break;
-  case 5:
-    tempint2 = animate_meter5_data;
-    break;
-  case 4:
-    tempint2 = animate_meter4_data;
-    break;
-  case 3:
-    tempint2 = animate_meter3_data;
-    break;
-  case 2:
-    tempint2 = animate_meter2_data;
-    break;
-  case 1:
-    tempint2 = animate_meter1_data;
-    break;
-  default:
-    tempint2 = animate_meter0_data;
-    break;
-  }
-
-  oam_meta_spr(0x16, 0x16, tempint2);
 }
 
 void draw_player_sprites()
 {
 
-  draw_player_health_meter();
+  temp = BoxGuy1.health;
+  draw_health_meter();
+  oam_meta_spr(0x16, 0x16, tempint2);
+  
 
   // player stuff get the player x,y
   temp_x = BoxGuy1.x >> 8;

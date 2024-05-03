@@ -25,12 +25,17 @@ TODO List:
 #include "enemy_stats.h"
 #include "collision.c"
 #include "player_sprites.c"
+#include "BG/Stage1/title.h"
+#include "BG/Stage1/gameover.h"
+
 
 void main(void)
 {
 	// test
 
 	reset();
+
+	load_title();
 
 	while (1)
 	{
@@ -49,6 +54,7 @@ void main(void)
 				game_mode = MODE_GAME;
 				// song = SONG_GAME;
 				// music_play(song); //no music yet
+				load_room();
 				ppu_on_all();
 				pal_bright(4); // back to normal brightness
 			}
@@ -216,6 +222,35 @@ void main(void)
 	}
 }
 
+
+void load_title(void)
+{
+	// pal_bg(palette_title);
+	// pal_spr(palette_sp);
+	// vram_adr(NAMETABLE_A);
+	// vram_unrle(title);
+	game_mode = MODE_TITLE;
+
+	clear_vram_buffer();
+
+	set_data_pointer(title);
+	set_mt_pointer(metatile);
+	for (y = 0;; y += 0x20)
+	{
+		for (x = 0;; x += 0x20)
+		{
+			address = get_ppu_addr(0, x, y);
+			index = (y & 0xf0) + (x >> 4);
+			buffer_4_mt(address, index); // ppu_address, index to the data
+			flush_vram_update2();
+			if (x == 0xe0)
+				break;
+		}
+		if (y == 0xe0)
+			break;
+	}
+}
+
 void reset(void)
 {
 	ppu_wait_nmi();
@@ -246,7 +281,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 6;				// debug, change starting level
+	level = 0;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -470,11 +505,18 @@ void draw_sprites(void)
 		temp_x = enemy_x[index2];
 		if (temp_x == 0)
 			temp_x = 1; // problems with x = 0
-		if (temp_x > 0xf0)
+		if (temp_x > 0xf0) 
 			continue;
 		if (temp_y < 0xf0)
 		{
 			oam_meta_spr(temp_x, temp_y, enemy_anim[index2]);
+			//draw bear life bar
+			if(enemy_type[index2] == ENEMY_BEAR){
+				temp = enemy_health[index];
+				draw_health_meter();
+				oam_meta_spr(0x28, 0x16, tempint2);
+			}
+	
 		}
 	}
 
@@ -505,42 +547,43 @@ void draw_sprites(void)
 		}
 	}
 
-	if (debug)
-	{
-		// SCROLL_X SPRITES
-		// oam_spr(20, 010, 0x58, 1); // 0xfe = X
-		temp1 = (scroll_x) >> 8;
-		oam_spr(28, 10, temp1 + 0x30, 2);
-		temp1 = (scroll_x & 0xff) >> 4;
-		oam_spr(36, 10, temp1 + 0x30, 2);
-		temp1 = (scroll_x & 0x0f);
-		oam_spr(44, 10, temp1 + 0x30, 2);
+	// if (debug)
+	// {
+	// 	// SCROLL_X SPRITES
+	// 	// oam_spr(20, 010, 0x58, 1); // 0xfe = X
+	// 	temp1 = (scroll_x) >> 8;
+	// 	oam_spr(28, 10, temp1 + 0x30, 2);
+	// 	temp1 = (scroll_x & 0xff) >> 4;
+	// 	oam_spr(36, 10, temp1 + 0x30, 2);
+	// 	temp1 = (scroll_x & 0x0f);
+	// 	oam_spr(44, 10, temp1 + 0x30, 2);
 
-		// CURRENT ROOM # SPRITE
+	// 	// CURRENT ROOM # SPRITE
 
-		tempint = scroll_x + high_byte(BoxGuy1.x);
-		temp1 = (tempint >> 8);
+	// 	tempint = scroll_x + high_byte(BoxGuy1.x);
+	// 	temp1 = (tempint >> 8);
 
-		// temp1 = (scroll_x) >> 8; // high byte of scroll_x
-		// oam_spr(58, 010, 0x52, 1); // 0xfd = R
-		oam_spr(90, 10, temp1 + 0x30, 1);
-		temp1 = room_to_load;
-		oam_spr(100, 10, temp1 + 0x30, 3);
+	// 	// temp1 = (scroll_x) >> 8; // high byte of scroll_x
+	// 	// oam_spr(58, 010, 0x52, 1); // 0xfd = R
+	// 	oam_spr(90, 10, temp1 + 0x30, 1);
+	// 	temp1 = room_to_load;
+	// 	oam_spr(100, 10, temp1 + 0x30, 3);
 
-		// PLAYER X LOCATION SPRITES
-		// oam_spr(66, 10, 0x58, 2); // 0xfe = X
-		temp1 = (BoxGuy1.x >> 8 & 0xff) >> 4;
-		oam_spr(66, 10, temp1 + 0x30, 2);
-		temp1 = (BoxGuy1.x >> 8 & 0x0f);
-		oam_spr(74, 10, temp1 + 0x30, 2);
+	// 	// PLAYER X LOCATION SPRITES
+	// 	// oam_spr(66, 10, 0x58, 2); // 0xfe = X
+	// 	temp1 = (BoxGuy1.x >> 8 & 0xff) >> 4;
+	// 	oam_spr(66, 10, temp1 + 0x30, 2);
+	// 	temp1 = (BoxGuy1.x >> 8 & 0x0f);
+	// 	oam_spr(74, 10, temp1 + 0x30, 2);
 
-		oam_spr(120, 10, nametable_to_load + 0x30, 3);
+	// 	oam_spr(120, 10, nametable_to_load + 0x30, 3);
 
-		// // PLAYER Y LOCATION SPRITES
-		// oam_spr(50, 20, 0xff, 2); // 0xff = Y
-		// oam_spr(58, 20, temp_cmap1 + 0x30, 2);
-		// oam_spr(80, 20, temp_cmap2 + 0x30, 2);
-	}
+	// 	// // PLAYER Y LOCATION SPRITES
+	// 	// oam_spr(50, 20, 0xff, 2); // 0xff = Y
+	// 	// oam_spr(58, 20, temp_cmap1 + 0x30, 2);
+	// 	// oam_spr(80, 20, temp_cmap2 + 0x30, 2);
+	// }
+
 }
 
 void movement(void)
@@ -1236,8 +1279,7 @@ void enemy_bear_behavior(void)
 	Generic.width = ENEMY_BEAR_WIDTH;
 	Generic.height = ENEMY_BEAR_HEIGHT;
 
-	//draw bear life bar
-	draw_boss_health_meter();
+	
 
 	if (enemy_frames[index] < 10)
 	{
@@ -1539,6 +1581,7 @@ void enemy_owl_behavior(void)
 	// enemy movement
 	if (enemy_mode[index] == 1) // he moves every 3 frames after activated
 	{
+		++enemy_y[index];
 		if (enemy_x[index] > Generic2.x) // enemy is right of player
 		{
 			if (enemy_actual_x[index] == 0)
@@ -1546,7 +1589,6 @@ void enemy_owl_behavior(void)
 				--enemy_room[index]; // I think there's a bug here
 			}
 			--enemy_actual_x[index];
-			++enemy_y[index];
 			enemy_dir[index] = LEFT;
 		}
 		else if (enemy_x[index] < Generic2.x) // enemy is left of player
@@ -1557,8 +1599,6 @@ void enemy_owl_behavior(void)
 			{
 				++enemy_room[index]; // I think there's a bug here
 			}
-
-			++enemy_y[index];
 			enemy_dir[index] = RIGHT;
 		}
 
@@ -1788,14 +1828,20 @@ void init_death(void)
 {
 	pal_fade_to(4, 0); // fade to black
 	ppu_off();
-	// clear nametables
+
+	game_mode = MODE_TITLE;
+
+	clear_vram_buffer();
+
+	set_data_pointer(gameover);
+	set_mt_pointer(metatile);
 	for (y = 0;; y += 0x20)
 	{
 		for (x = 0;; x += 0x20)
 		{
 			address = get_ppu_addr(0, x, y);
-			// index = (y & 0xf0) + (x >> 4);
-			buffer_4_mt(address, 0); // ppu_address, index to the data
+			index = (y & 0xf0) + (x >> 4);
+			buffer_4_mt(address, index); // ppu_address, index to the data
 			flush_vram_update2();
 			if (x == 0xe0)
 				break;
@@ -1803,14 +1849,15 @@ void init_death(void)
 		if (y == 0xe0)
 			break;
 	}
+
 	scroll_x = 0;
 	set_scroll_x(0);
 	oam_clear();
 
 	game_mode = MODE_DEATH;
-	multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 6));
+	// multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 6));
 
-	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
+	// multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 
 	ppu_on_all();
 	pal_fade_to(0, 4); // fade to black
