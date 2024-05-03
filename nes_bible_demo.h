@@ -220,7 +220,7 @@ unsigned char entity_room[MAX_ENTITY];
 unsigned char entity_actual_x[MAX_ENTITY];
 unsigned char entity_type[MAX_ENTITY];
 const unsigned char *entity_anim[MAX_ENTITY];
-unsigned char entity_frames;
+unsigned char entity_frames[MAX_ENTITY];
 
 #define ENEMY_WIDTH 13
 #define ENEMY_HEIGHT 13

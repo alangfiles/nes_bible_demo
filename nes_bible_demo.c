@@ -28,7 +28,6 @@ TODO List:
 #include "BG/Stage1/title.h"
 #include "BG/Stage1/gameover.h"
 
-
 void main(void)
 {
 	// test
@@ -222,7 +221,6 @@ void main(void)
 	}
 }
 
-
 void load_title(void)
 {
 	// pal_bg(palette_title);
@@ -281,7 +279,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 1;				// debug, change starting level
+	level = 0;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -505,18 +503,18 @@ void draw_sprites(void)
 		temp_x = enemy_x[index2];
 		if (temp_x == 0)
 			temp_x = 1; // problems with x = 0
-		if (temp_x > 0xf0) 
+		if (temp_x > 0xf0)
 			continue;
 		if (temp_y < 0xf0)
 		{
 			oam_meta_spr(temp_x, temp_y, enemy_anim[index2]);
-			//draw bear life bar
-			if(enemy_type[index2] == ENEMY_BEAR){
+			// draw bear life bar
+			if (enemy_type[index2] == ENEMY_BEAR)
+			{
 				temp = enemy_health[index];
 				draw_health_meter();
 				oam_meta_spr(0x28, 0x16, tempint2);
 			}
-	
 		}
 	}
 
@@ -540,12 +538,33 @@ void draw_sprites(void)
 			continue;
 		if (temp_y < 0xf0)
 		{
+			++entity_frames[index2];
 			if (entity_type[index2] == ENTITY_WINE)
 			{
 				oam_meta_spr(temp_x, temp_y, animate_wine_data);
-			} 
-			if(entity_type[index2] == ENTITY_BREAD){
-				oam_meta_spr(temp_x, temp_y, animate_bread_data);
+			}
+			if (entity_type[index2] == ENTITY_BREAD)
+			{
+				if(entity_frames[index2] < 20)
+					oam_meta_spr(temp_x, temp_y, animate_bread_data);
+				else if(entity_frames[index2] < 40)
+					oam_meta_spr(temp_x, temp_y, animate_bread2_data);
+				else{
+					oam_meta_spr(temp_x, temp_y, animate_bread_data);
+					entity_frames[index2] = 0;
+				}
+			}
+			if (entity_type[index2] == ENTITY_BUN)
+			{
+				if(entity_frames[index2] < 20)
+					oam_meta_spr(temp_x, temp_y, animate_bun_data);
+				else if(entity_frames[index2] < 40)
+					oam_meta_spr(temp_x, temp_y, animate_bun2_data);
+				else{
+					oam_meta_spr(temp_x, temp_y, animate_bun_data);
+					entity_frames[index2] = 0;
+				}
+					
 			}
 		}
 	}
@@ -586,7 +605,6 @@ void draw_sprites(void)
 	// 	// oam_spr(58, 20, temp_cmap1 + 0x30, 2);
 	// 	// oam_spr(80, 20, temp_cmap2 + 0x30, 2);
 	// }
-
 }
 
 void movement(void)
@@ -1254,6 +1272,27 @@ void enemy_moves(void)
 				--enemy_health[index];
 				if (enemy_health[index] == 0 || enemy_health[index] > 240) // check for overflow with 240
 				{
+					// randomly decide to place something
+					if (frame_counter % 2 == 0)
+					{
+						// find an empty entity slot
+						for (index2 = 0; index2 <= MAX_ENTITY; ++index2)
+						{
+							if (entity_y[index2] == TURN_OFF)
+							{
+								break;
+							}
+						}
+						// place an item there.
+						entity_y[index2] = enemy_y[index];
+						entity_x[index2] = enemy_x[index];
+						entity_room[index2] = enemy_room[index];
+						entity_active[index2] = 1;
+						entity_type[index2] = ENTITY_BUN;
+						entity_actual_x[index2] = enemy_actual_x[index];
+					}
+
+					// delete the enemy
 					enemy_y[index] = TURN_OFF;
 					enemy_active[index] = 0;
 				}
@@ -1281,8 +1320,6 @@ void enemy_bear_behavior(void)
 	Generic.y = enemy_y[index] + 6; // mid point
 	Generic.width = ENEMY_BEAR_WIDTH;
 	Generic.height = ENEMY_BEAR_HEIGHT;
-
-	
 
 	if (enemy_frames[index] < 10)
 	{
@@ -1317,7 +1354,8 @@ void enemy_bear_behavior(void)
 			enemy_anim[index] = animate_bearwalk3right_data;
 		}
 	}
-	else {
+	else
+	{
 		if (enemy_dir[index] == LEFT)
 		{
 			enemy_anim[index] = animate_bearwalk3left_data;
@@ -1436,7 +1474,8 @@ void enemy_snail_behavior(void)
 		{
 			Generic.x -= 1; // test going left
 			bg_collision_fast();
-			if (collision_L){
+			if (collision_L)
+			{
 				enemy_mode[index] = 1;
 				return;
 			}
@@ -1449,7 +1488,9 @@ void enemy_snail_behavior(void)
 				}
 				--enemy_actual_x[index];
 				enemy_dir[index] = LEFT;
-			} else {
+			}
+			else
+			{
 				enemy_mode[index] = 1;
 			}
 		}
@@ -1459,7 +1500,8 @@ void enemy_snail_behavior(void)
 			Generic.x += 1; // test going right
 
 			bg_collision_fast();
-			if (collision_R){
+			if (collision_R)
+			{
 				enemy_mode[index] = 0;
 				return;
 			}
@@ -1472,7 +1514,9 @@ void enemy_snail_behavior(void)
 				}
 
 				enemy_dir[index] = RIGHT;
-			} else {
+			}
+			else
+			{
 				enemy_mode[index] = 0;
 			}
 		}
@@ -1641,7 +1685,7 @@ void sprite_obj_init(void)
 		temp1 = pointer[index2]; // get a byte of data
 		enemy_room[index] = temp1;
 
-		++index2;  
+		++index2;
 
 		temp1 = pointer[index2]; // get a byte of data
 		enemy_actual_x[index] = temp1;
@@ -1756,11 +1800,17 @@ void entity_collisions(void)
 				case ENTITY_SPIKE_WIDE_64:
 					++death;
 					break;
-				
+				case ENTITY_BUN:
+					if(BoxGuy1.health < MAX_PLAYER_HEALTH){
+						BoxGuy1.health += 1;
+					}
+					entity_active[index] = 0;
+					entity_y[index] = TURN_OFF;
+					break;
 				case ENTITY_BREAD:
-						BoxGuy1.health = MAX_PLAYER_HEALTH;
-						entity_active[index] = 0;
-						entity_y[index] = TURN_OFF;
+					BoxGuy1.health = MAX_PLAYER_HEALTH;
+					entity_active[index] = 0;
+					entity_y[index] = TURN_OFF;
 					break;
 				case ENTITY_WINE:
 					pal_fade_to(4, 0);			 // fade to black
