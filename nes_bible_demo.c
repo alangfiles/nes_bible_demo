@@ -1429,12 +1429,14 @@ void enemy_snail_behavior(void)
 	{
 
 		// note, Generic2 is the hero's x position
-		if (enemy_x[index] > Generic2.x)
+		if (enemy_mode[index] == 0)
 		{
 			Generic.x -= 1; // test going left
 			bg_collision_fast();
-			if (collision_L)
+			if (collision_L){
+				enemy_mode[index] = 1;
 				return;
+			}
 			if (collision_D) // needs ground under it
 			{
 
@@ -1444,16 +1446,20 @@ void enemy_snail_behavior(void)
 				}
 				--enemy_actual_x[index];
 				enemy_dir[index] = LEFT;
+			} else {
+				enemy_mode[index] = 1;
 			}
 		}
-		else if (enemy_x[index] < Generic2.x)
+		else if (enemy_mode[index] == 1)
 		{
 
 			Generic.x += 1; // test going right
 
 			bg_collision_fast();
-			if (collision_R)
+			if (collision_R){
+				enemy_mode[index] = 0;
 				return;
+			}
 			if (collision_D)
 			{
 				++enemy_actual_x[index];
@@ -1463,6 +1469,8 @@ void enemy_snail_behavior(void)
 				}
 
 				enemy_dir[index] = RIGHT;
+			} else {
+				enemy_mode[index] = 0;
 			}
 		}
 	}
