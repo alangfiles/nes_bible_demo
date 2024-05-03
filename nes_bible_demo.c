@@ -51,7 +51,6 @@ void main(void)
 				// music_play(song); //no music yet
 				ppu_on_all();
 				pal_bright(4); // back to normal brightness
-				
 			}
 		}
 		while (game_mode == MODE_GAME)
@@ -247,7 +246,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 1;				// debug, change starting level
+	level = 6;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -499,17 +498,9 @@ void draw_sprites(void)
 			continue;
 		if (temp_y < 0xf0)
 		{
-			if (entity_type[index2] == ENTITY_PIT_WIDE_64)
+			if (entity_type[index2] == ENTITY_WINE)
 			{
-				oam_meta_spr(temp_x, temp_y, animate_bread_data);
-			}
-			else if (entity_type[index2] == ENTITY_LEVEL_UP)
-			{
-				oam_meta_spr(temp_x, temp_y, animate_bun_data);
-			}
-			else
-			{
-				oam_meta_spr(temp_x, temp_y, animate_fruit_data);
+				oam_meta_spr(temp_x, temp_y, animate_wine_data);
 			}
 		}
 	}
@@ -1167,7 +1158,7 @@ void entity_obj_init(void)
 	{
 		entity_y[index] = TURN_OFF; // turn off all objects
 	}
-  
+
 	for (index = 0, index2 = 0; index < MAX_ENTITY; ++index)
 	{
 
@@ -1231,6 +1222,108 @@ void enemy_moves(void)
 	if (enemy_type[index] == ENEMY_OWL)
 	{
 		enemy_owl_behavior();
+	}
+	if (enemy_type[index] == ENEMY_BEAR)
+	{
+		enemy_bear_behavior();
+	}
+}
+
+void enemy_bear_behavior(void)
+{
+	Generic.x = enemy_x[index];
+	Generic.y = enemy_y[index] + 6; // mid point
+	Generic.width = ENEMY_BEAR_WIDTH;
+	Generic.height = ENEMY_BEAR_HEIGHT;
+
+	//draw bear life bar
+	draw_boss_health_meter();
+
+	if (enemy_frames[index] < 10)
+	{
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_bearwalk1eft_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_bearwalkright_data;
+		}
+	}
+	else if (enemy_frames[index] < 20)
+	{
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_bearwalk2left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_bearwalk2right_data;
+		}
+	}
+	else if (enemy_frames[index] < 30)
+	{
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_bearwalk3left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_bearwalk3right_data;
+		}
+	}
+	else {
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_bearwalk3left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_bearwalk3right_data;
+		}
+		enemy_frames[index] = 0;
+	}
+
+	if (enemy_frames[index] % 3 == 0)
+	{
+
+		// note, Generic2 is the hero's x position
+		if (enemy_x[index] > Generic2.x)
+		{
+			Generic.x -= 1; // test going left
+			bg_collision_fast();
+			if (collision_L)
+				return;
+			if (collision_D) // needs ground under it
+			{
+
+				if (enemy_actual_x[index] == 0)
+				{
+					--enemy_room[index];
+				}
+				--enemy_actual_x[index];
+				enemy_dir[index] = LEFT;
+			}
+		}
+		else if (enemy_x[index] < Generic2.x)
+		{
+
+			Generic.x += 1; // test going right
+
+			bg_collision_fast();
+			if (collision_R)
+				return;
+			if (collision_D)
+			{
+				++enemy_actual_x[index];
+				if (enemy_actual_x[index] == 0)
+				{
+					++enemy_room[index];
+				}
+
+				enemy_dir[index] = RIGHT;
+			}
+		}
 	}
 }
 
@@ -1326,7 +1419,7 @@ void enemy_snail_behavior(void)
 				{
 					++enemy_room[index];
 				}
-				
+
 				enemy_dir[index] = RIGHT;
 			}
 		}
@@ -1338,13 +1431,13 @@ void enemy_owl_behavior(void)
 	// no collision for owl, he just swoops down and out.
 	// mode 0 is idle, mode 1 is attacking
 
-	if(enemy_x[index] > Generic2.x // enemy right of player
-		&& enemy_x[index] - Generic2.x < 50) // and close
+	if (enemy_x[index] > Generic2.x					 // enemy right of player
+			&& enemy_x[index] - Generic2.x < 50) // and close
 	{
 		enemy_mode[index] = 1;
 	}
-	if(enemy_x[index] < Generic2.x // enemy left of player
-		&& Generic2.x - enemy_x[index] < 50) // and close
+	if (enemy_x[index] < Generic2.x					 // enemy left of player
+			&& Generic2.x - enemy_x[index] < 50) // and close
 	{
 		enemy_mode[index] = 1;
 	}
@@ -1352,14 +1445,14 @@ void enemy_owl_behavior(void)
 	// animation
 	if (enemy_mode[index] == 0)
 	{
-			if (enemy_dir[index] == LEFT)
-			{
-				enemy_anim[index] = animate_hootyowl5left_data;
-			}
-			else
-			{
-				enemy_anim[index] = animate_hootyowl5right_data;
-			}
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_hootyowl5left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_hootyowl5right_data;
+		}
 	}
 	else
 	{
@@ -1424,7 +1517,7 @@ void enemy_owl_behavior(void)
 			{
 				enemy_anim[index] = animate_hootyowl2left_data;
 			}
-			else  
+			else
 			{
 				enemy_anim[index] = animate_hootyowl2right_data;
 			}
@@ -1442,15 +1535,15 @@ void enemy_owl_behavior(void)
 			enemy_frames[index] = 0;
 		}
 	}
-    
-	// enemy movement   
+
+	// enemy movement
 	if (enemy_mode[index] == 1) // he moves every 3 frames after activated
 	{
 		if (enemy_x[index] > Generic2.x) // enemy is right of player
 		{
 			if (enemy_actual_x[index] == 0)
 			{
-				--enemy_room[index]; //I think there's a bug here
+				--enemy_room[index]; // I think there's a bug here
 			}
 			--enemy_actual_x[index];
 			++enemy_y[index];
@@ -1462,9 +1555,9 @@ void enemy_owl_behavior(void)
 			++enemy_actual_x[index];
 			if (enemy_actual_x[index] == 0)
 			{
-				++enemy_room[index];  //I think there's a bug here
+				++enemy_room[index]; // I think there's a bug here
 			}
-			
+
 			++enemy_y[index];
 			enemy_dir[index] = RIGHT;
 		}
@@ -1497,7 +1590,7 @@ void sprite_obj_init(void)
 		temp1 = pointer[index2]; // get a byte of data
 		enemy_room[index] = temp1;
 
-		++index2;
+		++index2;  
 
 		temp1 = pointer[index2]; // get a byte of data
 		enemy_actual_x[index] = temp1;
@@ -1513,6 +1606,10 @@ void sprite_obj_init(void)
 		if (enemy_type[index] == ENEMY_OWL)
 		{
 			enemy_health[index] = ENEMY_OWL_HEALTH; // set enemy health here
+		}
+		if (enemy_type[index] == ENEMY_BEAR)
+		{
+			enemy_health[index] = ENEMY_BEAR_HEALTH; // set enemy health here
 		}
 
 		++index2;
@@ -1543,8 +1640,8 @@ void entity_collisions(void)
 				Generic2.width = 64;
 				Generic2.height = 8;
 				break;
-			case ENTITY_SPIKE_WIDE_64:  
-				Generic2.width = 64;  
+			case ENTITY_SPIKE_WIDE_64:
+				Generic2.width = 64;
 				Generic2.height = 8;
 				break;
 			case ENTITY_LEVEL_DOWN_WIDE_256:
@@ -1608,6 +1705,17 @@ void entity_collisions(void)
 				case ENTITY_SPIKE_WIDE_64:
 					++death;
 					break;
+				case ENTITY_WINE:
+
+					pal_fade_to(4, 0);			 // fade to black
+					game_mode = MODE_SWITCH; // this handles loading the level
+					ppu_off();
+					scroll_x = 0;
+					++level;
+					level_up = 0;
+					room_to_load = 0;
+					nametable_to_load = 0;
+					break;
 				default:
 					break;
 				}
@@ -1657,6 +1765,16 @@ void sprite_collisions(void)
 						BoxGuy1.health -= ENEMY_OWL_DAMAGE; // check for overflow
 						player_in_hitstun = ENEMY_OWL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_OWL_PLAYER_INVUL;
+					}
+					break;
+				case ENEMY_BEAR:
+					if (invul_frames == 0)
+					{
+						hit_direction = enemy_dir[index];
+						// enemy_health[index] -= 1;  // hit the enemy running into it?
+						BoxGuy1.health -= ENEMY_BEAR_DAMAGE; // check for overflow
+						player_in_hitstun = ENEMY_BEAR_PLAYER_HITSTUN;
+						invul_frames = ENEMY_BEAR_PLAYER_INVUL;
 					}
 					break;
 				default:

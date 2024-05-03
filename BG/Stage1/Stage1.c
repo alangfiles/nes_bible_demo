@@ -6,6 +6,7 @@
 #include "level4.c"
 #include "level5.c"
 #include "level6.c"
+#include "level7.c"
 
 const unsigned char *const stage1_levels_list[] = {
     level0_0, level0_1, level0_2, level0_3, level0_4, level0_5, level0_6, level0_7,
@@ -14,19 +15,20 @@ const unsigned char *const stage1_levels_list[] = {
     level3_0,
     level4_0, level4_1, level4_2, level4_3, level4_4,
     level5_0,
-    level6_0, level6_1};
+    level6_0, level6_1,
+    level7_0};
 
 const unsigned char level_max_rooms[] = {
-    8, 1, 4, 1, 5, 1, 2};
+    8, 1, 4, 1, 5, 1, 2, 1};
 
 const unsigned char level_offsets[] = {
-    0, 8, 9, 13, 14, 19, 20, 21};
+    0, 8, 9, 13, 14, 19, 20, 22};
 
 enum
 {
     ENEMY_SNAIL,
     ENEMY_OWL,
-    ENEMY_SNAKE,
+    ENEMY_BEAR,
 };
 
 enum
@@ -44,8 +46,10 @@ enum
 // NOTE MAX_ENEMY = 10
 
 // NOTE, after testing, we can only handle 4 enemies on the same screen
+
 #define LEVEL_BOTTOM 230
 #define LEVEL_TOP 0
+
 // y, room, x, type,
 // y = TURN_OFF end of list
 const unsigned char level_0_enemies[] = {
@@ -81,9 +85,12 @@ const unsigned char level_4_enemies[] = {
     TURN_OFF};
 const unsigned char level_5_enemies[] = {
     80, 0, 112,  ENEMY_OWL,
-
     TURN_OFF};
 const unsigned char level_6_enemies[] = {
+    190, 0, 200, ENEMY_SNAIL,
+    TURN_OFF};
+const unsigned char level_7_enemies[] = {
+    190, 0, 40, ENEMY_BEAR,
     TURN_OFF};
 
 
@@ -91,7 +98,7 @@ const unsigned char level_6_enemies[] = {
 const unsigned char *const Enemy_list[] = {
     level_0_enemies, level_1_enemies, level_2_enemies,
     level_3_enemies, level_4_enemies, level_5_enemies,
-    level_6_enemies};
+    level_6_enemies, level_7_enemies};
 
 const unsigned char level_0_entities[] = {
     LEVEL_BOTTOM, 2, 0, ENTITY_PIT_WIDE_64, // pit begins here; is 80 pixels wide
@@ -118,10 +125,7 @@ const unsigned char level_2_entities[] = {
     LEVEL_BOTTOM, 2, 208, ENTITY_SPIKE_WIDE_64,
     LEVEL_BOTTOM, 3, 0, ENTITY_SPIKE_WIDE_64,
     LEVEL_BOTTOM, 3, 176, ENTITY_LEVEL_UP,
-    LEVEL_BOTTOM, 3, 192, ENTITY_LEVEL_UP,
-    LEVEL_BOTTOM, 3, 208, ENTITY_LEVEL_UP,
-    LEVEL_BOTTOM, 3, 224, ENTITY_LEVEL_UP,
-    LEVEL_BOTTOM, 3, 240, ENTITY_LEVEL_UP,
+    LEVEL_BOTTOM, 3, 176, ENTITY_LEVEL_UP_WIDE_256,
     TURN_OFF};
 const unsigned char level_3_entities[] = {
     LEVEL_TOP, 0, 176, ENTITY_LEVEL_DOWN,
@@ -135,11 +139,11 @@ const unsigned char level_4_entities[] = {
 const unsigned char level_5_entities[] = {
     LEVEL_BOTTOM, 0, 176, ENTITY_LEVEL_DOWN,
     LEVEL_BOTTOM, 0, 0, ENTITY_LEVEL_DOWN_WIDE_256,
-    LEVEL_TOP, 0, 176, ENTITY_LEVEL_UP,
+    LEVEL_TOP, 0, 32, ENTITY_LEVEL_UP,
     TURN_OFF};
 const unsigned char level_6_entities[] = {
-    214, 1, 240, ENTITY_WINE,
-    TURN_OFF};
+    190, 1, 200, ENTITY_WINE,
+    TURN_OFF};  
 
 const unsigned char *const entity_list[] = {
     level_0_entities, level_1_entities, level_2_entities,

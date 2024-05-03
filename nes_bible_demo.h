@@ -117,7 +117,8 @@ enum
 	MODE_SWITCH,
 	MODE_END,
 	MODE_GAME_OVER,
-	MODE_RESET
+	MODE_RESET,
+	BOSS_ENTRY
 };
 
 const unsigned char *pointer;
@@ -127,6 +128,7 @@ unsigned int old_x;
 unsigned int old_y;
 unsigned char bright;
 unsigned char bright_count;
+unsigned char temp;
 unsigned char temp_x;
 unsigned char temp_y;
 unsigned char temp_room;
