@@ -281,7 +281,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 0;				// debug, change starting level
+	level = 1;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -543,6 +543,9 @@ void draw_sprites(void)
 			if (entity_type[index2] == ENTITY_WINE)
 			{
 				oam_meta_spr(temp_x, temp_y, animate_wine_data);
+			} 
+			if(entity_type[index2] == ENTITY_BREAD){
+				oam_meta_spr(temp_x, temp_y, animate_bread_data);
 			}
 		}
 	}
@@ -1753,8 +1756,13 @@ void entity_collisions(void)
 				case ENTITY_SPIKE_WIDE_64:
 					++death;
 					break;
+				
+				case ENTITY_BREAD:
+						BoxGuy1.health = MAX_PLAYER_HEALTH;
+						entity_active[index] = 0;
+						entity_y[index] = TURN_OFF;
+					break;
 				case ENTITY_WINE:
-
 					pal_fade_to(4, 0);			 // fade to black
 					game_mode = MODE_SWITCH; // this handles loading the level
 					ppu_off();

@@ -40,7 +40,8 @@ enum
     ENTITY_LEVEL_DOWN_WIDE_256,
     ENTITY_LEVEL_UP_WIDE_256,
     ENTITY_SPIKE_WIDE_64,
-    ENTITY_WINE
+    ENTITY_WINE,
+    ENTITY_BREAD
 };
 
 // NOTE MAX_ENEMY = 10
@@ -113,6 +114,7 @@ const unsigned char level_0_entities[] = {
 const unsigned char level_1_entities[] = {
     LEVEL_BOTTOM, 0, 0xA0, ENTITY_LEVEL_DOWN,
     LEVEL_TOP, 0, 0x28, ENTITY_LEVEL_UP,
+    154, 0, 24, ENTITY_BREAD,
     TURN_OFF};
 const unsigned char level_2_entities[] = {
     LEVEL_BOTTOM, 0, 128, ENTITY_LEVEL_DOWN,
