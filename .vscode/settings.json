@@ -5,6 +5,8 @@
     "bible_game.h": "c",
     "metatiles1.h": "c",
     "neslib.h": "c",
-    "title.h": "c"
+    "title.h": "c",
+    "title2.h": "c",
+    "gameover2.h": "c"
   }
 }

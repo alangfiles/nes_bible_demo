@@ -25,8 +25,8 @@ TODO List:
 #include "enemy_stats.h"
 #include "collision.c"
 #include "player_sprites.c"
-#include "BG/Stage1/title.h"
-#include "BG/Stage1/gameover.h"
+// #include "BG/Stage1/title.h"
+// #include "BG/Stage1/gameover.h"
 
 void main(void)
 {
@@ -209,7 +209,7 @@ void main(void)
 			{ // now switch rooms
 				ppu_off();
 				oam_clear();
-				if (level < 20)
+				if (level < 20)  
 				{
 					load_room();
 					game_mode = MODE_GAME;
@@ -221,33 +221,38 @@ void main(void)
 	}
 }
 
+#include "BG/Stage1/title2.h"
 void load_title(void)
 {
-	// pal_bg(palette_title);
-	// pal_spr(palette_sp);
-	// vram_adr(NAMETABLE_A);
-	// vram_unrle(title);
+	ppu_off(); // screen off
+
+	vram_adr(NAMETABLE_A);
+	// this sets a start position on the BG, top left of screen
+	// vram_adr() and vram_unrle() need to be done with the screen OFF
+	
+	vram_unrle(title2);
+	ppu_on_all();
+	
 	game_mode = MODE_TITLE;
-
-	clear_vram_buffer();
-
-	set_data_pointer(title);
-	set_mt_pointer(metatile);
-	for (y = 0;; y += 0x20)
-	{
-		for (x = 0;; x += 0x20)
-		{
-			address = get_ppu_addr(0, x, y);
-			index = (y & 0xf0) + (x >> 4);
-			buffer_4_mt(address, index); // ppu_address, index to the data
-			flush_vram_update2();
-			if (x == 0xe0)
-				break;
-		}
-		if (y == 0xe0)
-			break;
-	}
 }
+
+#include "BG/Stage1/gameover2.h"
+void load_gameover(void)
+{
+	ppu_off(); // screen off
+
+	vram_adr(NAMETABLE_A);
+	// this sets a start position on the BG, top left of screen
+	// vram_adr() and vram_unrle() need to be done with the screen OFF
+	
+	vram_unrle(gameover2);
+	ppu_on_all();
+	
+	game_mode = MODE_TITLE;
+}
+
+
+
 
 void reset(void)
 {
@@ -1894,27 +1899,7 @@ void init_death(void)
 {
 	pal_fade_to(4, 0); // fade to black
 	ppu_off();
-
-	game_mode = MODE_TITLE;
-
-	clear_vram_buffer();
-
-	set_data_pointer(gameover);
-	set_mt_pointer(metatile);
-	for (y = 0;; y += 0x20)
-	{
-		for (x = 0;; x += 0x20)
-		{
-			address = get_ppu_addr(0, x, y);
-			index = (y & 0xf0) + (x >> 4);
-			buffer_4_mt(address, index); // ppu_address, index to the data
-			flush_vram_update2();
-			if (x == 0xe0)
-				break;
-		}
-		if (y == 0xe0)
-			break;
-	}
+	load_gameover();
 
 	scroll_x = 0;
 	set_scroll_x(0);
