@@ -251,6 +251,7 @@ void entity_collisions(void);
 void load_title(void);
 
 void enemy_moves(void);
+void entity_moves(void);
 void reset(void);
 void sprite_obj_init(void);
 void entity_obj_init(void);

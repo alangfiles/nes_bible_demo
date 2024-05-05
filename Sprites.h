@@ -38,12 +38,12 @@ const unsigned char animate_bun2_data[] = {
 
 };
 
-// const unsigned char animate_fruit_data[] = {
+const unsigned char animate_fruit_data[] = {
 
-// 		0, 0, 0x1e, 0,
-// 		0x80
+		0, 0, 0x1e, 0,
+		0x80
 
-// };
+};
 
 const unsigned char animate_wine_data[] = {
 

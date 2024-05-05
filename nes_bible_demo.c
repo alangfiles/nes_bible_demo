@@ -209,7 +209,7 @@ void main(void)
 			{ // now switch rooms
 				ppu_off();
 				oam_clear();
-				if (level < 20)  
+				if (level < 20)
 				{
 					load_room();
 					game_mode = MODE_GAME;
@@ -229,10 +229,10 @@ void load_title(void)
 	vram_adr(NAMETABLE_A);
 	// this sets a start position on the BG, top left of screen
 	// vram_adr() and vram_unrle() need to be done with the screen OFF
-	
+
 	vram_unrle(title2);
 	ppu_on_all();
-	
+
 	game_mode = MODE_TITLE;
 }
 
@@ -244,15 +244,12 @@ void load_gameover(void)
 	vram_adr(NAMETABLE_A);
 	// this sets a start position on the BG, top left of screen
 	// vram_adr() and vram_unrle() need to be done with the screen OFF
-	
+
 	vram_unrle(gameover2);
 	ppu_on_all();
-	
+
 	game_mode = MODE_TITLE;
 }
-
-
-
 
 void reset(void)
 {
@@ -550,26 +547,31 @@ void draw_sprites(void)
 			}
 			if (entity_type[index2] == ENTITY_BREAD)
 			{
-				if(entity_frames[index2] < 20)
+				if (entity_frames[index2] < 20)
 					oam_meta_spr(temp_x, temp_y, animate_bread_data);
-				else if(entity_frames[index2] < 40)
+				else if (entity_frames[index2] < 40)
 					oam_meta_spr(temp_x, temp_y, animate_bread2_data);
-				else{
+				else
+				{
 					oam_meta_spr(temp_x, temp_y, animate_bread_data);
 					entity_frames[index2] = 0;
 				}
 			}
+			if (entity_type[index2] == ENTITY_FRUIT)
+			{
+				oam_meta_spr(temp_x, temp_y, animate_fruit_data);
+			}
 			if (entity_type[index2] == ENTITY_BUN)
 			{
-				if(entity_frames[index2] < 20)
+				if (entity_frames[index2] < 20)
 					oam_meta_spr(temp_x, temp_y, animate_bun_data);
-				else if(entity_frames[index2] < 40)
+				else if (entity_frames[index2] < 40)
 					oam_meta_spr(temp_x, temp_y, animate_bun2_data);
-				else{
+				else
+				{
 					oam_meta_spr(temp_x, temp_y, animate_bun_data);
 					entity_frames[index2] = 0;
 				}
-					
 			}
 		}
 	}
@@ -1193,6 +1195,30 @@ void check_entity_objects(void)
 			if (temp1 == 0)
 				continue;
 			entity_x[index] = temp_x; // screen x coords
+
+			entity_moves();
+		}
+	}
+}
+
+void entity_moves(void)
+{
+	// some entities drop til they're coliding with the ground.
+	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_FRUIT)
+	{
+		// check for collision
+		Generic.x = entity_x[index];
+		Generic.y = entity_y[index] - 6; // mid point
+		Generic.width = 16;
+		Generic.height = 1;
+
+		bg_collision_fast();
+		if (!collision_D)
+		{
+			++entity_y[index];
+			if(entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_FRUIT){ //fruit moves slowly
+				++entity_y[index];
+			}
 		}
 	}
 }
@@ -1277,8 +1303,18 @@ void enemy_moves(void)
 				--enemy_health[index];
 				if (enemy_health[index] == 0 || enemy_health[index] > 240) // check for overflow with 240
 				{
+					if (enemy_type[index] == ENEMY_BEAR)
+					{
+						// place an item there.
+						entity_y[0] = 80;
+						entity_x[0] = 120;
+						entity_room[0] = enemy_room[index];
+						entity_active[0] = 1;
+						entity_type[0] = ENTITY_FRUIT;
+						entity_actual_x[0] = 128;
+					}
 					// randomly decide to place something
-					if (frame_counter % 2 == 0)
+					else if (frame_counter % 2 == 0)
 					{
 						// find an empty entity slot
 						for (index2 = 0; index2 <= MAX_ENTITY; ++index2)
@@ -1805,8 +1841,12 @@ void entity_collisions(void)
 				case ENTITY_SPIKE_WIDE_64:
 					++death;
 					break;
+				case ENTITY_FRUIT:
+					++death; // todo: replace this with win screen
+					break;
 				case ENTITY_BUN:
-					if(BoxGuy1.health < MAX_PLAYER_HEALTH){
+					if (BoxGuy1.health < MAX_PLAYER_HEALTH)
+					{
 						BoxGuy1.health += 1;
 					}
 					entity_active[index] = 0;
