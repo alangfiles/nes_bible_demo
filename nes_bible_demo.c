@@ -218,37 +218,96 @@ void main(void)
 				}
 			}
 		}
+		while (game_mode == MODE_END)
+		{
+			ppu_wait_nmi();
+
+			pad1 = pad_poll(0); // read the first controller
+			pad1_new = get_pad_new(0);
+
+			// draw_sprites();
+
+			if (pad1_new & PAD_START)
+			{
+				reset();  
+				game_mode = MODE_TITLE;
+			}
+		}
 	}
 }
 
-#include "BG/Stage1/title2.h"
+#include "BG/Stage1/titletiled.c"
 void load_title(void)
 {
-	ppu_off(); // screen off
+	ppu_off();
 
-	vram_adr(NAMETABLE_A);
-	// this sets a start position on the BG, top left of screen
-	// vram_adr() and vram_unrle() need to be done with the screen OFF
-
-	vram_unrle(title2);
+	pal_bg(palette_bg);
+	set_data_pointer(titletiled_0);
+	set_mt_pointer(metatile);
+	for (y = 0;; y += 0x20)
+	{
+		for (x = 0;; x += 0x20)
+		{
+			address = get_ppu_addr(0, x, y);
+			index = (y & 0xf0) + (x >> 4);
+			buffer_4_mt(address, index); // ppu_address, index to the data
+			flush_vram_update2();
+			if (x == 0xe0)
+				break;
+		}
+		if (y == 0xe0)
+			break;
+	}
 	ppu_on_all();
-
 	game_mode = MODE_TITLE;
+	multi_vram_buffer_horz("CORGS DEMO", 10, NTADR_A(14, 6));
+
+	multi_vram_buffer_horz("BRIAN & ALAN GAMES", 18, NTADR_A(12, 8));
+
 }
 
-#include "BG/Stage1/gameover2.h"
-void load_gameover(void)
+#include "BG/Stage1/gameovertiled.c"
+const unsigned char palette_gameover[16]={ 0x0f,0x0f,0x00,0x10,0x0f,0x0f,0x30,0x08,0x0f,0x0f,0x17,0x06,0x0f,0x0f,0x19,0x29 };
+void load_gameover(void){
+	clear_vram_buffer();
+
+	pal_bg(palette_gameover);
+	set_data_pointer(gameovertiled_0);
+	for (y = 0;; y += 0x20)
+	{
+		for (x = 0;; x += 0x20)
+		{
+			address = get_ppu_addr(0, x, y);
+			index = (y & 0xf0) + (x >> 4);
+			buffer_4_mt(address, index); // ppu_address, index to the data
+			flush_vram_update2();
+			if (x == 0xe0)
+				break;
+		}
+		if (y == 0xe0)
+			break;
+	};
+	multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 12));
+
+	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
+
+}
+
+#include "BG/Stage1/victory.h"
+const unsigned char palette_victory[16]={ 0x21,0x0f,0x00,0x10,0x21,0x21,0x30,0x21,0x21,0x20,0x21,0x20,0x21,0x0f,0x0f,0x29 };
+void load_victory(void)
 {
 	ppu_off(); // screen off
 
+	pal_bg(palette_victory);
 	vram_adr(NAMETABLE_A);
 	// this sets a start position on the BG, top left of screen
 	// vram_adr() and vram_unrle() need to be done with the screen OFF
 
-	vram_unrle(gameover2);
+	vram_unrle(victory);
 	ppu_on_all();
 
-	game_mode = MODE_TITLE;
+	game_mode = MODE_END;
 }
 
 void reset(void)
@@ -1842,7 +1901,7 @@ void entity_collisions(void)
 					++death;
 					break;
 				case ENTITY_FRUIT:
-					++death; // todo: replace this with win screen
+					load_victory();
 					break;
 				case ENTITY_BUN:
 					if (BoxGuy1.health < MAX_PLAYER_HEALTH)

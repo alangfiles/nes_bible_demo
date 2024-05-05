@@ -115,13 +115,15 @@ const unsigned char level_0_entities[] = {
     TURN_OFF};
 const unsigned char level_1_entities[] = {
     LEVEL_BOTTOM, 0, 0xA0, ENTITY_LEVEL_DOWN,
-    LEVEL_TOP, 0, 0x28, ENTITY_LEVEL_UP,
-    154, 0, 24, ENTITY_BREAD,
+    LEVEL_TOP, 0, 48, ENTITY_LEVEL_UP,
+    72, 0, 192, ENTITY_BREAD,
     TURN_OFF};
 const unsigned char level_2_entities[] = {
-    LEVEL_BOTTOM, 0, 128, ENTITY_LEVEL_DOWN,
+    LEVEL_BOTTOM, 0, 48, ENTITY_LEVEL_DOWN,
     LEVEL_BOTTOM, 0, 0, ENTITY_LEVEL_DOWN_WIDE_256,
-    LEVEL_BOTTOM, 1, 112, ENTITY_SPIKE_WIDE_64, // beginning of first spike pit
+	LEVEL_BOTTOM, 1, 0, ENTITY_SPIKE_WIDE_64, // beginning of first spike pit
+	LEVEL_BOTTOM, 1, 64, ENTITY_SPIKE_WIDE_64,
+    LEVEL_BOTTOM, 1, 112, ENTITY_SPIKE_WIDE_64, 
     LEVEL_BOTTOM, 1, 176, ENTITY_SPIKE_WIDE_64,
     LEVEL_BOTTOM, 1, 240, ENTITY_SPIKE_WIDE_64,
     LEVEL_BOTTOM, 2, 144, ENTITY_SPIKE_WIDE_64, // begin of second spike pit
@@ -137,14 +139,16 @@ const unsigned char level_3_entities[] = {
     TURN_OFF};
 const unsigned char level_4_entities[] = {
     LEVEL_TOP, 0, 48, ENTITY_LEVEL_DOWN,
-    LEVEL_TOP, 4, 176, ENTITY_LEVEL_UP,
+    LEVEL_TOP, 4, 192, ENTITY_LEVEL_UP,
     TURN_OFF};
 const unsigned char level_5_entities[] = {
-    LEVEL_BOTTOM, 0, 176, ENTITY_LEVEL_DOWN,
+    LEVEL_BOTTOM, 0, 192, ENTITY_LEVEL_DOWN,
     LEVEL_BOTTOM, 0, 0, ENTITY_LEVEL_DOWN_WIDE_256,
-    LEVEL_TOP, 0, 32, ENTITY_LEVEL_UP,
+    LEVEL_TOP, 0, 48, ENTITY_LEVEL_UP,
     TURN_OFF};
 const unsigned char level_6_entities[] = {
+	LEVEL_BOTTOM, 0, 48, ENTITY_LEVEL_DOWN,
+	112, 0, 48, ENTITY_BREAD,
     190, 1, 200, ENTITY_WINE,
     TURN_OFF};  
 
