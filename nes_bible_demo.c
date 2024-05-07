@@ -1547,15 +1547,26 @@ void enemy_bear_behavior(void)
 			enemy_anim[index] = animate_bearwalk3right_data;
 		}
 	}
+	else if (enemy_frames[index] < 40)
+	{
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_bearwalk2left_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_bearwalk2right_data;
+		}
+	}
 	else
 	{
 		if (enemy_dir[index] == LEFT)
 		{
-			enemy_anim[index] = animate_bearwalk3left_data;
+			enemy_anim[index] = animate_bearwalk1eft_data;
 		}
 		else
 		{
-			enemy_anim[index] = animate_bearwalk3right_data;
+			enemy_anim[index] = animate_bearwalkright_data;
 		}
 		enemy_frames[index] = 0;
 	}
