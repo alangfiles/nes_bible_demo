@@ -388,6 +388,7 @@ void reset(void)
 	scroll_y = 0;
 	map_loaded = 0;
 	player_in_air = 0;
+	falling_down = 0;
 	player_on_ladder = 0;
 	player_running = 0;
 	short_jump_count = 0;
@@ -409,7 +410,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 7;				// debug, change starting level
+	level = 0;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -955,6 +956,7 @@ void movement(void)
 			player_on_ladder = 1;
 			player_on_ladder_pose = 0;
 			player_in_air = 0;
+			falling_down = 0;
 			BoxGuy1.vel_y = 0;
 			BoxGuy1.vel_x = 0;
 			BoxGuy1.y += 0x100;
@@ -970,15 +972,21 @@ void movement(void)
 	Generic.x = high_byte(BoxGuy1.x);
 	Generic.y = high_byte(BoxGuy1.y);
 
-if(!player_on_ladder && BoxGuy1.vel_y != 0x300 ){
-		player_in_air = 1;
-	}
+	// if(!player_on_ladder && BoxGuy1.vel_y > 0){
+	// 	player_in_air = 1;
+	// }
 	if (BoxGuy1.vel_y > 0) // he's falling
 	{
+		++falling_down;
+
+		if(falling_down > 2){ //been falling for 2 frames
+			player_in_air = 1;
+		}
 
 		if (bg_coll_D()) // if he's collising below
 		{								 // check collision below
 			player_in_air = 0;
+			falling_down = 0;
 			multi_jump = 0;
 			player_on_ladder = 0;
 
@@ -1019,6 +1027,7 @@ if(!player_on_ladder && BoxGuy1.vel_y != 0x300 ){
 			player_on_ladder_pose = 0;
 			player_on_ladder = 1;
 			player_in_air = 0;
+			falling_down = 0;
 			BoxGuy1.vel_y = 0;
 			BoxGuy1.vel_x = 0;
 		}

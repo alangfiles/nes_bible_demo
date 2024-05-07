@@ -49,6 +49,7 @@ unsigned char collision_R;
 unsigned char collision_U;
 unsigned char collision_D;
 unsigned char coordinates;
+unsigned char falling_down;
 unsigned char nametable_to_load;
 unsigned char temp1;
 unsigned char temp2;
