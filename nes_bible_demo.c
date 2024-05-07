@@ -2033,26 +2033,33 @@ void sprite_collisions(void)
 		if (enemy_active[index])
 		{
 			switch (enemy_type[index])
-				{
+				{ 
 				case ENEMY_SNAIL:
-					Generic2.width = ENEMY_SNAIL_WIDTH;
+					Generic2.width = ENEMY_SNAIL_WIDTH; 
 					Generic2.height = ENEMY_SNAIL_HEIGHT;
+					Generic2.x = enemy_x[index] + 4; 
+					Generic2.y = enemy_y[index];
 				break;
 				case ENEMY_OWL:
 					Generic2.width = ENEMY_OWL_WIDTH;
 					Generic2.height = ENEMY_OWL_HEIGHT;
+					Generic2.x = enemy_x[index];
+					Generic2.y = enemy_y[index];
 				break;
 				case ENEMY_BEAR:
 					Generic2.width = ENEMY_BEAR_WIDTH;
 					Generic2.height = ENEMY_BEAR_HEIGHT;
+					Generic2.x = enemy_x[index];
+					Generic2.y = enemy_y[index];
 				break;
 				default: 
 					Generic2.width = ENEMY_WIDTH;
 					Generic2.height = ENEMY_HEIGHT;
+					Generic2.x = enemy_x[index];
+					Generic2.y = enemy_y[index];
 				}
 
-			Generic2.x = enemy_x[index] - 3;
-			Generic2.y = enemy_y[index];
+			
 			if (check_collision(&Generic, &Generic2))
 			{
 
