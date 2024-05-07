@@ -48,18 +48,49 @@ void main(void)
 			if (pad1_new & PAD_START)
 			{
 				sfx_play(SFX_START_LEVEL, 0);
-				for(temp = 0; temp < 100; ++temp){
+				pal_bright(3); 
+				for(temp = 0; temp < 10; ++temp){
 					ppu_wait_nmi();
 				}
-				pal_fade_to(4, 0); // fade to black
+				pal_bright(2); 
+				for(temp = 0; temp < 10; ++temp){
+					ppu_wait_nmi();
+				}
+				pal_bright(1); 
+				for(temp = 0; temp < 10; ++temp){
+					ppu_wait_nmi();
+				}
+				pal_bright(0); 
+				for(temp = 0; temp < 10; ++temp){
+					ppu_wait_nmi();
+				}
 				ppu_off();
+				for(temp = 0; temp < 20; ++temp){
+					ppu_wait_nmi();
+				}
 				// load game mode
 				game_mode = MODE_GAME;
 				load_room();
 				
 				ppu_on_all();
-				
-				pal_bright(4); // back to normal brightness
+				pal_bright(1); 
+				for(temp = 0; temp < 10; ++temp){
+					ppu_wait_nmi();
+				}
+				pal_bright(2); 
+				for(temp = 0; temp < 10; ++temp){
+					ppu_wait_nmi();
+				}
+				pal_bright(3); 
+				for(temp = 0; temp < 10; ++temp){
+					ppu_wait_nmi();
+				}
+				pal_bright(4); 
+				for(temp = 0; temp < 10; ++temp){
+					ppu_wait_nmi();
+				}
+
+
 				song = SONG_GAME;
 				music_play(song);
 				set_music_speed(11);
@@ -939,7 +970,7 @@ void movement(void)
 
 	if (BoxGuy1.vel_y > 0) // he's falling
 	{
-		// player_in_air = 1;
+
 		if (bg_coll_D()) // if he's collising below
 		{								 // check collision below
 			player_in_air = 0;
@@ -962,6 +993,10 @@ void movement(void)
 			BoxGuy1.vel_y = 0;
 		}
 	}
+
+	// if(!player_on_ladder && BoxGuy1.vel_y != 0x300){
+	// 	player_in_air = 1;
+	// }
 
 	// check collision down a little lower than hero
 	Generic.y = high_byte(BoxGuy1.y); // the rest should be the same
