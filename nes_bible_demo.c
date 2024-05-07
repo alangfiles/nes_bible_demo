@@ -725,7 +725,7 @@ void movement(void)
 	if (invul_frames > 0)
 	{
 		--invul_frames;
-	}
+	}  
 	if (player_in_hitstun)
 	{
 		--player_in_hitstun;
@@ -1981,14 +1981,30 @@ void sprite_collisions(void)
 	Generic.x = high_byte(BoxGuy1.x);
 	Generic.y = high_byte(BoxGuy1.y);
 
-	Generic2.width = ENEMY_WIDTH;
-	Generic2.height = ENEMY_HEIGHT;
-
 	for (index = 0; index < MAX_ENEMY; ++index)
 	{
 		if (enemy_active[index])
 		{
-			Generic2.x = enemy_x[index];
+			switch (enemy_type[index])
+				{
+				case ENEMY_SNAIL:
+					Generic2.width = ENEMY_SNAIL_WIDTH;
+					Generic2.height = ENEMY_SNAIL_HEIGHT;
+				break;
+				case ENEMY_OWL:
+					Generic2.width = ENEMY_OWL_WIDTH;
+					Generic2.height = ENEMY_OWL_HEIGHT;
+				break;
+				case ENEMY_BEAR:
+					Generic2.width = ENEMY_BEAR_WIDTH;
+					Generic2.height = ENEMY_BEAR_HEIGHT;
+				break;
+				default: 
+					Generic2.width = ENEMY_WIDTH;
+					Generic2.height = ENEMY_HEIGHT;
+				}
+
+			Generic2.x = enemy_x[index] - 3;
 			Generic2.y = enemy_y[index];
 			if (check_collision(&Generic, &Generic2))
 			{

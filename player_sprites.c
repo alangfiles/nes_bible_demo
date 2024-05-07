@@ -122,8 +122,8 @@ void draw_player_sprites()
   // sprite_frame_counter
   ++sprite_frame_counter;
 
-#define FLASH_DURATION 8
-#define TOTAL_DURATION 16 // 4 frames on + 4 frames off
+#define FLASH_DURATION 6
+#define TOTAL_DURATION 18
 
   if (invul_frames > 0)
   {
