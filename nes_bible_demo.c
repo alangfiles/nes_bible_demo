@@ -2066,6 +2066,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_SNAIL_DAMAGE; // check for overflow
+						player_on_ladder = 0; //hitting hits you off ladder
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_SNAIL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_SNAIL_PLAYER_INVUL;
@@ -2079,6 +2080,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_OWL_DAMAGE; // check for overflow
+						player_on_ladder = 0; //hitting hits you off ladder
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_OWL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_OWL_PLAYER_INVUL;
@@ -2090,6 +2092,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_BEAR_DAMAGE; // check for overflow
+						player_on_ladder = 0; //hitting hits you off ladder
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_BEAR_PLAYER_HITSTUN;
 						invul_frames = ENEMY_BEAR_PLAYER_INVUL;
