@@ -409,7 +409,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 0;				// debug, change starting level
+	level = 7;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -641,12 +641,14 @@ void draw_sprites(void)
 			// draw bear life bar
 			if (enemy_type[index2] == ENEMY_BEAR)
 			{
-				temp = enemy_health[index];
+				temp = enemy_health[index2];
 				draw_health_meter();
 				oam_meta_spr(0x28, 0x16, tempint2);
 			}
 		}
+		
 	}
+	
 
 	offset = get_frame_count() & 3;
 	offset = offset << 4; // * 16, the size of the shuffle array
@@ -968,6 +970,9 @@ void movement(void)
 	Generic.x = high_byte(BoxGuy1.x);
 	Generic.y = high_byte(BoxGuy1.y);
 
+if(!player_on_ladder && BoxGuy1.vel_y != 0x300 ){
+		player_in_air = 1;
+	}
 	if (BoxGuy1.vel_y > 0) // he's falling
 	{
 
@@ -994,9 +999,7 @@ void movement(void)
 		}
 	}
 
-	// if(!player_on_ladder && BoxGuy1.vel_y != 0x300){
-	// 	player_in_air = 1;
-	// }
+	
 
 	// check collision down a little lower than hero
 	Generic.y = high_byte(BoxGuy1.y); // the rest should be the same
