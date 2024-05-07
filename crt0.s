@@ -4,7 +4,7 @@
 
 
 FT_BASE_ADR		= $0100		;page in RAM, should be $xx00
-FT_DPCM_OFF		= $f000		;$c000..$ffc0, 64-byte steps
+FT_DPCM_OFF		= $fc00		;$c000..$ffc0, 64-byte steps
 FT_SFX_STREAMS	= 1			;number of sound effects played at once, 1..4
 
 FT_THREAD       = 1		;undefine if you call sound effects in the same thread as sound update
@@ -264,13 +264,12 @@ detectNTSC:
 .segment "RODATA"
 
 music_data:
-;	.include "music.s"
-
+	.include "MUSIC/nes_bible_demo.s"
 
 
 	.if(FT_SFX_ENABLE)
 sounds_data:
-;	.include "sounds.s"
+	.include "MUSIC/nes_bible_demo_sfx.s"
 	.endif
 
 	

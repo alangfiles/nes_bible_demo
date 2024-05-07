@@ -94,17 +94,21 @@ unsigned char scroll_count;
 unsigned int pseudo_scroll_x;
 
 unsigned char song;
-#define MAX_SONGS 2
+#define MAX_SONGS 1
 enum
 {
 	SONG_GAME,
-	SONG_PAUSE
+	// SONG_PAUSE
 };
-enum
-{
+enum {
+	SFX_SHOOT,
+	SFX_ENEMY_HITS,
+	SFX_SHOT_HITS,
+	SFX_LIFE_UP,
+	SFX_PLAYER_DIES,
 	SFX_JUMP,
-	SFX_DING,
-	SFX_NOISE
+	SFX_START_LEVEL,
+	SFX_VICTORY
 };
 
 unsigned char game_mode;

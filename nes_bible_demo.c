@@ -47,15 +47,22 @@ void main(void)
 			pad1_new = get_pad_new(0);
 			if (pad1_new & PAD_START)
 			{
+				sfx_play(SFX_START_LEVEL, 0);
+				for(temp = 0; temp < 100; ++temp){
+					ppu_wait_nmi();
+				}
 				pal_fade_to(4, 0); // fade to black
 				ppu_off();
 				// load game mode
 				game_mode = MODE_GAME;
-				// song = SONG_GAME;
-				// music_play(song); //no music yet
 				load_room();
+				
 				ppu_on_all();
+				
 				pal_bright(4); // back to normal brightness
+				song = SONG_GAME;
+				music_play(song);
+				set_music_speed(11);
 			}
 		}
 		while (game_mode == MODE_GAME)
@@ -73,6 +80,7 @@ void main(void)
 				game_mode = MODE_PAUSE;
 				// song = SONG_PAUSE;
 				// music_play(song);
+				music_stop();
 				// color_emphasis(0x01);
 				ppu_mask(0b00011001); // grayscale mode
 
@@ -164,13 +172,40 @@ void main(void)
 
 			pad1 = pad_poll(0); // read the first controller
 			pad1_new = get_pad_new(0);
-			// draw_sprites();
+
+			temp_x = 120;
+			temp_y = 195;
+			if(frame_counter < 250){
+				oam_clear();
+				++frame_counter;
+				if(frame_counter < 40){
+					oam_meta_spr(temp_x, temp_y, animate_playerstandright_data);
+				} else if(frame_counter < 50){
+					oam_meta_spr(temp_x, temp_y, animate_deathright1_data);
+				}else if(frame_counter < 60){
+					oam_meta_spr(temp_x, temp_y, animate_deathright2_data);
+				}else if(frame_counter < 70){
+					oam_meta_spr(temp_x, temp_y, animate_deathright3_data);
+				}else if(frame_counter < 80){
+					oam_meta_spr(temp_x, temp_y, animate_deathright4_data);
+				}else if(frame_counter < 90){
+					oam_meta_spr(temp_x, temp_y, animate_deathright5_data);
+				}else if(frame_counter < 100){
+					oam_meta_spr(temp_x, temp_y, animate_deathright6_data);
+				}else if(frame_counter < 110){
+					oam_meta_spr(temp_x, temp_y, animate_deathright7_data);
+				} else {
+					oam_meta_spr(temp_x, temp_y, animate_deathright8_data);
+				}
+			}
 
 			if (pad1_new & PAD_START)
 			{
 
 				reset();
-				game_mode = MODE_GAME;
+
+				load_title();
+				game_mode = MODE_TITLE;
 			}
 		}
 
@@ -186,8 +221,8 @@ void main(void)
 			if (pad1_new & PAD_START)
 			{
 				game_mode = MODE_GAME;
-				// song = SONG_GAME;
-				// music_play(song);
+				song = SONG_GAME;
+				music_play(song);
 				// color_emphasis(COL_EMP_NORMAL);
 				ppu_mask(0b00011000); // grayscale mode
 			}
@@ -306,6 +341,9 @@ void load_victory(void)
 
 	vram_unrle(victory);
 	ppu_on_all();
+	music_stop();
+	sfx_play(SFX_VICTORY, 0);
+
 
 	game_mode = MODE_END;
 }
@@ -959,7 +997,7 @@ void movement(void)
 		{
 			++multi_jump;
 			BoxGuy1.vel_y = JUMP_VEL; // JUMP
-			// sfx_play(SFX_JUMP, 0);
+			sfx_play(SFX_JUMP, 0);
 			short_jump_count = 1;
 			player_in_air = 1;
 		}
@@ -994,6 +1032,7 @@ void movement(void)
 
 			projectiles_x[projectile_index] = high_byte(BoxGuy1.x) + 10;
 			projectiles_y[projectile_index] = high_byte(BoxGuy1.y);
+			sfx_play(SFX_SHOOT, 0);
 		}
 	}
 
@@ -1360,6 +1399,7 @@ void enemy_moves(void)
 			{
 				projectiles_list[temp1] = TURN_OFF;
 				--enemy_health[index];
+				sfx_play(SFX_SHOT_HITS, 0);
 				if (enemy_health[index] == 0 || enemy_health[index] > 240) // check for overflow with 240
 				{
 					if (enemy_type[index] == ENEMY_BEAR)
@@ -1907,12 +1947,14 @@ void entity_collisions(void)
 					if (BoxGuy1.health < MAX_PLAYER_HEALTH)
 					{
 						BoxGuy1.health += 1;
+						sfx_play(SFX_LIFE_UP, 0);
 					}
 					entity_active[index] = 0;
 					entity_y[index] = TURN_OFF;
 					break;
 				case ENTITY_BREAD:
 					BoxGuy1.health = MAX_PLAYER_HEALTH;
+					sfx_play(SFX_LIFE_UP, 0);
 					entity_active[index] = 0;
 					entity_y[index] = TURN_OFF;
 					break;
@@ -1961,6 +2003,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_SNAIL_DAMAGE; // check for overflow
+						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_SNAIL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_SNAIL_PLAYER_INVUL;
 					}
@@ -1973,6 +2016,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_OWL_DAMAGE; // check for overflow
+						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_OWL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_OWL_PLAYER_INVUL;
 					}
@@ -1983,6 +2027,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_BEAR_DAMAGE; // check for overflow
+						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_BEAR_PLAYER_HITSTUN;
 						invul_frames = ENEMY_BEAR_PLAYER_INVUL;
 					}
@@ -2000,6 +2045,7 @@ void init_death(void)
 	ppu_off();
 	load_gameover();
 
+	frame_counter = 0;
 	scroll_x = 0;
 	set_scroll_x(0);
 	oam_clear();
@@ -2010,6 +2056,8 @@ void init_death(void)
 	// multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 
 	ppu_on_all();
+	music_stop();
+	sfx_play(SFX_PLAYER_DIES, 0);
 	pal_fade_to(0, 4); // fade to black
 }
 
