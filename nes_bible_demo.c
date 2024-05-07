@@ -979,7 +979,7 @@ void movement(void)
 	{
 		++falling_down;
 
-		if(falling_down > 2){ //been falling for 2 frames
+		if(falling_down > 2 && !player_on_ladder){ //been falling for 2 frames
 			player_in_air = 1;
 		}
 
