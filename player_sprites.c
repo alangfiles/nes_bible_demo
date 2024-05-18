@@ -149,25 +149,25 @@ void draw_player_sprites()
       else
       {
         tempint = animate_recoilleft_data;
-        if(sprite_frame_counter > 16){
+        if (sprite_frame_counter > 16)
+        {
           sprite_frame_counter = 0;
         }
-        
       }
     }
     else
     {
-       if (sprite_frame_counter < 8)
+      if (sprite_frame_counter < 8)
       {
         tempint = animate_skeletonright_data;
       }
       else
       {
         tempint = animate_recoilright_data;
-        if(sprite_frame_counter > 16){
+        if (sprite_frame_counter > 16)
+        {
           sprite_frame_counter = 0;
         }
-        
       }
     }
     oam_meta_spr(temp_x, temp_y, tempint);
@@ -218,18 +218,26 @@ void draw_player_sprites()
       return;
     }
 
-    if (player_on_ladder_pose < PLAYER_LADDER_1_FRAMES)
+    if (player_on_ladder_top)
     {
-      oam_meta_spr(temp_x, temp_y, animate_playerclimb1_data);
-    }
-    else if (player_on_ladder_pose < PLAYER_LADDER_2_FRAMES)
-    {
-      oam_meta_spr(temp_x, temp_y, animate_playerclimb2_data);
+      oam_meta_spr(temp_x, temp_y, animate_laddertop_data);
     }
     else
     {
-      oam_meta_spr(temp_x, temp_y, animate_playerclimb1_data);
-      player_on_ladder_pose = 0;
+
+      if (player_on_ladder_pose < PLAYER_LADDER_1_FRAMES)
+      {
+        oam_meta_spr(temp_x, temp_y, animate_playerclimb1_data);
+      }
+      else if (player_on_ladder_pose < PLAYER_LADDER_2_FRAMES)
+      {
+        oam_meta_spr(temp_x, temp_y, animate_playerclimb2_data);
+      }
+      else
+      {
+        oam_meta_spr(temp_x, temp_y, animate_playerclimb1_data);
+        player_on_ladder_pose = 0;
+      }
     }
 
     return;

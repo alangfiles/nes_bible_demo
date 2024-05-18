@@ -42,6 +42,7 @@ unsigned char player_in_air;
 unsigned char player_is_running;
 unsigned char player_on_ladder;
 unsigned char player_on_ladder_pose;
+unsigned char player_on_ladder_top;
 unsigned char player_in_hitstun;
 unsigned char player_running;
 unsigned char collision_L;

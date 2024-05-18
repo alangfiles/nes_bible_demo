@@ -969,6 +969,7 @@ void movement(void)
 			{
 				BoxGuy1.vel_y = MAX_LADDER_SPEED;
 			}
+			player_on_ladder_top = 0;
 		}
 		else if (pad1 & PAD_UP)
 		{
@@ -978,6 +979,22 @@ void movement(void)
 			if (BoxGuy1.vel_y < -MAX_LADDER_SPEED)
 			{
 				BoxGuy1.vel_y = -MAX_LADDER_SPEED;
+			}
+			//if you're on the top of ladder, zip to the top top;
+			if(bg_coll_ladder_top_under_player()){
+				++player_on_ladder_top;
+
+				if(player_on_ladder_top > 10){
+					//if he's going fast, just bump him 2px up
+					if(BoxGuy1.vel_y = -MAX_LADDER_SPEED){
+						BoxGuy1.y -= 0x200;
+					} else { //otherwise, bump him up 8px
+						BoxGuy1.y -= 0x800;
+					}
+					
+					player_on_ladder_top = 0;
+					player_on_ladder = 0;
+				}  
 			}
 		}
 		else
@@ -1006,7 +1023,7 @@ void movement(void)
 	{
 		direction_y = DOWN;
 		// TODO: not hardcode the last level here
-		if (bg_coll_ladder_top_under_player() && level != 6)
+		if (bg_coll_ladder_top_under_player())
 		{
 			BoxGuy1.x = (BoxGuy1.x + 0x700) & ~0xF00; // tried to square the player to the ladder
 			player_on_ladder = 1;
