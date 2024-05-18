@@ -35,6 +35,7 @@
 unsigned char debug;
 unsigned char pad1;
 unsigned char pad1_new;
+unsigned char pad1_state;
 unsigned char short_jump_count;
 unsigned char map_loaded;
 unsigned char collision;

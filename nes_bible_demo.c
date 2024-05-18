@@ -113,6 +113,7 @@ void main(void)
 
 			pad1 = pad_poll(0); // read the first controller
 			pad1_new = get_pad_new(0);
+			pad1_state = pad_state(0);
 
 			if (pad1_new & PAD_START)
 			{
@@ -1089,10 +1090,10 @@ void movement(void)
 		--projectile_cooldown;
 	}
 
-	if (pad1_new & PAD_UP)
+	if (pad1_new & PAD_UP || pad1_state & PAD_UP) //on trigger or hold
 	{
 		direction_y = UP;
-		if (bg_coll_ladder())
+		if (!player_on_ladder && bg_coll_ladder())
 		{
 			// needs to snap player to grid, to nearest 16 pixels
 			BoxGuy1.x = (BoxGuy1.x + 0x700) & ~0xF00;
