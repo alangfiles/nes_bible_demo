@@ -198,12 +198,6 @@ unsigned int max_scroll;
 // data is exactly 240 bytes, 16 * 15
 // doubles as the collision map data
 
-const unsigned char palette_sp[] = {
-		0x21, 0x17, 0x24, 0x36,
-		0x21, 0x06, 0x28, 0x37,
-		0x21, 0x0f, 0x11, 0x30,
-		0x21, 0x17, 0x3d, 0x38};
-
 #define MAX_ENEMY 16
 unsigned char enemy_x[MAX_ENEMY];
 unsigned char enemy_y[MAX_ENEMY];

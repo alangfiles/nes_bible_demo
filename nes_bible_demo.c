@@ -416,7 +416,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 0;				// debug, change starting level
+	level = 2;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -436,7 +436,7 @@ void reset(void)
 	}
 	for (temp1 = 0; temp1 < MAX_ENEMY; ++temp1)
 	{
-		enemy_y[temp1] = TURN_OFF;
+		enemy_y[temp1] = TURN_OFF;  
 	}
 
 	ppu_mask(0); // grayscale mode
@@ -678,6 +678,20 @@ void draw_sprites(void)
 		if (temp_y < 0xf0)
 		{
 			++entity_frames[index2];
+			if(entity_type[index2] == ENTITY_STARBURST){
+				if (entity_frames[index2] < 20){
+					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
+				} else if (entity_frames[index2] < 40){
+					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
+				} else if (entity_frames[index2] < 60){
+					oam_meta_spr(temp_x, temp_y, animate_starburst3_data);
+				} else if (entity_frames[index2] < 80){
+					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
+				} else {
+					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
+					entity_frames[index2] = 0;
+				}
+			}
 			if (entity_type[index2] == ENTITY_WINE)
 			{
 				oam_meta_spr(temp_x, temp_y, animate_wine_data);
@@ -696,7 +710,18 @@ void draw_sprites(void)
 			}
 			if (entity_type[index2] == ENTITY_FRUIT)
 			{
-				oam_meta_spr(temp_x, temp_y, animate_fruit_data);
+				if (entity_frames[index2] < 20){
+					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
+				} else if (entity_frames[index2] < 40){
+					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
+				} else if (entity_frames[index2] < 60){
+					oam_meta_spr(temp_x, temp_y, animate_starburst3_data);
+				} else if (entity_frames[index2] < 80){
+					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
+				} else {
+					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
+					entity_frames[index2] = 0;
+				}
 			}
 			if (entity_type[index2] == ENTITY_BUN)
 			{
@@ -1355,7 +1380,7 @@ void check_entity_objects(void)
 void entity_moves(void)
 {
 	// some entities drop til they're coliding with the ground.
-	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_FRUIT)
+	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_FRUIT)
 	{
 		// check for collision
 		Generic.x = entity_x[index];
@@ -1367,7 +1392,7 @@ void entity_moves(void)
 		if (!collision_D)
 		{
 			++entity_y[index];
-			if(entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_FRUIT){ //fruit moves slowly
+			if(entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST  || entity_type[index] == ENTITY_FRUIT){ //fruit moves slowly
 				++entity_y[index];
 			}
 		}
@@ -2022,7 +2047,7 @@ void entity_collisions(void)
 					entity_active[index] = 0;
 					entity_y[index] = TURN_OFF;
 					break;
-				case ENTITY_WINE:
+				case ENTITY_STARBURST:
 					pal_fade_to(4, 0);			 // fade to black
 					game_mode = MODE_SWITCH; // this handles loading the level
 					ppu_off();
