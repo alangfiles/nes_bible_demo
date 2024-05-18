@@ -258,6 +258,7 @@ void entity_obj_init(void);
 void init_death(void);
 void init_mode_switch(void);
 void level_down_routine(void);
+void level_up_routine(void);
 void enemy_snail_behavior(void);
 void enemy_owl_behavior(void);
 void enemy_bear_behavior(void);

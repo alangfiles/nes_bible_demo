@@ -48,48 +48,56 @@ void main(void)
 			if (pad1_new & PAD_START)
 			{
 				sfx_play(SFX_START_LEVEL, 0);
-				pal_bright(3); 
-				for(temp = 0; temp < 10; ++temp){
+				pal_bright(3);
+				for (temp = 0; temp < 10; ++temp)
+				{
 					ppu_wait_nmi();
 				}
-				pal_bright(2); 
-				for(temp = 0; temp < 10; ++temp){
+				pal_bright(2);
+				for (temp = 0; temp < 10; ++temp)
+				{
 					ppu_wait_nmi();
 				}
-				pal_bright(1); 
-				for(temp = 0; temp < 10; ++temp){
+				pal_bright(1);
+				for (temp = 0; temp < 10; ++temp)
+				{
 					ppu_wait_nmi();
 				}
-				pal_bright(0); 
-				for(temp = 0; temp < 10; ++temp){
+				pal_bright(0);
+				for (temp = 0; temp < 10; ++temp)
+				{
 					ppu_wait_nmi();
 				}
 				ppu_off();
-				for(temp = 0; temp < 20; ++temp){
+				for (temp = 0; temp < 20; ++temp)
+				{
 					ppu_wait_nmi();
 				}
 				// load game mode
 				game_mode = MODE_GAME;
 				load_room();
-				
-				ppu_on_all();
-				pal_bright(1); 
-				for(temp = 0; temp < 10; ++temp){
-					ppu_wait_nmi();
-				}
-				pal_bright(2); 
-				for(temp = 0; temp < 10; ++temp){
-					ppu_wait_nmi();
-				}
-				pal_bright(3); 
-				for(temp = 0; temp < 10; ++temp){
-					ppu_wait_nmi();
-				}
-				pal_bright(4); 
-				for(temp = 0; temp < 10; ++temp){
-					ppu_wait_nmi();
-				}
 
+				ppu_on_all();
+				pal_bright(1);
+				for (temp = 0; temp < 10; ++temp)
+				{
+					ppu_wait_nmi();
+				}
+				pal_bright(2);
+				for (temp = 0; temp < 10; ++temp)
+				{
+					ppu_wait_nmi();
+				}
+				pal_bright(3);
+				for (temp = 0; temp < 10; ++temp)
+				{
+					ppu_wait_nmi();
+				}
+				pal_bright(4);
+				for (temp = 0; temp < 10; ++temp)
+				{
+					ppu_wait_nmi();
+				}
 
 				song = SONG_GAME;
 				music_play(song);
@@ -145,33 +153,18 @@ void main(void)
 
 			// check for player offscreen level flags
 
-			// player goes up to next level
+			// player goes up to next level //must be on ladder
 			if (high_byte(BoxGuy1.y) < 0x08 && level_up && player_on_ladder)
 			{
 				BoxGuy1.y = 0xD000;			 // put the user above the bottom of the screen.
-				pal_fade_to(4, 0);			 // fade to black
-				game_mode = MODE_SWITCH; // this handles loading the level
-				init_mode_switch();
-				scroll_x = 0;
-				ppu_off();
-				++level;
-				level_up = 0;
-				room_to_load = 0;
-				nametable_to_load = 0;
+				level_up_routine();
 			}
 
-			// player goes down to next level
-			if (high_byte(BoxGuy1.y) > 0xd0 && high_byte(BoxGuy1.y) < 0xd9 && level_up) // todo: might need less than 0xd0
+			// player goes down to next level, ladder not necessary
+			if (high_byte(BoxGuy1.y) > 0xd0 && high_byte(BoxGuy1.y) < 0xf4 && level_up) // todo: might need less than 0xd0
 			{
 				BoxGuy1.y = 0x1800;			 // put the user near the top of screen
-				pal_fade_to(4, 0);			 // fade to black
-				game_mode = MODE_SWITCH; // this handles loading the level
-				ppu_off();
-				scroll_x = 0;
-				++level;
-				level_up = 0;
-				room_to_load = 0;
-				nametable_to_load = 0;
+				level_up_routine();
 			}
 
 			// player goes up to previous level
@@ -206,26 +199,44 @@ void main(void)
 
 			temp_x = 120;
 			temp_y = 195;
-			if(frame_counter < 250){
+			if (frame_counter < 250)
+			{
 				oam_clear();
 				++frame_counter;
-				if(frame_counter < 40){
+				if (frame_counter < 40)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_playerstandright_data);
-				} else if(frame_counter < 50){
+				}
+				else if (frame_counter < 50)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_deathright1_data);
-				}else if(frame_counter < 60){
+				}
+				else if (frame_counter < 60)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_deathright2_data);
-				}else if(frame_counter < 70){
+				}
+				else if (frame_counter < 70)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_deathright3_data);
-				}else if(frame_counter < 80){
+				}
+				else if (frame_counter < 80)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_deathright4_data);
-				}else if(frame_counter < 90){
+				}
+				else if (frame_counter < 90)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_deathright5_data);
-				}else if(frame_counter < 100){
+				}
+				else if (frame_counter < 100)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_deathright6_data);
-				}else if(frame_counter < 110){
+				}
+				else if (frame_counter < 110)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_deathright7_data);
-				} else {
+				}
+				else
+				{
 					oam_meta_spr(temp_x, temp_y, animate_deathright8_data);
 				}
 			}
@@ -295,7 +306,7 @@ void main(void)
 
 			if (pad1_new & PAD_START)
 			{
-				reset();  
+				reset();
 				game_mode = MODE_TITLE;
 			}
 		}
@@ -329,12 +340,12 @@ void load_title(void)
 	multi_vram_buffer_horz("CORGS DEMO", 10, NTADR_A(14, 6));
 
 	multi_vram_buffer_horz("BRIAN & ALAN GAMES", 18, NTADR_A(12, 8));
-
 }
 
 #include "BG/Stage1/gameovertiled.c"
-const unsigned char palette_gameover[16]={ 0x0f,0x0f,0x00,0x10,0x0f,0x0f,0x30,0x08,0x0f,0x0f,0x17,0x06,0x0f,0x0f,0x19,0x29 };
-void load_gameover(void){
+const unsigned char palette_gameover[16] = {0x0f, 0x0f, 0x00, 0x10, 0x0f, 0x0f, 0x30, 0x08, 0x0f, 0x0f, 0x17, 0x06, 0x0f, 0x0f, 0x19, 0x29};
+void load_gameover(void)
+{
 	clear_vram_buffer();
 
 	pal_bg(palette_gameover);
@@ -356,16 +367,14 @@ void load_gameover(void){
 	multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 12));
 
 	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
-
 }
 
 #include "BG/Stage1/victory.h"
-const unsigned char palette_victory[16]={ 
-	0x21,0x0f,0x00,0x10,
-	0x21,0x21,0x30,0x21,
-	0x21,0x20,0x21,0x20,
-	0x21,0x0f,0x0f,0x29 
-};
+const unsigned char palette_victory[16] = {
+		0x21, 0x0f, 0x00, 0x10,
+		0x21, 0x21, 0x30, 0x21,
+		0x21, 0x20, 0x21, 0x20,
+		0x21, 0x0f, 0x0f, 0x29};
 void load_victory(void)
 {
 	ppu_off(); // screen off
@@ -379,7 +388,6 @@ void load_victory(void)
 	ppu_on_all();
 	music_stop();
 	sfx_play(SFX_VICTORY, 0);
-
 
 	game_mode = MODE_END;
 }
@@ -416,7 +424,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 0;				// debug, change starting level
+	level = 3;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -436,7 +444,7 @@ void reset(void)
 	}
 	for (temp1 = 0; temp1 < MAX_ENEMY; ++temp1)
 	{
-		enemy_y[temp1] = TURN_OFF;  
+		enemy_y[temp1] = TURN_OFF;
 	}
 
 	ppu_mask(0); // grayscale mode
@@ -653,9 +661,7 @@ void draw_sprites(void)
 				oam_meta_spr(0x28, 0x16, tempint2);
 			}
 		}
-		
 	}
-	
 
 	offset = get_frame_count() & 3;
 	offset = offset << 4; // * 16, the size of the shuffle array
@@ -678,16 +684,26 @@ void draw_sprites(void)
 		if (temp_y < 0xf0)
 		{
 			++entity_frames[index2];
-			if(entity_type[index2] == ENTITY_STARBURST){
-				if (entity_frames[index2] < 20){
+			if (entity_type[index2] == ENTITY_STARBURST)
+			{
+				if (entity_frames[index2] < 20)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
-				} else if (entity_frames[index2] < 40){
+				}
+				else if (entity_frames[index2] < 40)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
-				} else if (entity_frames[index2] < 60){
+				}
+				else if (entity_frames[index2] < 60)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst3_data);
-				} else if (entity_frames[index2] < 80){
+				}
+				else if (entity_frames[index2] < 80)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
-				} else {
+				}
+				else
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
 					entity_frames[index2] = 0;
 				}
@@ -710,15 +726,24 @@ void draw_sprites(void)
 			}
 			if (entity_type[index2] == ENTITY_FRUIT)
 			{
-				if (entity_frames[index2] < 20){
+				if (entity_frames[index2] < 20)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
-				} else if (entity_frames[index2] < 40){
+				}
+				else if (entity_frames[index2] < 40)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
-				} else if (entity_frames[index2] < 60){
+				}
+				else if (entity_frames[index2] < 60)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst3_data);
-				} else if (entity_frames[index2] < 80){
+				}
+				else if (entity_frames[index2] < 80)
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
-				} else {
+				}
+				else
+				{
 					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
 					entity_frames[index2] = 0;
 				}
@@ -790,7 +815,7 @@ void movement(void)
 	if (invul_frames > 0)
 	{
 		--invul_frames;
-	}  
+	}
 	if (player_in_hitstun)
 	{
 		--player_in_hitstun;
@@ -1010,7 +1035,8 @@ void movement(void)
 	{
 		++falling_down;
 
-		if(falling_down > 2 && !player_on_ladder){ //been falling for 2 frames
+		if (falling_down > 2 && !player_on_ladder)
+		{ // been falling for 2 frames
 			player_in_air = 1;
 		}
 
@@ -1037,8 +1063,6 @@ void movement(void)
 			BoxGuy1.vel_y = 0;
 		}
 	}
-
-	
 
 	// check collision down a little lower than hero
 	Generic.y = high_byte(BoxGuy1.y); // the rest should be the same
@@ -1392,7 +1416,8 @@ void entity_moves(void)
 		if (!collision_D)
 		{
 			++entity_y[index];
-			if(entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST  || entity_type[index] == ENTITY_FRUIT){ //fruit moves slowly
+			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_FRUIT)
+			{ // fruit moves slowly
 				++entity_y[index];
 			}
 		}
@@ -2075,33 +2100,32 @@ void sprite_collisions(void)
 		if (enemy_active[index])
 		{
 			switch (enemy_type[index])
-				{ 
-				case ENEMY_SNAIL:
-					Generic2.width = ENEMY_SNAIL_WIDTH; 
-					Generic2.height = ENEMY_SNAIL_HEIGHT;
-					Generic2.x = enemy_x[index] + 4; 
-					Generic2.y = enemy_y[index];
+			{
+			case ENEMY_SNAIL:
+				Generic2.width = ENEMY_SNAIL_WIDTH;
+				Generic2.height = ENEMY_SNAIL_HEIGHT;
+				Generic2.x = enemy_x[index] + 4;
+				Generic2.y = enemy_y[index];
 				break;
-				case ENEMY_OWL:
-					Generic2.width = ENEMY_OWL_WIDTH;
-					Generic2.height = ENEMY_OWL_HEIGHT;
-					Generic2.x = enemy_x[index];
-					Generic2.y = enemy_y[index];
+			case ENEMY_OWL:
+				Generic2.width = ENEMY_OWL_WIDTH;
+				Generic2.height = ENEMY_OWL_HEIGHT;
+				Generic2.x = enemy_x[index];
+				Generic2.y = enemy_y[index];
 				break;
-				case ENEMY_BEAR:
-					Generic2.width = ENEMY_BEAR_WIDTH;
-					Generic2.height = ENEMY_BEAR_HEIGHT;
-					Generic2.x = enemy_x[index];
-					Generic2.y = enemy_y[index];
+			case ENEMY_BEAR:
+				Generic2.width = ENEMY_BEAR_WIDTH;
+				Generic2.height = ENEMY_BEAR_HEIGHT;
+				Generic2.x = enemy_x[index];
+				Generic2.y = enemy_y[index];
 				break;
-				default: 
-					Generic2.width = ENEMY_WIDTH;
-					Generic2.height = ENEMY_HEIGHT;
-					Generic2.x = enemy_x[index];
-					Generic2.y = enemy_y[index];
-				}
+			default:
+				Generic2.width = ENEMY_WIDTH;
+				Generic2.height = ENEMY_HEIGHT;
+				Generic2.x = enemy_x[index];
+				Generic2.y = enemy_y[index];
+			}
 
-			
 			if (check_collision(&Generic, &Generic2))
 			{
 
@@ -2115,7 +2139,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_SNAIL_DAMAGE; // check for overflow
-						player_on_ladder = 0; //hitting hits you off ladder
+						player_on_ladder = 0;									// hitting hits you off ladder
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_SNAIL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_SNAIL_PLAYER_INVUL;
@@ -2129,7 +2153,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_OWL_DAMAGE; // check for overflow
-						player_on_ladder = 0; //hitting hits you off ladder
+						player_on_ladder = 0;								// hitting hits you off ladder
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_OWL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_OWL_PLAYER_INVUL;
@@ -2141,7 +2165,7 @@ void sprite_collisions(void)
 						hit_direction = enemy_dir[index];
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_BEAR_DAMAGE; // check for overflow
-						player_on_ladder = 0; //hitting hits you off ladder
+						player_on_ladder = 0;								 // hitting hits you off ladder
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_BEAR_PLAYER_HITSTUN;
 						invul_frames = ENEMY_BEAR_PLAYER_INVUL;
@@ -2174,6 +2198,28 @@ void init_death(void)
 	music_stop();
 	sfx_play(SFX_PLAYER_DIES, 0);
 	pal_fade_to(0, 4); // fade to black
+}
+
+void level_up_routine()
+{
+	pal_fade_to(4, 0); // fade to black
+	ppu_off();
+	game_mode = MODE_SWITCH; // this handles loading the level
+	++level;
+	level_up = 0;
+	max_rooms = level_max_rooms[level] - 1;
+	nametable_to_load = 0;
+	scroll_x = 0;
+	room_to_load = 0;
+
+	if (max_rooms > 1)
+	{
+		max_scroll = (max_rooms * 0x100) - 1;
+	}
+	else
+	{
+		max_scroll = 0;
+	}
 }
 
 void level_down_routine()
