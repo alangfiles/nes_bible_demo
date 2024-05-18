@@ -107,7 +107,6 @@ void draw_player_sprites()
   temp = BoxGuy1.health;
   draw_health_meter();
   oam_meta_spr(0x16, 0x16, tempint2);
-  
 
   // player stuff get the player x,y
   temp_x = BoxGuy1.x >> 8;
@@ -143,11 +142,33 @@ void draw_player_sprites()
   {
     if (direction == LEFT)
     {
-      tempint = animate_recoilleft_data;
+      if (sprite_frame_counter < 8)
+      {
+        tempint = animate_skeletonleft_data;
+      }
+      else
+      {
+        tempint = animate_recoilleft_data;
+        if(sprite_frame_counter > 16){
+          sprite_frame_counter = 0;
+        }
+        
+      }
     }
     else
     {
-      tempint = animate_recoilright_data;
+       if (sprite_frame_counter < 8)
+      {
+        tempint = animate_skeletonright_data;
+      }
+      else
+      {
+        tempint = animate_recoilright_data;
+        if(sprite_frame_counter > 16){
+          sprite_frame_counter = 0;
+        }
+        
+      }
     }
     oam_meta_spr(temp_x, temp_y, tempint);
     return;

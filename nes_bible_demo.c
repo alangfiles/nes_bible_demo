@@ -810,10 +810,10 @@ void movement(void)
 		// where the player triggers the death flag
 		// but doesn't cross the border til later
 		--death_flag;
-	}
+	}   
 
-	if (invul_frames > 0)
-	{
+	if (invul_frames > 0) 
+	{  
 		--invul_frames;
 	}
 	if (player_in_hitstun)
@@ -1416,7 +1416,7 @@ void entity_moves(void)
 		if (!collision_D)
 		{
 			++entity_y[index];
-			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_FRUIT)
+			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || !entity_type[index] == ENTITY_FRUIT)
 			{ // fruit moves slowly
 				++entity_y[index];
 			}

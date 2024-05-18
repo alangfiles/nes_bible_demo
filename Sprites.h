@@ -1992,293 +1992,293 @@ const unsigned char animate_stonesmall_data[]={
 
 };
 
-const unsigned char animate_deerleft1_data[]={
+// const unsigned char animate_deerleft1_data[]={
 
-	- 1,- 5,0x6f,2,
-	  0,  0,0x7d,1,
-	  0,- 8,0x6d,1,
-	  8,- 8,0x6e,1,
+// 	- 1,- 5,0x6f,2,
+// 	  0,  0,0x7d,1,
+// 	  0,- 8,0x6d,1,
+// 	  8,- 8,0x6e,1,
 
-	  8,  0,0x7e,1,
-	  0,  8,0x8d,1,
-	  8,  8,0x8e,1,
-	 16,  0,0x7f,1,
+// 	  8,  0,0x7e,1,
+// 	  0,  8,0x8d,1,
+// 	  8,  8,0x8e,1,
+// 	 16,  0,0x7f,1,
 
-	 16,  8,0x8f,1,
-	  8, 16,0x9e,1,
-	 16, 16,0x9f,1,
-	  0, 16,0x9d,1,
-	0x80
-
-};
+// 	 16,  8,0x8f,1,
+// 	  8, 16,0x9e,1,
+// 	 16, 16,0x9f,1,
+// 	  0, 16,0x9d,1,
+// 	0x80
+
+// };
 
-const unsigned char animate_deerleft2_data[]={
+// const unsigned char animate_deerleft2_data[]={
 
-	- 1,- 4,0x6f,2,
-	  0,  0,0x8b,1,
-	  0,- 8,0x7b,1,
-	  8,- 8,0x7c,1,
+// 	- 1,- 4,0x6f,2,
+// 	  0,  0,0x8b,1,
+// 	  0,- 8,0x7b,1,
+// 	  8,- 8,0x7c,1,
 
-	  8,  0,0x8c,1,
-	  0,  8,0xbe,1,
-	  8,  8,0x8e,1,
-	 16,  8,0x8f,1,
+// 	  8,  0,0x8c,1,
+// 	  0,  8,0xbe,1,
+// 	  8,  8,0x8e,1,
+// 	 16,  8,0x8f,1,
 
-	  8, 16,0xae,1,
-	 16, 16,0xaf,1,
-	 16,  0,0x8a,1,
-	0x80
+// 	  8, 16,0xae,1,
+// 	 16, 16,0xaf,1,
+// 	 16,  0,0x8a,1,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_deerleft3_data[]={
+// const unsigned char animate_deerleft3_data[]={
 
-	- 1,- 5,0x6f,2,
-	  0,  0,0x7d,1,
-	  0,- 8,0x6d,1,
-	  8,- 8,0x6e,1,
+// 	- 1,- 5,0x6f,2,
+// 	  0,  0,0x7d,1,
+// 	  0,- 8,0x6d,1,
+// 	  8,- 8,0x6e,1,
 
-	  8,  0,0x7e,1,
-	  0,  8,0x9a,1,
-	  8,  8,0x9b,1,
-	 16,  0,0x7f,1,
+// 	  8,  0,0x7e,1,
+// 	  0,  8,0x9a,1,
+// 	  8,  8,0x9b,1,
+// 	 16,  0,0x7f,1,
 
-	 16,  8,0x9c,1,
-	  8, 16,0xab,1,
-	 16, 16,0xac,1,
-	  0, 16,0xaa,1,
-	0x80
+// 	 16,  8,0x9c,1,
+// 	  8, 16,0xab,1,
+// 	 16, 16,0xac,1,
+// 	  0, 16,0xaa,1,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_deerleftjump_data[]={
+// const unsigned char animate_deerleftjump_data[]={
 
-	- 1,- 5,0x6f,2,
-	  0,  0,0x7d,1,
-	  0,- 8,0x6d,1,
-	  8,- 8,0x6e,1,
+// 	- 1,- 5,0x6f,2,
+// 	  0,  0,0x7d,1,
+// 	  0,- 8,0x6d,1,
+// 	  8,- 8,0x6e,1,
 
-	  8,  0,0x7e,1,
-	  0,  8,0xbe,1,
-	  8,  8,0x9b,1,
-	 16,  0,0x7f,1,
+// 	  8,  0,0x7e,1,
+// 	  0,  8,0xbe,1,
+// 	  8,  8,0x9b,1,
+// 	 16,  0,0x7f,1,
 
-	 16,  8,0x9c,1,
-	  8, 16,0x6a,1,
-	 16, 16,0x6b,1,
-	 24, 16,0x6c,1,
-	0x80
+// 	 16,  8,0x9c,1,
+// 	  8, 16,0x6a,1,
+// 	 16, 16,0x6b,1,
+// 	 24, 16,0x6c,1,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_deerright1_data[]={
+// const unsigned char animate_deerright1_data[]={
 
-	 17,- 5,0x6f,2|OAM_FLIP_H,
-	 16,  0,0x7d,1|OAM_FLIP_H,
-	 16,- 8,0x6d,1|OAM_FLIP_H,
-	  8,- 8,0x6e,1|OAM_FLIP_H,
+// 	 17,- 5,0x6f,2|OAM_FLIP_H,
+// 	 16,  0,0x7d,1|OAM_FLIP_H,
+// 	 16,- 8,0x6d,1|OAM_FLIP_H,
+// 	  8,- 8,0x6e,1|OAM_FLIP_H,
 
-	  8,  0,0x7e,1|OAM_FLIP_H,
-	 16,  8,0x8d,1|OAM_FLIP_H,
-	  8,  8,0x8e,1|OAM_FLIP_H,
-	  0,  0,0x7f,1|OAM_FLIP_H,
+// 	  8,  0,0x7e,1|OAM_FLIP_H,
+// 	 16,  8,0x8d,1|OAM_FLIP_H,
+// 	  8,  8,0x8e,1|OAM_FLIP_H,
+// 	  0,  0,0x7f,1|OAM_FLIP_H,
 
-	  0,  8,0x8f,1|OAM_FLIP_H,
-	  8, 16,0x9e,1|OAM_FLIP_H,
-	  0, 16,0x9f,1|OAM_FLIP_H,
-	 16, 16,0x9d,1|OAM_FLIP_H,
-	0x80
+// 	  0,  8,0x8f,1|OAM_FLIP_H,
+// 	  8, 16,0x9e,1|OAM_FLIP_H,
+// 	  0, 16,0x9f,1|OAM_FLIP_H,
+// 	 16, 16,0x9d,1|OAM_FLIP_H,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_deerright2_data[]={
+// const unsigned char animate_deerright2_data[]={
 
-	 17,- 4,0x6f,2|OAM_FLIP_H,
-	 16,  0,0x8b,1|OAM_FLIP_H,
-	 16,- 8,0x7b,1|OAM_FLIP_H,
-	  8,- 8,0x7c,1|OAM_FLIP_H,
+// 	 17,- 4,0x6f,2|OAM_FLIP_H,
+// 	 16,  0,0x8b,1|OAM_FLIP_H,
+// 	 16,- 8,0x7b,1|OAM_FLIP_H,
+// 	  8,- 8,0x7c,1|OAM_FLIP_H,
 
-	  8,  0,0x8c,1|OAM_FLIP_H,
-	 16,  8,0xbe,1|OAM_FLIP_H,
-	  8,  8,0x8e,1|OAM_FLIP_H,
-	  0,  8,0x8f,1|OAM_FLIP_H,
+// 	  8,  0,0x8c,1|OAM_FLIP_H,
+// 	 16,  8,0xbe,1|OAM_FLIP_H,
+// 	  8,  8,0x8e,1|OAM_FLIP_H,
+// 	  0,  8,0x8f,1|OAM_FLIP_H,
 
-	  8, 16,0xae,1|OAM_FLIP_H,
-	  0, 16,0xaf,1|OAM_FLIP_H,
-	  0,  0,0x8a,1|OAM_FLIP_H,
-	0x80
+// 	  8, 16,0xae,1|OAM_FLIP_H,
+// 	  0, 16,0xaf,1|OAM_FLIP_H,
+// 	  0,  0,0x8a,1|OAM_FLIP_H,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_deerright3_data[]={
+// const unsigned char animate_deerright3_data[]={
 
-	 17,- 5,0x6f,2|OAM_FLIP_H,
-	 16,  0,0x7d,1|OAM_FLIP_H,
-	 16,- 8,0x6d,1|OAM_FLIP_H,
-	  8,- 8,0x6e,1|OAM_FLIP_H,
+// 	 17,- 5,0x6f,2|OAM_FLIP_H,
+// 	 16,  0,0x7d,1|OAM_FLIP_H,
+// 	 16,- 8,0x6d,1|OAM_FLIP_H,
+// 	  8,- 8,0x6e,1|OAM_FLIP_H,
 
-	  8,  0,0x7e,1|OAM_FLIP_H,
-	 16,  8,0x9a,1|OAM_FLIP_H,
-	  8,  8,0x9b,1|OAM_FLIP_H,
-	  0,  0,0x7f,1|OAM_FLIP_H,
+// 	  8,  0,0x7e,1|OAM_FLIP_H,
+// 	 16,  8,0x9a,1|OAM_FLIP_H,
+// 	  8,  8,0x9b,1|OAM_FLIP_H,
+// 	  0,  0,0x7f,1|OAM_FLIP_H,
 
-	  0,  8,0x9c,1|OAM_FLIP_H,
-	  8, 16,0xab,1|OAM_FLIP_H,
-	  0, 16,0xac,1|OAM_FLIP_H,
-	 16, 16,0xaa,1|OAM_FLIP_H,
-	0x80
+// 	  0,  8,0x9c,1|OAM_FLIP_H,
+// 	  8, 16,0xab,1|OAM_FLIP_H,
+// 	  0, 16,0xac,1|OAM_FLIP_H,
+// 	 16, 16,0xaa,1|OAM_FLIP_H,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_deerrightjump_data[]={
+// const unsigned char animate_deerrightjump_data[]={
 
-	 17,- 5,0x6f,2|OAM_FLIP_H,
-	 16,  0,0x7d,1|OAM_FLIP_H,
-	 16,- 8,0x6d,1|OAM_FLIP_H,
-	  8,- 8,0x6e,1|OAM_FLIP_H,
+// 	 17,- 5,0x6f,2|OAM_FLIP_H,
+// 	 16,  0,0x7d,1|OAM_FLIP_H,
+// 	 16,- 8,0x6d,1|OAM_FLIP_H,
+// 	  8,- 8,0x6e,1|OAM_FLIP_H,
 
-	  8,  0,0x7e,1|OAM_FLIP_H,
-	 16,  8,0xbe,1|OAM_FLIP_H,
-	  8,  8,0x9b,1|OAM_FLIP_H,
-	  0,  0,0x7f,1|OAM_FLIP_H,
+// 	  8,  0,0x7e,1|OAM_FLIP_H,
+// 	 16,  8,0xbe,1|OAM_FLIP_H,
+// 	  8,  8,0x9b,1|OAM_FLIP_H,
+// 	  0,  0,0x7f,1|OAM_FLIP_H,
 
-	  0,  8,0x9c,1|OAM_FLIP_H,
-	  8, 16,0x6a,1|OAM_FLIP_H,
-	  0, 16,0x6b,1|OAM_FLIP_H,
-	- 8, 16,0x6c,1|OAM_FLIP_H,
-	0x80
+// 	  0,  8,0x9c,1|OAM_FLIP_H,
+// 	  8, 16,0x6a,1|OAM_FLIP_H,
+// 	  0, 16,0x6b,1|OAM_FLIP_H,
+// 	- 8, 16,0x6c,1|OAM_FLIP_H,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_squirrelleft1_data[]={
+// const unsigned char animate_squirrelleft1_data[]={
 
-	- 1,  3,0xa5,2,
-	  0,  0,0x80,3,
-	  0, 16,0x83,3,
-	  8,  0,0x81,3,
+// 	- 1,  3,0xa5,2,
+// 	  0,  0,0x80,3,
+// 	  0, 16,0x83,3,
+// 	  8,  0,0x81,3,
 
-	- 3, 15,0xa3,1,
-	- 3,  7,0x93,1,
-	  0,  8,0x90,3,
-	  8,  8,0x91,3,
+// 	- 3, 15,0xa3,1,
+// 	- 3,  7,0x93,1,
+// 	  0,  8,0x90,3,
+// 	  8,  8,0x91,3,
 
-	 16,  8,0x92,3,
-	  8, 16,0x84,3,
-	 16,  0,0x82,3,
-	0x80
+// 	 16,  8,0x92,3,
+// 	  8, 16,0x84,3,
+// 	 16,  0,0x82,3,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_squirrelleft2_data[]={
+// const unsigned char animate_squirrelleft2_data[]={
 
-	- 1,  4,0xa5,2,
-	  0,  1,0x80,3,
-	  0, 16,0x85,3,
-	  8,  0,0x62,3,
+// 	- 1,  4,0xa5,2,
+// 	  0,  1,0x80,3,
+// 	  0, 16,0x85,3,
+// 	  8,  0,0x62,3,
 
-	- 3, 15,0xa3,1,
-	- 3,  7,0x93,1,
-	  8,  8,0x72,3,
-	 16,  8,0x73,3,
+// 	- 3, 15,0xa3,1,
+// 	- 3,  7,0x93,1,
+// 	  8,  8,0x72,3,
+// 	 16,  8,0x73,3,
 
-	  8, 16,0x86,3,
-	 16,  0,0x63,3,
-	  0,  9,0x90,3,
-	0x80
+// 	  8, 16,0x86,3,
+// 	 16,  0,0x63,3,
+// 	  0,  9,0x90,3,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_squirrelleft3_data[]={
+// const unsigned char animate_squirrelleft3_data[]={
 
-	- 1,  3,0xa5,2,
-	  0,  0,0x80,3,
-	  0, 16,0x95,3,
-	  8,  0,0x81,3,
+// 	- 1,  3,0xa5,2,
+// 	  0,  0,0x80,3,
+// 	  0, 16,0x95,3,
+// 	  8,  0,0x81,3,
 
-	- 3, 15,0xa3,1,
-	- 3,  7,0x93,1,
-	  0,  8,0x90,3,
-	  8,  8,0x91,3,
+// 	- 3, 15,0xa3,1,
+// 	- 3,  7,0x93,1,
+// 	  0,  8,0x90,3,
+// 	  8,  8,0x91,3,
 
-	 16,  8,0x92,3,
-	  8, 16,0x96,3,
-	 16,  0,0x82,3,
-	0x80
+// 	 16,  8,0x92,3,
+// 	  8, 16,0x96,3,
+// 	 16,  0,0x82,3,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_acornleft_data[]={
+// const unsigned char animate_acornleft_data[]={
 
-	  0,  0,0x93,1,
-	  0,  8,0xa3,1,
-	0x80
+// 	  0,  0,0x93,1,
+// 	  0,  8,0xa3,1,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_squirrelright1_data[]={
+// const unsigned char animate_squirrelright1_data[]={
 
-	  9,  3,0xa5,2|OAM_FLIP_H,
-	  8,  0,0x80,3|OAM_FLIP_H,
-	  8, 16,0x83,3|OAM_FLIP_H,
-	  0,  0,0x81,3|OAM_FLIP_H,
+// 	  9,  3,0xa5,2|OAM_FLIP_H,
+// 	  8,  0,0x80,3|OAM_FLIP_H,
+// 	  8, 16,0x83,3|OAM_FLIP_H,
+// 	  0,  0,0x81,3|OAM_FLIP_H,
 
-	 11, 15,0xa3,1|OAM_FLIP_H,
-	 11,  7,0x93,1|OAM_FLIP_H,
-	  8,  8,0x90,3|OAM_FLIP_H,
-	  0,  8,0x91,3|OAM_FLIP_H,
+// 	 11, 15,0xa3,1|OAM_FLIP_H,
+// 	 11,  7,0x93,1|OAM_FLIP_H,
+// 	  8,  8,0x90,3|OAM_FLIP_H,
+// 	  0,  8,0x91,3|OAM_FLIP_H,
 
-	- 8,  8,0x92,3|OAM_FLIP_H,
-	  0, 16,0x84,3|OAM_FLIP_H,
-	- 8,  0,0x82,3|OAM_FLIP_H,
-	0x80
+// 	- 8,  8,0x92,3|OAM_FLIP_H,
+// 	  0, 16,0x84,3|OAM_FLIP_H,
+// 	- 8,  0,0x82,3|OAM_FLIP_H,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_squirrelright2_data[]={
+// const unsigned char animate_squirrelright2_data[]={
 
-	  9,  4,0xa5,2|OAM_FLIP_H,
-	  8,  1,0x80,3|OAM_FLIP_H,
-	  8, 16,0x85,3|OAM_FLIP_H,
-	  0,  0,0x62,3|OAM_FLIP_H,
+// 	  9,  4,0xa5,2|OAM_FLIP_H,
+// 	  8,  1,0x80,3|OAM_FLIP_H,
+// 	  8, 16,0x85,3|OAM_FLIP_H,
+// 	  0,  0,0x62,3|OAM_FLIP_H,
 
-	 11, 15,0xa3,1|OAM_FLIP_H,
-	 11,  7,0x93,1|OAM_FLIP_H,
-	  0,  8,0x72,3|OAM_FLIP_H,
-	- 8,  8,0x73,3|OAM_FLIP_H,
+// 	 11, 15,0xa3,1|OAM_FLIP_H,
+// 	 11,  7,0x93,1|OAM_FLIP_H,
+// 	  0,  8,0x72,3|OAM_FLIP_H,
+// 	- 8,  8,0x73,3|OAM_FLIP_H,
 
-	  0, 16,0x86,3|OAM_FLIP_H,
-	- 8,  0,0x63,3|OAM_FLIP_H,
-	  8,  9,0x90,3|OAM_FLIP_H,
-	0x80
+// 	  0, 16,0x86,3|OAM_FLIP_H,
+// 	- 8,  0,0x63,3|OAM_FLIP_H,
+// 	  8,  9,0x90,3|OAM_FLIP_H,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_squirrelright3_data[]={
+// const unsigned char animate_squirrelright3_data[]={
 
-	  9,  3,0xa5,2|OAM_FLIP_H,
-	  8,  0,0x80,3|OAM_FLIP_H,
-	  8, 16,0x95,3|OAM_FLIP_H,
-	  0,  0,0x81,3|OAM_FLIP_H,
+// 	  9,  3,0xa5,2|OAM_FLIP_H,
+// 	  8,  0,0x80,3|OAM_FLIP_H,
+// 	  8, 16,0x95,3|OAM_FLIP_H,
+// 	  0,  0,0x81,3|OAM_FLIP_H,
 
-	 11, 15,0xa3,1|OAM_FLIP_H,
-	 11,  7,0x93,1|OAM_FLIP_H,
-	  8,  8,0x90,3|OAM_FLIP_H,
-	  0,  8,0x91,3|OAM_FLIP_H,
+// 	 11, 15,0xa3,1|OAM_FLIP_H,
+// 	 11,  7,0x93,1|OAM_FLIP_H,
+// 	  8,  8,0x90,3|OAM_FLIP_H,
+// 	  0,  8,0x91,3|OAM_FLIP_H,
 
-	- 8,  8,0x92,3|OAM_FLIP_H,
-	  0, 16,0x96,3|OAM_FLIP_H,
-	- 8,  0,0x82,3|OAM_FLIP_H,
-	0x80
+// 	- 8,  8,0x92,3|OAM_FLIP_H,
+// 	  0, 16,0x96,3|OAM_FLIP_H,
+// 	- 8,  0,0x82,3|OAM_FLIP_H,
+// 	0x80
 
-};
+// };
 
-const unsigned char animate_acornright_data[]={
+// const unsigned char animate_acornright_data[]={
 
-	  0,  0,0x93,1|OAM_FLIP_H,
-	  0,  8,0xa3,1|OAM_FLIP_H,
-	0x80
+// 	  0,  0,0x93,1|OAM_FLIP_H,
+// 	  0,  8,0xa3,1|OAM_FLIP_H,
+// 	0x80
 
-};
+// };
 
 const unsigned char animate_starburst1_data[]={
 
