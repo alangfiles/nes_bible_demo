@@ -1,9 +1,11 @@
 // PLAYER + GLOBAL
 #define ACCEL 30
+#define SLIDE_ACCEL 40
 #define LADDER_ACCEL 20
 #define DECEL 50
 #define HITSTUN_DECEL 45
 #define MAX_SPEED 0x160
+#define MAX_SLIDE_SPEED 0x140
 #define MAX_LADDER_SPEED 0x100
 #define JUMP_VEL -0x510
 #define MAX_PLAYER_HEALTH 28
@@ -40,6 +42,7 @@ unsigned char short_jump_count;
 unsigned char map_loaded;
 unsigned char collision;
 unsigned char player_in_air;
+unsigned char player_is_sliding;
 unsigned char player_is_running;
 unsigned char player_on_ladder;
 unsigned char player_on_ladder_pose;

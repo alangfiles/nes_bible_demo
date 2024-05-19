@@ -173,6 +173,15 @@ void draw_player_sprites()
     oam_meta_spr(temp_x, temp_y, tempint);
     return;
   }
+  else if (player_is_sliding){
+    if(direction == LEFT){
+      tempint = animate_slideleft_data;
+    } else {
+      tempint = animate_slideright_data;
+    }
+    oam_meta_spr(temp_x, temp_y, tempint);
+    return;
+  }
   else if (player_in_air)
   {
     if (direction == LEFT)

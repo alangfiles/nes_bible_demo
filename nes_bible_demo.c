@@ -157,14 +157,14 @@ void main(void)
 			// player goes up to next level //must be on ladder
 			if (high_byte(BoxGuy1.y) < 0x08 && level_up && player_on_ladder)
 			{
-				BoxGuy1.y = 0xD000;			 // put the user above the bottom of the screen.
+				BoxGuy1.y = 0xD000; // put the user above the bottom of the screen.
 				level_up_routine();
 			}
 
 			// player goes down to next level, ladder not necessary
 			if (high_byte(BoxGuy1.y) > 0xd0 && high_byte(BoxGuy1.y) < 0xf4 && level_up) // todo: might need less than 0xd0
 			{
-				BoxGuy1.y = 0x1800;			 // put the user near the top of screen
+				BoxGuy1.y = 0x1800; // put the user near the top of screen
 				level_up_routine();
 			}
 
@@ -374,7 +374,7 @@ void load_gameover(void)
 const unsigned char palette_victory[16] = {
 		0x21, 0x0f, 0x00, 0x10,
 		0x21, 0x21, 0x30, 0x21,
-		0x21, 0x20, 0x21, 0x20,
+		0x21, 0x30, 0x21, 0x30,
 		0x21, 0x0f, 0x0f, 0x29};
 void load_victory(void)
 {
@@ -425,7 +425,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 0;				// debug, change starting level
+	level = 6;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -811,10 +811,10 @@ void movement(void)
 		// where the player triggers the death flag
 		// but doesn't cross the border til later
 		--death_flag;
-	}   
+	}
 
-	if (invul_frames > 0) 
-	{  
+	if (invul_frames > 0)
+	{
 		--invul_frames;
 	}
 	if (player_in_hitstun)
@@ -842,7 +842,7 @@ void movement(void)
 
 	old_x = BoxGuy1.x;
 
-	if (pad1 & PAD_LEFT && !player_in_hitstun)
+	if (pad1 & PAD_LEFT && !player_in_hitstun  && !player_is_sliding)
 	{
 		direction = LEFT;
 		player_is_running = 1;
@@ -865,7 +865,7 @@ void movement(void)
 			}
 		}
 	}
-	else if (pad1 & PAD_RIGHT && !player_in_hitstun)
+	else if (pad1 & PAD_RIGHT && !player_in_hitstun && !player_is_sliding)
 	{
 
 		direction = RIGHT;
@@ -899,6 +899,16 @@ void movement(void)
 			BoxGuy1.vel_x += ACCEL;
 		else
 			BoxGuy1.vel_x = 0;
+	}
+
+	if(player_is_sliding > 0){
+		--player_is_sliding;
+
+		if(direction == LEFT){
+				BoxGuy1.vel_x = -MAX_SLIDE_SPEED;
+		} else {
+			BoxGuy1.vel_x = MAX_SLIDE_SPEED;
+		}
 	}
 
 	BoxGuy1.x += BoxGuy1.vel_x;
@@ -981,21 +991,26 @@ void movement(void)
 			{
 				BoxGuy1.vel_y = -MAX_LADDER_SPEED;
 			}
-			//if you're on the top of ladder, zip to the top top;
-			if(bg_coll_ladder_top_under_player()){
+			// if you're on the top of ladder, zip to the top top;
+			if (bg_coll_ladder_top_under_player())
+			{
 				++player_on_ladder_top;
 
-				if(player_on_ladder_top > 10){
-					//if he's going fast, just bump him 2px up
-					if(BoxGuy1.vel_y = -MAX_LADDER_SPEED){
+				if (player_on_ladder_top > 10)
+				{
+					// if he's going fast, just bump him 2px up
+					if (BoxGuy1.vel_y = -MAX_LADDER_SPEED)
+					{
 						BoxGuy1.y -= 0x200;
-					} else { //otherwise, bump him up 8px
+					}
+					else
+					{ // otherwise, bump him up 8px
 						BoxGuy1.y -= 0x800;
 					}
-					
+
 					player_on_ladder_top = 0;
 					player_on_ladder = 0;
-				}  
+				}
 			}
 		}
 		else
@@ -1023,7 +1038,6 @@ void movement(void)
 	if (pad1 & PAD_DOWN)
 	{
 		direction_y = DOWN;
-		// TODO: not hardcode the last level here
 		if (bg_coll_ladder_top_under_player())
 		{
 			BoxGuy1.x = (BoxGuy1.x + 0x700) & ~0xF00; // tried to square the player to the ladder
@@ -1089,8 +1103,9 @@ void movement(void)
 	{
 		--projectile_cooldown;
 	}
+	
 
-	if (pad1_new & PAD_UP || pad1_state & PAD_UP) //on trigger or hold
+	if (pad1_new & PAD_UP || pad1_state & PAD_UP) // on trigger or hold
 	{
 		direction_y = UP;
 		if (!player_on_ladder && bg_coll_ladder())
@@ -1104,9 +1119,11 @@ void movement(void)
 			BoxGuy1.vel_y = 0;
 			BoxGuy1.vel_x = 0;
 		}
-	}
+	}  
 
-	if (pad1_new & PAD_A)
+	if(pad1_state & PAD_DOWN && pad1_new & PAD_A){
+		player_is_sliding = 25;
+	} else if (pad1_new & PAD_A)
 	{
 		if (player_on_ladder)
 		{
@@ -1122,7 +1139,7 @@ void movement(void)
 			player_in_air = 1;
 		}
 	}
-	if (pad1_new & PAD_B && projectile_cooldown == 0) // shooting
+	if (pad1_new & PAD_B && projectile_cooldown == 0 && !player_in_hitstun && !player_is_sliding) // shooting
 	{
 
 		// check if there's an empty shot spot
@@ -1575,6 +1592,15 @@ void enemy_moves(void)
 	}
 }
 
+enum
+{
+	BEAR_WALK,
+	BEAR_PREP_RUN,
+	BEAR_RUN,
+	BEAR_PREP_ATTACK,
+	BEAR_ATTACK
+};
+
 void enemy_bear_behavior(void)
 {
 	Generic.x = enemy_x[index];
@@ -1582,103 +1608,167 @@ void enemy_bear_behavior(void)
 	Generic.width = ENEMY_BEAR_WIDTH;
 	Generic.height = ENEMY_BEAR_HEIGHT;
 
-	if (enemy_frames[index] < 10)
+	// determine bear mode
+
+	// if he's in walk mode he can change
+	// otherwise he completes his mode.
+	if (enemy_mode[index] == BEAR_WALK)
 	{
-		if (enemy_dir[index] == LEFT)
+		// if the player is far away, the bear will run
+
+		// his mode can change when he's walking.
+		// if (enemy_frames[index] == 200)
+		// {
+		// 	// after 200 frames, the bear will rain down rocks
+		// 	enemy_mode[index] = BEAR_PREP_RUN;
+		// 	enemy_frames[index] = 0;
+		// }
+
+		// if player is far away, bear will run
+		if ((enemy_actual_x[index] >= Generic2.x && ((enemy_actual_x[index] - Generic2.x) > 120)) ||
+				(enemy_actual_x[index] < Generic2.x && ((Generic2.x - enemy_actual_x[index]) > 120)))
 		{
-			enemy_anim[index] = animate_bearwalk1eft_data;
+			enemy_mode[index] = BEAR_PREP_RUN;
 		}
-		else
-		{
-			enemy_anim[index] = animate_bearwalkright_data;
-		}
-	}
-	else if (enemy_frames[index] < 20)
-	{
-		if (enemy_dir[index] == LEFT)
-		{
-			enemy_anim[index] = animate_bearwalk2left_data;
-		}
-		else
-		{
-			enemy_anim[index] = animate_bearwalk2right_data;
-		}
-	}
-	else if (enemy_frames[index] < 30)
-	{
-		if (enemy_dir[index] == LEFT)
-		{
-			enemy_anim[index] = animate_bearwalk3left_data;
-		}
-		else
-		{
-			enemy_anim[index] = animate_bearwalk3right_data;
-		}
-	}
-	else if (enemy_frames[index] < 40)
-	{
-		if (enemy_dir[index] == LEFT)
-		{
-			enemy_anim[index] = animate_bearwalk2left_data;
-		}
-		else
-		{
-			enemy_anim[index] = animate_bearwalk2right_data;
-		}
-	}
-	else
-	{
-		if (enemy_dir[index] == LEFT)
-		{
-			enemy_anim[index] = animate_bearwalk1eft_data;
-		}
-		else
-		{
-			enemy_anim[index] = animate_bearwalkright_data;
-		}
-		enemy_frames[index] = 0;
 	}
 
-	if (enemy_frames[index] % 3 == 0)
+	if (enemy_mode[index] == BEAR_PREP_RUN)
 	{
-
-		// note, Generic2 is the hero's x position
-		if (enemy_x[index] > Generic2.x)
+		if (enemy_frames[index] > 50)
 		{
-			Generic.x -= 1; // test going left
-			bg_collision_fast();
-			if (collision_L)
-				return;
-			if (collision_D) // needs ground under it
+			enemy_mode[index] = BEAR_RUN;
+			enemy_frames[index] = 0;
+		}
+	}
+
+	if (enemy_mode[index] == BEAR_RUN)
+	{
+		if (enemy_frames[index] > 100)
+		{
+			enemy_mode[index] = BEAR_WALK;
+			enemy_frames[index] = 0;
+		}
+	}
+
+	switch (enemy_mode[index])
+	{
+		case BEAR_WALK:
+		#pragma region bear_walk
+		if (enemy_frames[index] < 10)
+		{
+			if (enemy_dir[index] == LEFT)
 			{
-
-				if (enemy_actual_x[index] == 0)
-				{
-					--enemy_room[index];
-				}
-				--enemy_actual_x[index];
-				enemy_dir[index] = LEFT;
+				enemy_anim[index] = animate_bearwalk1eft_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalkright_data;
 			}
 		}
-		else if (enemy_x[index] < Generic2.x)
+		else if (enemy_frames[index] < 20)
 		{
-
-			Generic.x += 1; // test going right
-
-			bg_collision_fast();
-			if (collision_R)
-				return;
-			if (collision_D)
+			if (enemy_dir[index] == LEFT)
 			{
-				++enemy_actual_x[index];
-				if (enemy_actual_x[index] == 0)
-				{
-					++enemy_room[index];
-				}
-
-				enemy_dir[index] = RIGHT;
+				enemy_anim[index] = animate_bearwalk2left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalk2right_data;
 			}
 		}
+		else if (enemy_frames[index] < 30)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_bearwalk3left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalk3right_data;
+			}
+		}
+		else if (enemy_frames[index] < 40)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_bearwalk2left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalk2right_data;
+			}
+		}
+		else
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_bearwalk1eft_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalkright_data;
+			}
+			enemy_frames[index] = 0;
+		}
+		#pragma endregion
+		break;
+		case BEAR_PREP_RUN:
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_beararms_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_beararmsright_data;
+			}
+		break;
+		case BEAR_RUN:
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_bearwalk1eft_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalkright_data;
+			}
+		break;
+		default: 
+		break;
+	}
+
+
+	//actual movement
+	switch(enemy_mode[index]){
+		case BEAR_WALK:
+			if (enemy_frames[index] % 3 == 0)
+			{
+
+				// note, Generic2 is the hero's x position
+				if (enemy_x[index] > Generic2.x)
+				{
+					Generic.x -= 1; // test going left
+				}
+				else if (enemy_x[index] < Generic2.x)
+				{
+					Generic.x += 1; // test going right
+				}
+			}
+		break;
+		case BEAR_PREP_RUN:
+			//bear stands still
+			break;
+		case BEAR_RUN:
+			// note, Generic2 is the hero's x position
+			if (enemy_x[index] > Generic2.x)
+			{
+				Generic.x -= 1; // test going left
+			}
+			else if (enemy_x[index] < Generic2.x)
+			{
+				Generic.x += 1; // test going right
+			}
+		default: 
+		break;
 	}
 }
 
