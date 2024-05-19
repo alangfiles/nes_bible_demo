@@ -1120,7 +1120,7 @@ void movement(void)
 			BoxGuy1.vel_x = 0;
 		}
 	}
-
+  
 	if(pad1_state & PAD_DOWN && pad1_new & PAD_A && !player_on_ladder){
 		player_is_sliding = 25;
 	} else if (pad1_new & PAD_A && !player_in_hitstun && !player_is_sliding)

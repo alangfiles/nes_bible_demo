@@ -2309,28 +2309,27 @@ const unsigned char animate_starburst3_data[] = {
 		0x80
 
 };
-
 const unsigned char animate_slideleft_data[] = {
 
-		0, 5, 0xa6, 0,
+		-8, 5, 0xa6, 0,
 
-		8, 5, 0xb6, 0,
+		0, 5, 0xb6, 0,
 
-		16, 4, 0xc6, 0,
+		8, 4, 0xc6, 0,
 
-		24, 5, 0xd6, 0,
+		16, 5, 0xd6, 0,
 
-		-8, 13, 0xe6, 0,
+		-16, 13, 0xe6, 0,
 
-		0, 13, 0xf6, 0,
+		-8, 13, 0xf6, 0,
 
-		8, 13, 0x3e, 0,
+		0, 13, 0x3e, 0,
 
-		16, 12, 0x4e, 0,
+		8, 12, 0x4e, 0,
 
-		24, 13, 0x4f, 0,
+		16, 13, 0x4f, 0,
 
-		1, 6, 0x0b, 2,
+		-7, 6, 0x0b, 2,
 
 		0x80
 
@@ -2338,25 +2337,25 @@ const unsigned char animate_slideleft_data[] = {
 
 const unsigned char animate_slideright_data[] = {
 
-		8, 5, 0xa6, 0 | OAM_FLIP_H,
+		16, 5, 0xa6, 0 | OAM_FLIP_H,
 
-		0, 5, 0xb6, 0 | OAM_FLIP_H,
+		8, 5, 0xb6, 0 | OAM_FLIP_H,
 
-		-8, 4, 0xc6, 0 | OAM_FLIP_H,
+		0, 4, 0xc6, 0 | OAM_FLIP_H,
 
-		-16, 5, 0xd6, 0 | OAM_FLIP_H,
+		-8, 5, 0xd6, 0 | OAM_FLIP_H,
 
-		16, 13, 0xe6, 0 | OAM_FLIP_H,
+		24, 13, 0xe6, 0 | OAM_FLIP_H,
 
-		8, 13, 0xf6, 0 | OAM_FLIP_H,
+		16, 13, 0xf6, 0 | OAM_FLIP_H,
 
-		0, 13, 0x3e, 0 | OAM_FLIP_H,
+		8, 13, 0x3e, 0 | OAM_FLIP_H,
 
-		-8, 12, 0x4e, 0 | OAM_FLIP_H,
+		0, 12, 0x4e, 0 | OAM_FLIP_H,
 
-		-16, 13, 0x4f, 0 | OAM_FLIP_H,
+		-8, 13, 0x4f, 0 | OAM_FLIP_H,
 
-		7, 6, 0x0b, 2 | OAM_FLIP_H,
+		15, 6, 0x0b, 2 | OAM_FLIP_H,
 
 		0x80
 

@@ -5,7 +5,7 @@
 #define DECEL 50
 #define HITSTUN_DECEL 45
 #define MAX_SPEED 0x160
-#define MAX_SLIDE_SPEED 0x140
+#define MAX_SLIDE_SPEED 0x180
 #define MAX_LADDER_SPEED 0x100
 #define JUMP_VEL -0x510
 #define MAX_PLAYER_HEALTH 28
