@@ -58,22 +58,26 @@ enum
 // y, room, x, type,
 // y = TURN_OFF end of list
 const unsigned char level_0_enemies[] = {
-    48, 1, 96,  ENEMY_OWL,
-    16, 1, 192,  ENEMY_OWL,
-    32, 3, 160,  ENEMY_OWL,
-    192, 1, 160, ENEMY_SNAIL,
-    128, 3, 16, ENEMY_SNAIL,
-    128, 5, 80, ENEMY_SNAIL,
-    64, 6, 32, ENEMY_SNAIL,
-    64, 7, 144, ENEMY_SNAIL,
+	192, 0, 224, ENEMY_SNAIL,
+    48, 1, 144,  ENEMY_OWL,
+	176, 1, 224, ENEMY_SNAIL,
+	128, 3, 0, ENEMY_SNAIL,
+	48, 3, 144, ENEMY_OWL,
+	128, 5, 160,  ENEMY_SNAIL,
+	144, 6, 128,  ENEMY_SNAIL,
+	0, 7, 112, ENEMY_OWL,
+	64, 7, 144,  ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_1_enemies[] = {
-    176, 0, 112, ENEMY_SNAIL,
-    48, 0, 160, ENEMY_SNAIL,
+	96, 0, 128,  ENEMY_SNAIL,
+	16, 0, 192,  ENEMY_OWL,
     TURN_OFF};
 const unsigned char level_2_enemies[] = {
-    160, 1, 96, ENEMY_SNAIL,
-    96, 2, 128, ENEMY_SNAIL,
+	144, 0, 128, ENEMY_SNAIL,
+	160, 1, 64,  ENEMY_SNAIL,
+	96, 2, 96, ENEMY_SNAIL,
+	144, 2, 224,  ENEMY_SNAIL,
+	192, 3, 160, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_3_enemies[] = {
     48, 0, 48,  ENEMY_OWL,
@@ -84,11 +88,13 @@ const unsigned char level_4_enemies[] = {
     128, 0, 224, ENEMY_SNAIL,
     48, 0, 224,  ENEMY_OWL,
     192, 1, 176, ENEMY_SNAIL,
-    32, 2, LEVEL_BOTTOM,  ENEMY_OWL,
-    96, 3, LEVEL_BOTTOM,  ENEMY_OWL,
     96, 4, 192, ENEMY_SNAIL,
+	32, 4, 208, ENEMY_OWL,
     TURN_OFF};
 const unsigned char level_5_enemies[] = {
+	144, 0, 80, ENEMY_SNAIL,
+	112, 0, 192, ENEMY_SNAIL,
+	80, 0, 32, ENEMY_OWL,
     80, 0, 112,  ENEMY_OWL,
     TURN_OFF};
 const unsigned char level_6_enemies[] = {
@@ -106,7 +112,8 @@ const unsigned char *const Enemy_list[] = {
     level_6_enemies, level_7_enemies};
 
 const unsigned char level_0_entities[] = {
-    LEVEL_BOTTOM, 2, 0, ENTITY_PIT_WIDE_64, // pit begins here; is 80 pixels wide
+    //160, 0, 16, ENTITY_PLAYER_STARAT, 
+	LEVEL_BOTTOM, 2, 0, ENTITY_PIT_WIDE_64, // pit begins here; is 80 pixels wide
     LEVEL_BOTTOM, 2, 64, ENTITY_PIT_WIDE_64,
     LEVEL_BOTTOM, 4, 0, ENTITY_PIT_WIDE_64, // pit begins here; is 80 pixels wide
     LEVEL_BOTTOM, 4, 64, ENTITY_PIT_WIDE_64,
@@ -118,19 +125,20 @@ const unsigned char level_0_entities[] = {
 const unsigned char level_1_entities[] = {
     LEVEL_BOTTOM, 0, 0xA0, ENTITY_LEVEL_DOWN,
     LEVEL_TOP, 0, 48, ENTITY_LEVEL_UP,
-    72, 0, 192, ENTITY_BREAD,
+    72, 0, 200, ENTITY_BUN,
     TURN_OFF};
 const unsigned char level_2_entities[] = {
     LEVEL_BOTTOM, 0, 48, ENTITY_LEVEL_DOWN,
     LEVEL_BOTTOM, 0, 0, ENTITY_LEVEL_DOWN_WIDE_256,
 	LEVEL_BOTTOM, 1, 0, ENTITY_SPIKE_WIDE_64, // beginning of first spike pit
 	LEVEL_BOTTOM, 1, 64, ENTITY_SPIKE_WIDE_64,
-    LEVEL_BOTTOM, 1, 112, ENTITY_SPIKE_WIDE_64, 
-    LEVEL_BOTTOM, 1, 176, ENTITY_SPIKE_WIDE_64,
-    LEVEL_BOTTOM, 1, 240, ENTITY_SPIKE_WIDE_64,
+    LEVEL_BOTTOM, 1, 128, ENTITY_SPIKE_WIDE_64, 
+	LEVEL_BOTTOM, 1, 192, ENTITY_SPIKE_WIDE_64, 
+	LEVEL_BOTTOM, 2, 0, ENTITY_SPIKE_WIDE_64, 
+	192, 2, 40, ENTITY_BREAD,
     LEVEL_BOTTOM, 2, 144, ENTITY_SPIKE_WIDE_64, // begin of second spike pit
     LEVEL_BOTTOM, 2, 208, ENTITY_SPIKE_WIDE_64,
-    LEVEL_BOTTOM, 3, 0, ENTITY_SPIKE_WIDE_64,
+    LEVEL_BOTTOM, 3, 16, ENTITY_SPIKE_WIDE_64,
     LEVEL_BOTTOM, 3, 176, ENTITY_LEVEL_UP,
     LEVEL_BOTTOM, 3, 192, ENTITY_LEVEL_UP,
     LEVEL_BOTTOM, 3, 218, ENTITY_LEVEL_UP,
@@ -152,7 +160,7 @@ const unsigned char level_5_entities[] = {
     TURN_OFF};
 const unsigned char level_6_entities[] = {
 	LEVEL_BOTTOM, 0, 48, ENTITY_LEVEL_DOWN,
-	112, 0, 48, ENTITY_BREAD,
+	112, 0, 56, ENTITY_BREAD,
     190, 1, 200, ENTITY_STARBURST,
     TURN_OFF};  
 

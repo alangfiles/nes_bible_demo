@@ -271,7 +271,6 @@ void reset(void);
 void sprite_obj_init(void);
 void entity_obj_init(void);
 void init_death(void);
-void init_mode_switch(void);
 void level_down_routine(void);
 void level_up_routine(void);
 void enemy_snail_behavior(void);

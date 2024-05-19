@@ -272,29 +272,16 @@ void main(void)
 		}
 		while (game_mode == MODE_SWITCH)
 		{
-			ppu_wait_nmi();
-			++bright_count;
-			if (bright_count >= 0x10)
-			{ // fade out
-				bright_count = 0;
-				--bright;
-				if (bright != 0xff)
-					pal_bright(bright); // fade out
-			}
-			set_scroll_x(scroll_x);
+	
+			ppu_off();
+			oam_clear();
+			
+			load_room();
+			game_mode = MODE_GAME;
+			ppu_on_all();
+			pal_bright(4); // back to normal brighness
 
-			if (bright == 0xff)
-			{ // now switch rooms
-				ppu_off();
-				oam_clear();
-				if (level < 20)
-				{
-					load_room();
-					game_mode = MODE_GAME;
-					ppu_on_all();
-					pal_bright(4); // back to normal brighness
-				}
-			}
+
 		}
 		while (game_mode == MODE_END)
 		{
@@ -2489,11 +2476,4 @@ void level_down_routine()
 		scroll_x = 0;
 		room_to_load = max_rooms;
 	}
-}
-
-void init_mode_switch()
-{
-	// switch to vertical scroll,
-	// load both name tables
-	// the mode moves scrollY up
 }
