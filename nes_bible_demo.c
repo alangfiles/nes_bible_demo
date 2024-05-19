@@ -1689,12 +1689,12 @@ void enemy_bear_behavior(void)
 						entity_type[2] = ENTITY_ROCK;
 						entity_actual_x[2] = 100;
 
-						// entity_y[3] = 10;
-						// entity_x[3] = 160;
-						// entity_room[3] = enemy_room[index];
-						// entity_active[3] = 1;
-						// entity_type[3] = ENTITY_ROCK;
-						// entity_actual_x[3] = 160;
+						entity_y[3] = 10;
+						entity_x[3] = 160;
+						entity_room[3] = enemy_room[index];
+						entity_active[3] = 1;
+						entity_type[3] = ENTITY_ROCK;
+						entity_actual_x[3] = 160;
 		}
 		if (frame_counter > 150)
 		{
