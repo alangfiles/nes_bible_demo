@@ -425,7 +425,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;
-	level = 6;				// debug, change starting level
+	level = 0;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
