@@ -1625,8 +1625,10 @@ void enemy_bear_behavior(void)
 		// }
 
 		// if player is far away, bear will run
-		if ((enemy_actual_x[index] >= Generic2.x && ((enemy_actual_x[index] - Generic2.x) > 120)) ||
-				(enemy_actual_x[index] < Generic2.x && ((Generic2.x - enemy_actual_x[index]) > 120)))
+		if(frame_counter > 200){
+			enemy_mode[index] = BEAR_PREP_ATTACK;
+		}else if ((enemy_actual_x[index] >= Generic2.x && ((enemy_actual_x[index] - Generic2.x) > 100)) ||
+				(enemy_actual_x[index] < Generic2.x && ((Generic2.x - enemy_actual_x[index]) > 100)))
 		{
 			enemy_mode[index] = BEAR_PREP_RUN;
 		}
@@ -1638,17 +1640,19 @@ void enemy_bear_behavior(void)
 		{
 			enemy_mode[index] = BEAR_RUN;
 			enemy_frames[index] = 0;
+			frame_counter = 0;
 		}
 	}
 
 	if (enemy_mode[index] == BEAR_RUN)
 	{
-		if (enemy_frames[index] > 100)
+		if (frame_counter > 100)
 		{
 			enemy_mode[index] = BEAR_WALK;
 			enemy_frames[index] = 0;
 		}
 	}
+
 
 	switch (enemy_mode[index])
 	{
@@ -1723,6 +1727,8 @@ void enemy_bear_behavior(void)
 			}
 		break;
 		case BEAR_RUN:
+			if (enemy_frames[index] < 5)
+		{
 			if (enemy_dir[index] == LEFT)
 			{
 				enemy_anim[index] = animate_bearwalk1eft_data;
@@ -1731,6 +1737,52 @@ void enemy_bear_behavior(void)
 			{
 				enemy_anim[index] = animate_bearwalkright_data;
 			}
+		}
+		else if (enemy_frames[index] < 10)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_bearwalk2left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalk2right_data;
+			}
+		}
+		else if (enemy_frames[index] < 15)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_bearwalk3left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalk3right_data;
+			}
+		}
+		else if (enemy_frames[index] < 20)
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_bearwalk2left_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalk2right_data;
+			}
+		}
+		else
+		{
+			if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_bearwalk1eft_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_bearwalkright_data;
+			}
+			enemy_frames[index] = 0;
+		}
 		break;
 		default: 
 		break;
@@ -1740,18 +1792,22 @@ void enemy_bear_behavior(void)
 	//actual movement
 	switch(enemy_mode[index]){
 		case BEAR_WALK:
+
+		
+
 			if (enemy_frames[index] % 3 == 0)
 			{
+				if (enemy_x[index] > Generic2.x) // enemy is right of player
+		{
+			--enemy_actual_x[index];
+			enemy_dir[index] = LEFT;
+		}
+		else if (enemy_x[index] < Generic2.x) // enemy is left of player
+		{
 
-				// note, Generic2 is the hero's x position
-				if (enemy_x[index] > Generic2.x)
-				{
-					Generic.x -= 1; // test going left
-				}
-				else if (enemy_x[index] < Generic2.x)
-				{
-					Generic.x += 1; // test going right
-				}
+			++enemy_actual_x[index];
+			enemy_dir[index] = RIGHT;
+		}
 			}
 		break;
 		case BEAR_PREP_RUN:
@@ -1759,18 +1815,22 @@ void enemy_bear_behavior(void)
 			break;
 		case BEAR_RUN:
 			// note, Generic2 is the hero's x position
-			if (enemy_x[index] > Generic2.x)
-			{
-				Generic.x -= 1; // test going left
-			}
-			else if (enemy_x[index] < Generic2.x)
-			{
-				Generic.x += 1; // test going right
-			}
+			if (enemy_x[index] > Generic2.x) // enemy is right of player
+		{
+			--enemy_actual_x[index];
+			enemy_dir[index] = LEFT;
+		}
+		else if (enemy_x[index] < Generic2.x) // enemy is left of player
+		{
+
+			++enemy_actual_x[index];
+			enemy_dir[index] = RIGHT;
+		}
 		default: 
 		break;
 	}
 }
+
 
 void enemy_snail_behavior(void)
 {
