@@ -725,6 +725,9 @@ void draw_sprites(void)
 					entity_frames[index2] = 0;
 				}
 			}
+			if (entity_type[index2] == ENTITY_ROCK){
+				oam_meta_spr(temp_x, temp_y, animate_bouldersmall_data);
+			}
 			if (entity_type[index2] == ENTITY_FRUIT)
 			{
 				if (entity_frames[index2] < 20)
@@ -1439,7 +1442,7 @@ void check_entity_objects(void)
 void entity_moves(void)
 {
 	// some entities drop til they're coliding with the ground.
-	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_FRUIT)
+	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_FRUIT || entity_type[index] == ENTITY_ROCK)
 	{
 		// check for collision
 		Generic.x = entity_x[index];
@@ -1452,9 +1455,13 @@ void entity_moves(void)
 		{
 			++entity_y[index];
 			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || !entity_type[index] == ENTITY_FRUIT)
-			{ // fruit moves slowly
+			{ // fruit/starburst moves slowly
 				++entity_y[index];
 			}
+		}
+		if(collision_D && entity_type[index] == ENTITY_ROCK){
+			entity_active[index] = 0;
+			entity_y[index] = TURN_OFF;
 		}
 	}
 }
@@ -1536,7 +1543,12 @@ void enemy_moves(void)
 					(enemy_y[index] > projectiles_y[temp1] - 30 && enemy_y[index] < projectiles_y[temp1] + 30))
 			{
 				projectiles_list[temp1] = TURN_OFF;
-				--enemy_health[index];
+				if(enemy_type[index] == ENEMY_BEAR && enemy_mode[index] == BEAR_ATTACK){
+					
+				} else {
+					--enemy_health[index];
+				}
+				
 				sfx_play(SFX_SHOT_HITS, 0);
 				if (enemy_health[index] == 0 || enemy_health[index] > 240) // check for overflow with 240
 				{
@@ -1592,14 +1604,6 @@ void enemy_moves(void)
 	}
 }
 
-enum
-{
-	BEAR_WALK,
-	BEAR_PREP_RUN,
-	BEAR_RUN,
-	BEAR_PREP_ATTACK,
-	BEAR_ATTACK
-};
 
 void enemy_bear_behavior(void)
 {
@@ -1624,10 +1628,14 @@ void enemy_bear_behavior(void)
 		// 	enemy_frames[index] = 0;
 		// }
 
-		// if player is far away, bear will run
-		if(frame_counter > 200){
+		
+		// every 200 frames, do a roar/rock
+		if(frame_counter > 250){
 			enemy_mode[index] = BEAR_PREP_ATTACK;
-		}else if ((enemy_actual_x[index] >= Generic2.x && ((enemy_actual_x[index] - Generic2.x) > 100)) ||
+			frame_counter = 0;
+		}
+		// if player is far away, bear will run
+		else if ((enemy_actual_x[index] >= Generic2.x && ((enemy_actual_x[index] - Generic2.x) > 100)) ||
 				(enemy_actual_x[index] < Generic2.x && ((Generic2.x - enemy_actual_x[index]) > 100)))
 		{
 			enemy_mode[index] = BEAR_PREP_RUN;
@@ -1644,9 +1652,51 @@ void enemy_bear_behavior(void)
 		}
 	}
 
+	if(enemy_mode[index] == BEAR_PREP_ATTACK)
+	{
+		if (enemy_frames[index] > 60)
+		{
+			enemy_mode[index] = BEAR_ATTACK;
+			enemy_frames[index] = 0;
+			frame_counter = 0;
+		}
+	}
+
 	if (enemy_mode[index] == BEAR_RUN)
 	{
 		if (frame_counter > 100)
+		{
+			enemy_mode[index] = BEAR_WALK;
+			enemy_frames[index] = 0;
+		}
+	}
+
+	if(enemy_mode[index] == BEAR_ATTACK)
+	{
+		if(frame_counter == 0){
+			//add falling rocks
+				entity_y[1] = 60;
+						entity_x[1] = 40;
+						entity_room[1] = enemy_room[index];
+						entity_active[1] = 1;
+						entity_type[1] = ENTITY_ROCK;
+						entity_actual_x[1] = 40;
+
+						entity_y[2] = 40;
+						entity_x[2] = 100;
+						entity_room[2] = enemy_room[index];
+						entity_active[2] = 1;
+						entity_type[2] = ENTITY_ROCK;
+						entity_actual_x[2] = 100;
+
+						// entity_y[3] = 10;
+						// entity_x[3] = 160;
+						// entity_room[3] = enemy_room[index];
+						// entity_active[3] = 1;
+						// entity_type[3] = ENTITY_ROCK;
+						// entity_actual_x[3] = 160;
+		}
+		if (frame_counter > 150)
 		{
 			enemy_mode[index] = BEAR_WALK;
 			enemy_frames[index] = 0;
@@ -1726,6 +1776,25 @@ void enemy_bear_behavior(void)
 				enemy_anim[index] = animate_beararmsright_data;
 			}
 		break;
+		case BEAR_PREP_ATTACK:
+			if(frame_counter < 20){
+				enemy_anim[index] = animate_bearroarright_data;
+			} else if(frame_counter < 40) {
+				enemy_anim[index] = animate_bearroarleft_data;
+			} else {
+				enemy_anim[index] = animate_bearroarright_data;
+			}
+		break;
+		case BEAR_ATTACK:
+		if (enemy_dir[index] == LEFT)
+			{
+				enemy_anim[index] = animate_beararms_data;
+			}
+			else
+			{
+				enemy_anim[index] = animate_beararmsright_data;
+			}
+			break;
 		case BEAR_RUN:
 			if (enemy_frames[index] < 5)
 		{
@@ -2221,6 +2290,14 @@ void entity_collisions(void)
 					break;
 				case ENTITY_SPIKE_WIDE_64:
 					++death;
+					break;
+				case ENTITY_ROCK:
+				
+					BoxGuy1.health -= 8;
+					player_in_hitstun = ENEMY_SNAIL_PLAYER_HITSTUN;
+					invul_frames = ENEMY_SNAIL_PLAYER_INVUL;
+					entity_active[index] = 0;
+					entity_y[index] = TURN_OFF;
 					break;
 				case ENTITY_FRUIT:
 					load_victory();

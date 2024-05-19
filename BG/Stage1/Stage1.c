@@ -44,6 +44,7 @@ enum
     ENTITY_BREAD,
     ENTITY_BUN,
     ENTITY_FRUIT,
+    ENTITY_ROCK,
     ENTITY_STARBURST
 };
 

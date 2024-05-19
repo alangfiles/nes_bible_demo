@@ -15,6 +15,16 @@
 #define PROJECTILE_SPEED 3
 #define PROJECTILE_SPEED_WITH_SCROLL 5
 
+
+enum
+{
+	BEAR_WALK,
+	BEAR_PREP_RUN,
+	BEAR_RUN,
+	BEAR_PREP_ATTACK,
+	BEAR_ATTACK
+};
+
 //Collision + Extra
 #define COL_DOWN 0x80
 #define COL_ALL 0x40
