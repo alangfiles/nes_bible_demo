@@ -310,7 +310,7 @@ const unsigned char metatile_colision_map[] =
 			COL_ALL,
 			COL_ALL,
 			COL_LADDER,
-			COL_LADDER,
+			COL_LADDER_TOP,
 			0,
 			0,
 			0,
