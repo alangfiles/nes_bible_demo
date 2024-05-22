@@ -100,7 +100,7 @@ void main(void)
 				}
 
 				song = SONG_GAME;
-				music_play(song);
+				// music_play(song);
 				set_music_speed(11);
 			}
 		}
@@ -119,7 +119,7 @@ void main(void)
 			{
 				game_mode = MODE_PAUSE;
 				// song = SONG_PAUSE;
-				// music_play(song);
+				// // music_play(song);
 				music_stop();
 				// color_emphasis(0x01);
 				ppu_mask(0b00011001); // grayscale mode
@@ -265,7 +265,7 @@ void main(void)
 			{
 				game_mode = MODE_GAME;
 				song = SONG_GAME;
-				music_play(song);
+				// music_play(song);
 				// color_emphasis(COL_EMP_NORMAL);
 				ppu_mask(0b00011000); // grayscale mode
 			}
@@ -408,11 +408,11 @@ void reset(void)
 	collision = 0;
 	death = 0;
 	BoxGuy1.x = 0x4000;
-	BoxGuy1.y = 0x8400;
+	BoxGuy1.y = 0x8400;   
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
-	game_mode = MODE_GAME;
-	level = 0;				// debug, change starting level
+	game_mode = MODE_GAME;         
+	level = 1;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -1424,20 +1424,19 @@ void check_entity_objects(void)
 			entity_moves();
 		}
 	}
-}
-
+}  
 void entity_moves(void)
 {
 	// some entities drop til they're coliding with the ground.
 	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_FRUIT || entity_type[index] == ENTITY_ROCK)
 	{
-		// check for collision
+		// check for collision    
 		Generic.x = entity_x[index];
 		Generic.y = entity_y[index] - 6; // mid point
 		Generic.width = 16;
 		Generic.height = 1;
-
-		bg_collision_fast();
+   
+		bg_collision_fast();  
 		if (!collision_D)
 		{
 			++entity_y[index];
