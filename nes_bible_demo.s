@@ -5286,7 +5286,7 @@ _metatile_colision_map:
 	.byte	$40
 	.byte	$40
 	.byte	$40
-	.byte	$00
+	.byte	$40
 	.byte	$40
 	.byte	$40
 	.byte	$00
@@ -5322,7 +5322,7 @@ _metatile_colision_map:
 	.byte	$40
 	.byte	$40
 	.byte	$01
-	.byte	$01
+	.byte	$02
 	.byte	$00
 	.byte	$00
 	.byte	$00
@@ -17887,7 +17887,7 @@ L3FE5:	ldy     _index
 ;
 	sta     _sprite_frame_counter
 ;
-; r_scroll_frames = 0;
+; r_scroll_frames = 0;  
 ;
 	sta     _r_scroll_frames
 ;
@@ -17895,11 +17895,11 @@ L3FE5:	ldy     _index
 ;
 	sta     _l_scroll_frames
 ;
-; collision = 0;
+; collision = 0;  
 ;
 	sta     _collision
 ;
-; death = 0;
+; death = 0;   
 ;
 	sta     _death
 ;
@@ -17930,13 +17930,13 @@ L3FE5:	ldy     _index
 	lda     #$01
 	sta     _game_mode
 ;
-; level = 0;    // debug, change starting level
+; level = 1;    // debug, change starting level
 ;
-	lda     #$00
 	sta     _level
 ;
 ; room_to_load = 0; // debug, hacky, change starting room
 ;
+	lda     #$00
 	sta     _room_to_load
 ;
 ; debug = 0;
