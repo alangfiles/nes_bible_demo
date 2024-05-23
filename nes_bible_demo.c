@@ -16,6 +16,10 @@ TODO List:
 	[] fix enemy collision (down)
 	[] cleanup reset code
 	[] add lives / deaths / game over
+
+
+	[] clear all enemy and entity arrays at start of level
+	[] add enemy imposion.
 */
 
 #include "LIB/neslib.h"
@@ -100,7 +104,7 @@ void main(void)
 				}
 
 				song = SONG_GAME;
-				// music_play(song);
+				music_play(song);
 				set_music_speed(11);
 			}
 		}
@@ -115,11 +119,9 @@ void main(void)
 			pad1_new = get_pad_new(0);
 			pad1_state = pad_state(0);
 
-			if (pad1_new & PAD_START)
+			if (pad1_new & PAD_START)   
 			{
 				game_mode = MODE_PAUSE;
-				// song = SONG_PAUSE;
-				// // music_play(song);
 				music_stop();
 				// color_emphasis(0x01);
 				ppu_mask(0b00011001); // grayscale mode
@@ -265,7 +267,7 @@ void main(void)
 			{
 				game_mode = MODE_GAME;
 				song = SONG_GAME;
-				// music_play(song);
+				music_play(song);
 				// color_emphasis(COL_EMP_NORMAL);
 				ppu_mask(0b00011000); // grayscale mode
 			}
@@ -412,7 +414,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;         
-	level = 1;				// debug, change starting level
+	level = 0;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -437,7 +439,7 @@ void reset(void)
 
 	ppu_mask(0); // grayscale mode
 	// load the palettes
-	pal_bg(palette_bg);
+	pal_bg(palette_bg);  
 	pal_spr(palette_sp);
 
 	// use the second set of tiles for sprites
@@ -627,11 +629,11 @@ void draw_sprites(void)
 		index2 = shuffle_array[offset];
 		++offset;
 		temp_y = enemy_y[index2];
-		if (enemy_health[index2] == 0)
-			continue;
+		// if (enemy_health[index2] == 0)
+		// 	continue;
 		if (temp_y == TURN_OFF)
 			continue;
-		if (!enemy_active[index2])
+		if (!enemy_active[index2] && enemy_mode[index2] != TURN_OFF)
 			continue;
 		temp_x = enemy_x[index2];
 		if (temp_x == 0)
@@ -1109,18 +1111,18 @@ void movement(void)
 			BoxGuy1.vel_y = 0;
 			BoxGuy1.vel_x = 0;
 		}
-	}
+	} 
   
 	if(pad1_state & PAD_DOWN && pad1_new & PAD_A && !player_on_ladder){
 		player_is_sliding = 25;
 	} else if (pad1_new & PAD_A && !player_in_hitstun && !player_is_sliding)
 	{
-		if (player_on_ladder)
+		if (player_on_ladder)   
 		{
-			player_on_ladder = 0;
+			player_on_ladder = 0;  
 			player_in_air = 1;
-		}
-		else if (bg_coll_D2() || multi_jump < 2)
+		}    
+		else if (bg_coll_D2() || multi_jump < 1)
 		{
 			++multi_jump;
 			BoxGuy1.vel_y = JUMP_VEL; // JUMP
@@ -1465,7 +1467,7 @@ void check_spr_objects(void)
 			high_byte(temp5) = enemy_room[index];
 			low_byte(temp5) = enemy_actual_x[index];
 			temp1 = enemy_active[index] = get_position();
-			if (temp1 == 0 || enemy_health[index] == 0)
+			if (temp1 == 0)
 				continue;
 			enemy_x[index] = temp_x; // screen x coords
 
@@ -1536,7 +1538,7 @@ void enemy_moves(void)
 				}
 				
 				sfx_play(SFX_SHOT_HITS, 0);
-				if (enemy_health[index] == 0 || enemy_health[index] > 240) // check for overflow with 240
+				if ((enemy_health[index] == 0 || enemy_health[index] > 240 ) && enemy_mode[index] != TURN_OFF) // check for overflow with 240
 				{
 					if (enemy_type[index] == ENEMY_BEAR)
 					{
@@ -1550,7 +1552,8 @@ void enemy_moves(void)
 					}
 					// randomly decide to place something
 					else if (frame_counter % 2 == 0)
-					{
+					{ 
+						//ITEM DROP CODE;
 						// find an empty entity slot
 						for (index2 = 0; index2 <= MAX_ENTITY; ++index2)
 						{
@@ -1569,8 +1572,10 @@ void enemy_moves(void)
 					}
 
 					// delete the enemy
-					enemy_y[index] = TURN_OFF;
+					// change enemy_mode to death
 					enemy_active[index] = 0;
+					enemy_mode[index] = TURN_OFF;
+					enemy_frames[index] = 0;
 				}
 			}
 		}
@@ -1588,6 +1593,19 @@ void enemy_moves(void)
 	{
 		enemy_bear_behavior();
 	}
+}
+
+void enemy_implosion(void){
+		if(enemy_frames[index] < 4){
+			enemy_anim[index] = animate_implosion1_data;
+		} else if (enemy_frames[index] < 8){
+			enemy_anim[index] = animate_implosion2_data;
+		} else if (enemy_frames[index] < 12){
+			enemy_anim[index] = animate_implosion3_data;
+		} else{
+			enemy_y[index] = TURN_OFF;
+			enemy_mode[index] = 0;
+		}
 }
 
 
@@ -1895,6 +1913,8 @@ void enemy_snail_behavior(void)
 	Generic.width = ENEMY_SNAIL_WIDTH;
 	Generic.height = ENEMY_SNAIL_HEIGHT;
 
+	
+
 	// set animation:
 	if (enemy_frames[index] < 10)
 	{
@@ -1940,6 +1960,9 @@ void enemy_snail_behavior(void)
 			enemy_anim[index] = animate_snail3right_data;
 		}
 		enemy_frames[index] = 0;
+	}
+	if(enemy_mode[index] == TURN_OFF){
+		enemy_implosion();
 	}
 
 	// actual movement
@@ -2004,6 +2027,11 @@ void enemy_owl_behavior(void)
 {
 	// no collision for owl, he just swoops down and out.
 	// mode 0 is idle, mode 1 is attacking
+
+	if(enemy_mode[index] == TURN_OFF){
+		enemy_implosion();
+		return;
+	}
 
 	if (enemy_x[index] > Generic2.x					 // enemy right of player
 			&& enemy_x[index] - Generic2.x < 50) // and close
@@ -2328,7 +2356,7 @@ void sprite_collisions(void)
 
 	for (index = 0; index < MAX_ENEMY; ++index)
 	{
-		if (enemy_active[index])
+		if (enemy_active[index] != 0)
 		{
 			switch (enemy_type[index])
 			{

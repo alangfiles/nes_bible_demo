@@ -13,11 +13,14 @@ nes_bible_demo_music_data:
 	.byte $30 ;instrument $01
 	.word @env2,@env0,@env4
 	.byte $00
-	.byte $30 ;instrument $04
-	.word @env3,@env0,@env0
-	.byte $00
 	.byte $30 ;instrument $05
 	.word @env1,@env0,@env0
+	.byte $00
+	.byte $30 ;instrument $06
+	.word @env3,@env0,@env0
+	.byte $00
+	.byte $30 ;instrument $07
+	.word @env3,@env0,@env5
 	.byte $00
 
 @samples:
@@ -28,10 +31,11 @@ nes_bible_demo_music_data:
 @env2:
 	.byte $cf,$cf,$cc,$c9,$c6,$c3,$c1,$c0,$00,$07
 @env3:
-	.byte $ce,$cd,$cb,$ca,$c9,$c9,$c8,$c7,$c7,$c6,$c4,$c3,$c3,$c2,$c1,$00
-	.byte $0e
+	.byte $cf,$ce,$cd,$cb,$c8,$c5,$c3,$c2,$c1,$c0,$00,$09
 @env4:
 	.byte $c2,$c2,$c0,$00,$00
+@env5:
+	.byte $ff,$02,$fe,$e9,$a8,$80,$00,$05
 
 
 ; New song
@@ -51,6 +55,10 @@ nes_bible_demo_music_data:
 	.word @ref2
 	.byte $ff,$10
 	.word @ref1
+@ref6:
+	.byte $1e,$85,$23,$25,$1a,$8d,$16,$85,$1b,$1f,$14,$8d
+@ref7:
+	.byte $1e,$85,$23,$25,$28,$8d,$2f,$25,$23,$25,$23,$1e,$89
 	.byte $ff,$10
 	.word @ref2
 	.byte $ff,$10
@@ -61,90 +69,111 @@ nes_bible_demo_music_data:
 ; New song
 @song0ch1:
 @song0ch1loop:
-@ref8:
-	.byte $bf
-@ref9:
-	.byte $bf
 @ref10:
-	.byte $86,$45,$3d,$3b,$39,$41,$01,$41,$01,$3d,$37,$2f,$01,$35,$31,$2d
-	.byte $3a,$81
+	.byte $bf
 @ref11:
-	.byte $37,$37,$37,$01,$33,$41,$33,$01,$2f,$2d,$2f,$37,$35,$2f,$2d,$00
-	.byte $81
+	.byte $bf
 @ref12:
-	.byte $45,$3d,$3b,$39,$41,$01,$41,$01,$3d,$37,$2f,$01,$35,$31,$2d,$3a
+	.byte $84,$45,$3d,$3b,$39,$41,$00,$85,$01,$3d,$37,$2f,$01,$35,$31,$2d
+	.byte $3a,$81
+@ref13:
+	.byte $36,$89,$01,$33,$41,$33,$01,$2f,$2d,$2f,$37,$35,$2f,$2d,$00,$81
+@ref14:
+	.byte $45,$3d,$3b,$39,$41,$00,$85,$01,$3d,$37,$2f,$01,$35,$31,$2d,$3a
 	.byte $81
-	.byte $ff,$11
-	.word @ref11
-	.byte $ff,$11
-	.word @ref12
-	.byte $ff,$11
-	.word @ref11
+	.byte $ff,$10
+	.word @ref13
+@ref16:
+	.byte $bf
+@ref17:
+	.byte $bf
+@ref18:
+	.byte $89,$80,$46,$44,$40,$1a,$87,$3c,$3a,$36,$2e,$87,$36,$32,$36,$2c
+	.byte $87,$44,$44,$44
+@ref19:
+	.byte $1e,$87,$36,$3c,$44,$1a,$87,$40,$38,$32,$2e,$87,$46,$44,$40,$3e
+	.byte $40,$3e,$36,$44,$83,$00
 	.byte $fd
 	.word @song0ch1loop
 
 ; New song
 @song0ch2:
 @song0ch2loop:
-@ref16:
-	.byte $82,$1e,$8b,$00,$1a,$8b,$00,$2e,$8b,$00,$2c,$8b,$00
-@ref17:
+@ref20:
+	.byte $88,$0c,$82,$1e,$89,$00,$88,$0c,$82,$1a,$89,$00,$88,$0c,$82,$2e
+	.byte $89,$00,$88,$0c,$82,$2c,$89,$00
+	.byte $ff,$10
+	.word @ref20
+	.byte $ff,$10
+	.word @ref20
+	.byte $ff,$10
+	.word @ref20
+	.byte $ff,$10
+	.word @ref20
+	.byte $ff,$10
+	.word @ref20
+@ref26:
 	.byte $1e,$8b,$00,$1a,$8b,$00,$2e,$8b,$00,$2c,$8b,$00
 	.byte $ff,$0c
-	.word @ref17
+	.word @ref26
 	.byte $ff,$0c
-	.word @ref17
+	.word @ref26
 	.byte $ff,$0c
-	.word @ref17
-	.byte $ff,$0c
-	.word @ref17
-	.byte $ff,$0c
-	.word @ref17
-	.byte $ff,$0c
-	.word @ref17
+	.word @ref26
 	.byte $fd
 	.word @song0ch2loop
 
 ; New song
 @song0ch3:
 @song0ch3loop:
-@ref24:
-	.byte $84,$12,$8b,$0e,$12,$8d,$0e,$8b,$0e,$12,$85,$0e,$85
-@ref25:
-	.byte $12,$8b,$12,$0e,$89,$0f,$12,$8b,$12,$0e,$85,$0e,$85
-@ref26:
-	.byte $12,$8b,$0e,$12,$8d,$0e,$8b,$0e,$12,$85,$0e,$85
-	.byte $ff,$0d
-	.word @ref25
-	.byte $ff,$0c
-	.word @ref26
-	.byte $ff,$0d
-	.word @ref25
-	.byte $ff,$0c
-	.word @ref26
-	.byte $ff,$0d
-	.word @ref25
+@ref30:
+	.byte $86,$02,$85,$1e,$85,$02,$85,$1e,$85,$02,$85,$1e,$85,$02,$85,$1e
+	.byte $85
+@ref31:
+	.byte $02,$85,$1e,$85,$02,$85,$1e,$85,$02,$85,$1e,$85,$02,$85,$1e,$85
+	.byte $ff,$10
+	.word @ref31
+	.byte $ff,$10
+	.word @ref31
+	.byte $ff,$10
+	.word @ref31
+	.byte $ff,$10
+	.word @ref31
+@ref36:
+	.byte $21,$1f,$21,$1f,$21,$1f,$21,$1f,$21,$1f,$21,$1f,$21,$1f,$21,$1e
+	.byte $81
+@ref37:
+	.byte $21,$1f,$21,$1f,$21,$1f,$21,$1f,$21,$1f,$07,$03,$04,$85,$04,$04
+	.byte $04,$81
+	.byte $ff,$11
+	.word @ref36
+	.byte $ff,$12
+	.word @ref37
 	.byte $fd
 	.word @song0ch3loop
 
 ; New song
 @song0ch4:
 @song0ch4loop:
-@ref32:
+@ref40:
 	.byte $bf
-@ref33:
+@ref41:
 	.byte $bf
-@ref34:
+@ref42:
 	.byte $bf
-@ref35:
+@ref43:
 	.byte $bf
-@ref36:
+@ref44:
 	.byte $bf
-@ref37:
+@ref45:
 	.byte $bf
-@ref38:
+@ref46:
 	.byte $bf
-@ref39:
+@ref47:
+	.byte $bf
+@ref48:
+	.byte $bf
+@ref49:
 	.byte $bf
 	.byte $fd
 	.word @song0ch4loop

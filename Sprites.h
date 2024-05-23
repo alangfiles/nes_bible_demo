@@ -38,12 +38,12 @@ const unsigned char animate_bun2_data[] = {
 
 };
 
-const unsigned char animate_fruit_data[] = {
+// const unsigned char animate_fruit_data[] = {
 
-		0, 0, 0x1e, 0,
-		0x80
+// 		0, 0, 0x1e, 0,
+// 		0x80
 
-};
+// };
 
 const unsigned char animate_wine_data[] = {
 
@@ -65,23 +65,20 @@ const unsigned char animate_implosion1_data[] = {
 };
 
 const unsigned char animate_implosion2_data[] = {
-
-		4, 4, 0x4e, 2,
 		4, 4, 0x2f, 2,
 		0x80
-
 };
 
 const unsigned char animate_implosion3_data[] = {
 
-		4, 5, 0x4f, 2,
+		4, 4, 0x3f, 2,
 		0x80
 
 };
 
 const unsigned char animate_orb0_data[] = {
 
-		0, 0, 0x0c, 0,
+		0, 0, 0x0c, 3,
 		0x80
 
 };
@@ -593,121 +590,121 @@ const unsigned char animate_skeletonleft_data[] = {
 
 };
 
-const unsigned char animate_deathleft1_data[] = {
+// const unsigned char animate_deathleft1_data[] = {
 
-		0, -8, 0x2c, 2,
-		0, 8, 0x4c, 2,
-		0, 0, 0x3c, 2,
-		8, 0, 0x3d, 2,
+// 		0, -8, 0x2c, 2,
+// 		0, 8, 0x4c, 2,
+// 		0, 0, 0x3c, 2,
+// 		8, 0, 0x3d, 2,
 
-		8, -8, 0x2d, 2,
-		8, 8, 0x4d, 2,
-		16, 0, 0x4b, 2 | OAM_FLIP_H,
-		-8, 0, 0x4b, 2,
-		0x80
+// 		8, -8, 0x2d, 2,
+// 		8, 8, 0x4d, 2,
+// 		16, 0, 0x4b, 2 | OAM_FLIP_H,
+// 		-8, 0, 0x4b, 2,
+// 		0x80
 
-};
+// };
 
-const unsigned char animate_deathleft2_data[] = {
+// const unsigned char animate_deathleft2_data[] = {
 
-		0, -8, 0x2c, 2,
-		0, 8, 0x4c, 2,
-		0, 0, 0x3c, 2,
-		8, 0, 0x3d, 2,
+// 		0, -8, 0x2c, 2,
+// 		0, 8, 0x4c, 2,
+// 		0, 0, 0x3c, 2,
+// 		8, 0, 0x3d, 2,
 
-		8, -8, 0x2d, 2,
-		8, 8, 0x4d, 2,
-		16, 0, 0x4b, 2 | OAM_FLIP_H,
-		-8, 0, 0x4b, 2,
-		0x80
+// 		8, -8, 0x2d, 2,
+// 		8, 8, 0x4d, 2,
+// 		16, 0, 0x4b, 2 | OAM_FLIP_H,
+// 		-8, 0, 0x4b, 2,
+// 		0x80
 
-};
+// };
 
-const unsigned char animate_deathleft3_data[] = {
+// const unsigned char animate_deathleft3_data[] = {
 
-		0, -6, 0x2c, 2,
-		0, 2, 0x3c, 2,
-		8, 2, 0x3d, 2,
-		8, -6, 0x2d, 2,
+// 		0, -6, 0x2c, 2,
+// 		0, 2, 0x3c, 2,
+// 		8, 2, 0x3d, 2,
+// 		8, -6, 0x2d, 2,
 
-		16, 0, 0x4b, 2 | OAM_FLIP_H,
-		-8, 0, 0x4b, 2,
-		0, 8, 0x4c, 2,
-		8, 8, 0x4d, 2,
-		0x80
+// 		16, 0, 0x4b, 2 | OAM_FLIP_H,
+// 		-8, 0, 0x4b, 2,
+// 		0, 8, 0x4c, 2,
+// 		8, 8, 0x4d, 2,
+// 		0x80
 
-};
+// };
 
-const unsigned char animate_deathleft4_data[] = {
+// const unsigned char animate_deathleft4_data[] = {
 
-		0, -4, 0x2c, 2,
-		0, 4, 0x3c, 2,
-		8, 4, 0x3d, 2,
-		8, -4, 0x2d, 2,
+// 		0, -4, 0x2c, 2,
+// 		0, 4, 0x3c, 2,
+// 		8, 4, 0x3d, 2,
+// 		8, -4, 0x2d, 2,
 
-		16, 2, 0x4b, 2 | OAM_FLIP_H,
-		-8, 2, 0x4b, 2,
-		0, 8, 0x4c, 2,
-		8, 8, 0x4d, 2,
-		0x80
+// 		16, 2, 0x4b, 2 | OAM_FLIP_H,
+// 		-8, 2, 0x4b, 2,
+// 		0, 8, 0x4c, 2,
+// 		8, 8, 0x4d, 2,
+// 		0x80
 
-};
+// };
 
-const unsigned char animate_deathleft5_data[] = {
+// const unsigned char animate_deathleft5_data[] = {
 
-		0, -2, 0x2c, 2,
-		0, 6, 0x3c, 2,
-		8, 6, 0x3d, 2,
-		8, -2, 0x2d, 2,
+// 		0, -2, 0x2c, 2,
+// 		0, 6, 0x3c, 2,
+// 		8, 6, 0x3d, 2,
+// 		8, -2, 0x2d, 2,
 
-		16, 4, 0x4b, 2 | OAM_FLIP_H,
-		-8, 4, 0x4b, 2,
-		0, 8, 0x4c, 2,
-		8, 8, 0x4d, 2,
-		0x80
+// 		16, 4, 0x4b, 2 | OAM_FLIP_H,
+// 		-8, 4, 0x4b, 2,
+// 		0, 8, 0x4c, 2,
+// 		8, 8, 0x4d, 2,
+// 		0x80
 
-};
+// };
 
-const unsigned char animate_deathleft6_data[] = {
+// const unsigned char animate_deathleft6_data[] = {
 
-		0, -2, 0x2c, 2,
-		0, 6, 0x3c, 2,
-		8, 6, 0x3d, 2,
-		8, -2, 0x2d, 2,
+// 		0, -2, 0x2c, 2,
+// 		0, 6, 0x3c, 2,
+// 		8, 6, 0x3d, 2,
+// 		8, -2, 0x2d, 2,
 
-		16, 6, 0x4b, 2 | OAM_FLIP_H,
-		-8, 6, 0x4b, 2,
-		0, 8, 0x4c, 2,
-		8, 8, 0x4d, 2,
-		0x80
+// 		16, 6, 0x4b, 2 | OAM_FLIP_H,
+// 		-8, 6, 0x4b, 2,
+// 		0, 8, 0x4c, 2,
+// 		8, 8, 0x4d, 2,
+// 		0x80
 
-};
+// };
 
-const unsigned char animate_deathleft7_data[] = {
+// const unsigned char animate_deathleft7_data[] = {
 
-		0, -1, 0x2c, 2,
-		0, 7, 0x5e, 2,
-		8, 7, 0x5f, 2,
-		8, -1, 0x2d, 2,
+// 		0, -1, 0x2c, 2,
+// 		0, 7, 0x5e, 2,
+// 		8, 7, 0x5f, 2,
+// 		8, -1, 0x2d, 2,
 
-		15, 9, 0x4b, 2 | OAM_FLIP_H,
-		-7, 9, 0x4b, 2,
-		0x80
+// 		15, 9, 0x4b, 2 | OAM_FLIP_H,
+// 		-7, 9, 0x4b, 2,
+// 		0x80
 
-};
+// };
 
-const unsigned char animate_deathleft8_data[] = {
+// const unsigned char animate_deathleft8_data[] = {
 
-		0, -1, 0x2c, 2,
-		0, 7, 0x5e, 2,
-		8, 7, 0x5f, 2,
-		8, -1, 0x2d, 2,
+// 		0, -1, 0x2c, 2,
+// 		0, 7, 0x5e, 2,
+// 		8, 7, 0x5f, 2,
+// 		8, -1, 0x2d, 2,
 
-		15, 11, 0x4b, 2 | OAM_FLIP_H,
-		-7, 11, 0x4b, 2,
-		0x80
+// 		15, 11, 0x4b, 2 | OAM_FLIP_H,
+// 		-7, 11, 0x4b, 2,
+// 		0x80
 
-};
+// };
 
 const unsigned char animate_recoilright_data[] = {
 
