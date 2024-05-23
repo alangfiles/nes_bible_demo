@@ -45,12 +45,16 @@ void main(void)
 		while (game_mode == MODE_TITLE)
 		{
 			// unused for title screen
-			ppu_wait_nmi();
+			ppu_wait_nmi();    
 
 			pad1 = pad_poll(0); // read the first controller
 			pad1_new = get_pad_new(0);
 			if (pad1_new & PAD_START)
 			{
+
+				if (pad1 & PAD_UP){
+					multi_jump_max = 2;
+				}
 				sfx_play(SFX_START_LEVEL, 0);
 				pal_bright(3);
 				for (temp = 0; temp < 10; ++temp)
