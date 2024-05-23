@@ -397,6 +397,7 @@ void reset(void)
 	player_running = 0;
 	short_jump_count = 0;
 	multi_jump = 0;
+	multi_jump_max = 1;
 	projectile_cooldown = 0;
 	projectile_count = 0;
 	projectile_index = 0;
@@ -1122,7 +1123,7 @@ void movement(void)
 			player_on_ladder = 0;  
 			player_in_air = 1;
 		}    
-		else if (bg_coll_D2() || multi_jump < 1)
+		else if (bg_coll_D2() || multi_jump < multi_jump_max)
 		{
 			++multi_jump;
 			BoxGuy1.vel_y = JUMP_VEL; // JUMP
@@ -1561,7 +1562,7 @@ void enemy_moves(void)
 							{
 								break;
 							}
-						}
+						}   
 						// place an item there.
 						entity_y[index2] = enemy_y[index];
 						entity_x[index2] = enemy_x[index];

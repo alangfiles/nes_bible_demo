@@ -1049,7 +1049,7 @@ const unsigned char animate_playerrunshoot3left_data[]={
 
 };
 
-const unsigned char animate_playerrunshoot1right_data[]={
+const unsigned char animate_playerrushoot1right_data[]={
 
 	  8,- 8,0x1a,0|OAM_FLIP_H,
 	  0,- 8,0x1b,0|OAM_FLIP_H,

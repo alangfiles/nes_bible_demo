@@ -141,6 +141,8 @@ enum
 	BOSS_ENTRY
 };
 
+unsigned char multi_jump_max;
+
 const unsigned char *pointer;
 unsigned char l_scroll_frames;
 unsigned char r_scroll_frames;
