@@ -12073,14 +12073,14 @@ _palette_victory:
 	.byte	$0F
 	.byte	$0F
 	.byte	$29
-L2E3D:
+L2E3F:
 	.byte	$42,$52,$49,$41,$4E,$20,$26,$20,$41,$4C,$41,$4E,$20,$47,$41,$4D
 	.byte	$45,$53,$00
-L2F79:
+L2F7B:
 	.byte	$50,$52,$45,$53,$53,$20,$53,$54,$41,$52,$54,$00
-L2E33:
+L2E35:
 	.byte	$43,$4F,$52,$47,$53,$20,$44,$45,$4D,$4F,$00
-L2F6F:
+L2F71:
 	.byte	$47,$41,$4D,$45,$20,$4F,$56,$45,$52,$00
 
 .segment	"BSS"
@@ -16748,7 +16748,7 @@ L3E7D:	lda     _y
 ;
 ; break;
 ;
-	beq     L2E0F
+	beq     L2E11
 ;
 ; for (y = 0;; y += 0x20)
 ;
@@ -16759,7 +16759,7 @@ L3E7D:	lda     _y
 ;
 ; ppu_on_all();
 ;
-L2E0F:	jsr     _ppu_on_all
+L2E11:	jsr     _ppu_on_all
 ;
 ; game_mode = MODE_TITLE;
 ;
@@ -16769,11 +16769,11 @@ L2E0F:	jsr     _ppu_on_all
 ; multi_vram_buffer_horz("CORGS DEMO", 10, NTADR_A(14, 6));
 ;
 	jsr     decsp3
-	lda     #<(L2E33)
+	lda     #<(L2E35)
 	ldy     #$01
 	sta     (sp),y
 	iny
-	lda     #>(L2E33)
+	lda     #>(L2E35)
 	sta     (sp),y
 	lda     #$0A
 	ldy     #$00
@@ -16785,11 +16785,11 @@ L2E0F:	jsr     _ppu_on_all
 ; multi_vram_buffer_horz("BRIAN & ALAN GAMES", 18, NTADR_A(12, 8));
 ;
 	jsr     decsp3
-	lda     #<(L2E3D)
+	lda     #<(L2E3F)
 	ldy     #$01
 	sta     (sp),y
 	iny
-	lda     #>(L2E3D)
+	lda     #>(L2E3F)
 	sta     (sp),y
 	lda     #$12
 	ldy     #$00
@@ -17495,10 +17495,6 @@ L3E8D:	ldy     _index
 ;
 	lda     #$01
 	sta     _game_mode
-;
-; level = 1;    // debug, change starting level
-;
-	sta     _level
 ;
 ; room_to_load = 0; // debug, hacky, change starting room
 ;
@@ -22787,6 +22783,11 @@ L3FB7:	sta     _tempint
 .segment	"CODE"
 
 ;
+; level = 0;
+;
+	lda     #$00
+	sta     _level
+;
 ; reset();
 ;
 	jsr     _reset
@@ -22801,7 +22802,7 @@ L3FB7:	sta     _tempint
 ;
 ; ppu_wait_nmi();    
 ;
-L2C13:	jsr     _ppu_wait_nmi
+L2C15:	jsr     _ppu_wait_nmi
 ;
 ; pad1 = pad_poll(0); // read the first controller
 ;
@@ -22824,7 +22825,7 @@ L2C13:	jsr     _ppu_wait_nmi
 ;
 	lda     _pad1
 	and     #$08
-	beq     L2C20
+	beq     L2C22
 ;
 ; multi_jump_max = 2;
 ;
@@ -22833,7 +22834,7 @@ L2C13:	jsr     _ppu_wait_nmi
 ;
 ; sfx_play(SFX_START_LEVEL, 0);
 ;
-L2C20:	lda     #$06
+L2C22:	lda     #$06
 	jsr     pusha
 	lda     #$00
 	jsr     _sfx_play
@@ -22952,7 +22953,7 @@ L2C20:	lda     #$06
 ; while (game_mode == MODE_TITLE)
 ;
 L3FC9:	lda     _game_mode
-	jeq     L2C13
+	jeq     L2C15
 ;
 ; while (game_mode == MODE_GAME)
 ;
@@ -22960,7 +22961,7 @@ L3FC9:	lda     _game_mode
 ;
 ; gray_line();
 ;
-L2C4C:	jsr     _gray_line
+L2C4E:	jsr     _gray_line
 ;
 ; ++frame_counter;
 ;
@@ -22992,7 +22993,7 @@ L2C4C:	jsr     _gray_line
 ;
 	lda     _pad1_new
 	and     #$10
-	beq     L2C5C
+	beq     L2C5E
 ;
 ; game_mode = MODE_PAUSE;
 ;
@@ -23014,7 +23015,7 @@ L2C4C:	jsr     _gray_line
 ;
 ; movement();
 ;
-L2C5C:	jsr     _movement
+L2C5E:	jsr     _movement
 ;
 ; check_spr_objects();
 ;
@@ -23061,7 +23062,7 @@ L2C5C:	jsr     _movement
 	lda     _BoxGuy1+8
 	beq     L3FCA
 	cmp     #$1D
-	bcc     L2C6F
+	bcc     L2C71
 ;
 ; death = 1;
 ;
@@ -23070,7 +23071,7 @@ L3FCA:	lda     #$01
 ;
 ; if (death)
 ;
-L2C6F:	lda     _death
+L2C71:	lda     _death
 	beq     L3FCB
 ;
 ; init_death();
@@ -23175,7 +23176,7 @@ L3FDB:	lda     _BoxGuy1+3
 ;
 L3FDF:	lda     _game_mode
 	cmp     #$01
-	jeq     L2C4C
+	jeq     L2C4E
 ;
 ; while (game_mode == MODE_DEATH)
 ;
@@ -23183,7 +23184,7 @@ L3FDF:	lda     _game_mode
 ;
 ; ppu_wait_nmi();
 ;
-L2C9E:	jsr     _ppu_wait_nmi
+L2CA0:	jsr     _ppu_wait_nmi
 ;
 ; pad1 = pad_poll(0); // read the first controller
 ;
@@ -23316,7 +23317,7 @@ L3FE5:	lda     _frame_counter
 	jmp     L3FC8
 L3FE6:	lda     _frame_counter
 	cmp     #$6E
-	bcs     L2CD4
+	bcs     L2CD6
 ;
 ; tempint = animate_deathright7_data;
 ;
@@ -23330,7 +23331,7 @@ L3FE6:	lda     _frame_counter
 ;
 ; tempint = animate_deathright8_data;
 ;
-L2CD4:	lda     #>(_animate_deathright8_data)
+L2CD6:	lda     #>(_animate_deathright8_data)
 	sta     _tempint+1
 	lda     #<(_animate_deathright8_data)
 L3FC8:	sta     _tempint
@@ -23371,7 +23372,7 @@ L3FE7:	lda     _pad1_new
 ;
 L3FE8:	lda     _game_mode
 	cmp     #$03
-	jeq     L2C9E
+	jeq     L2CA0
 ;
 ; while (game_mode == MODE_PAUSE)
 ;
@@ -23379,7 +23380,7 @@ L3FE8:	lda     _game_mode
 ;
 ; ppu_wait_nmi();
 ;
-L2CE5:	jsr     _ppu_wait_nmi
+L2CE7:	jsr     _ppu_wait_nmi
 ;
 ; pad1 = pad_poll(0); // read the first controller
 ;
@@ -23421,7 +23422,7 @@ L2CE5:	jsr     _ppu_wait_nmi
 ;
 L3FE9:	lda     _game_mode
 	cmp     #$02
-	beq     L2CE5
+	beq     L2CE7
 ;
 ; while (game_mode == MODE_SWITCH)
 ;
@@ -23429,7 +23430,7 @@ L3FE9:	lda     _game_mode
 ;
 ; ppu_off();
 ;
-L2CFA:	jsr     _ppu_off
+L2CFC:	jsr     _ppu_off
 ;
 ; oam_clear();
 ;
@@ -23457,7 +23458,7 @@ L2CFA:	jsr     _ppu_off
 ;
 L3FEA:	lda     _game_mode
 	cmp     #$04
-	beq     L2CFA
+	beq     L2CFC
 ;
 ; while (game_mode == MODE_END)
 ;
@@ -23465,7 +23466,7 @@ L3FEA:	lda     _game_mode
 ;
 ; ppu_wait_nmi();
 ;
-L2D06:	jsr     _ppu_wait_nmi
+L2D08:	jsr     _ppu_wait_nmi
 ;
 ; pad1 = pad_poll(0); // read the first controller
 ;
@@ -23497,7 +23498,7 @@ L2D06:	jsr     _ppu_wait_nmi
 ;
 L3FEB:	lda     _game_mode
 	cmp     #$05
-	beq     L2D06
+	beq     L2D08
 ;
 ; while (1)
 ;
@@ -23605,7 +23606,7 @@ L3FEF:	lda     _y
 ;
 ; break;
 ;
-	beq     L2F4E
+	beq     L2F50
 ;
 ; for (y = 0;; y += 0x20)
 ;
@@ -23616,12 +23617,12 @@ L3FEF:	lda     _y
 ;
 ; multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 12));
 ;
-L2F4E:	jsr     decsp3
-	lda     #<(L2F6F)
+L2F50:	jsr     decsp3
+	lda     #<(L2F71)
 	ldy     #$01
 	sta     (sp),y
 	iny
-	lda     #>(L2F6F)
+	lda     #>(L2F71)
 	sta     (sp),y
 	lda     #$0A
 	ldy     #$00
@@ -23633,11 +23634,11 @@ L2F4E:	jsr     decsp3
 ; multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 ;
 	jsr     decsp3
-	lda     #<(L2F79)
+	lda     #<(L2F7B)
 	ldy     #$01
 	sta     (sp),y
 	iny
-	lda     #>(L2F79)
+	lda     #>(L2F7B)
 	sta     (sp),y
 	lda     #$0C
 	ldy     #$00

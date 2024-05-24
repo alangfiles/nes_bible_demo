@@ -11,12 +11,13 @@ TODO List:
 	[] sign posts / text in game?
 
 	[] add lives / deaths / game over
-
-
 	[] clear all enemy and entity arrays at start of level
 	[] clear projectiles at start of level
 	[] too many enemies in some rooms
-	[] no double jumping on ladders
+	[] dying starts you on level you died on (need to add starting rooms to it)
+	[] add starting positions per level
+	[] add charge shot
+	[] add slide under things?
 */
 
 #include "LIB/neslib.h"
@@ -33,6 +34,7 @@ void main(void)
 {
 	// test
 
+	level = 0;
 	reset();
 
 	load_title();
@@ -392,7 +394,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;         
-	level = 1;				// debug, change starting level
+	// level = 0;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
