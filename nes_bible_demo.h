@@ -235,7 +235,7 @@ unsigned char entity_active[MAX_ENTITY];
 unsigned char entity_room[MAX_ENTITY];
 unsigned char entity_actual_x[MAX_ENTITY];
 unsigned char entity_type[MAX_ENTITY];
-const unsigned char *entity_anim[MAX_ENTITY];
+// const unsigned char *entity_anim[MAX_ENTITY];
 unsigned char entity_frames[MAX_ENTITY];
 
 #define ENEMY_WIDTH 13
@@ -278,6 +278,8 @@ void level_up_routine(void);
 void enemy_snail_behavior(void);
 void enemy_owl_behavior(void);
 void enemy_bear_behavior(void);
+void waitTen(void);
+void drawMetatileBlock(void);
 
 char bg_coll_L(void);
 char bg_coll_R(void);

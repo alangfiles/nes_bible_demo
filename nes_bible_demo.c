@@ -10,16 +10,13 @@
 TODO List:
 	[] sign posts / text in game?
 
-	[] enemy dying animation
-	[] enemy hit animation?
-	[] level transition doesn't work?
-	[] fix enemy collision (down)
-	[] cleanup reset code
 	[] add lives / deaths / game over
 
 
 	[] clear all enemy and entity arrays at start of level
-	[] add enemy imposion.
+	[] clear projectiles at start of level
+	[] too many enemies in some rooms
+	[] no double jumping on ladders
 */
 
 #include "LIB/neslib.h"
@@ -50,71 +47,45 @@ void main(void)
 			pad1 = pad_poll(0); // read the first controller
 			pad1_new = get_pad_new(0);
 			if (pad1_new & PAD_START)
-			{
+			{  
 
 				if (pad1 & PAD_UP){
 					multi_jump_max = 2;
 				}
 				sfx_play(SFX_START_LEVEL, 0);
 				pal_bright(3);
-				for (temp = 0; temp < 10; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
 				pal_bright(2);
-				for (temp = 0; temp < 10; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
 				pal_bright(1);
-				for (temp = 0; temp < 10; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
 				pal_bright(0);
-				for (temp = 0; temp < 10; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
 				ppu_off();
-				for (temp = 0; temp < 20; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
+				waitTen();
 				// load game mode
 				game_mode = MODE_GAME;
 				load_room();
 
 				ppu_on_all();
 				pal_bright(1);
-				for (temp = 0; temp < 10; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
 				pal_bright(2);
-				for (temp = 0; temp < 10; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
 				pal_bright(3);
-				for (temp = 0; temp < 10; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
 				pal_bright(4);
-				for (temp = 0; temp < 10; ++temp)
-				{
-					ppu_wait_nmi();
-				}
+				waitTen();
 
 				song = SONG_GAME;
 				music_play(song);
-				set_music_speed(11);
+				set_music_speed(10);
 			}
 		}
 		while (game_mode == MODE_GAME)
 		{
-			// gray_line();
+			gray_line();
 			++frame_counter;
 			// infinite loop
 			ppu_wait_nmi(); // wait till beginning of the frame
@@ -212,40 +183,42 @@ void main(void)
 				++frame_counter;
 				if (frame_counter < 40)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_playerstandright_data);
+					tempint = animate_playerstandright_data;
+					
 				}
 				else if (frame_counter < 50)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_deathright1_data);
+					tempint = animate_deathright1_data;
 				}
 				else if (frame_counter < 60)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_deathright2_data);
+					tempint = animate_deathright2_data;
 				}
 				else if (frame_counter < 70)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_deathright3_data);
+					tempint = animate_deathright3_data;
 				}
 				else if (frame_counter < 80)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_deathright4_data);
+					tempint = animate_deathright4_data;
 				}
 				else if (frame_counter < 90)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_deathright5_data);
+					tempint = animate_deathright5_data;
 				}
 				else if (frame_counter < 100)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_deathright6_data);
+					tempint = animate_deathright6_data;
 				}
 				else if (frame_counter < 110)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_deathright7_data);
+					tempint = animate_deathright7_data;
 				}
 				else
 				{
-					oam_meta_spr(temp_x, temp_y, animate_deathright8_data);
+					tempint = animate_deathright8_data;
 				}
+				oam_meta_spr(temp_x, temp_y, tempint);
 			}
 
 			if (pad1_new & PAD_START)
@@ -419,7 +392,7 @@ void reset(void)
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;         
-	level = 0;				// debug, change starting level
+	level = 1;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	debug = 0;
 	player_in_hitstun = 0;
@@ -683,25 +656,26 @@ void draw_sprites(void)
 			{
 				if (entity_frames[index2] < 20)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
+					tempint = animate_starburst1_data;
 				}
 				else if (entity_frames[index2] < 40)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
+					tempint = animate_starburst2_data;
 				}
 				else if (entity_frames[index2] < 60)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst3_data);
+					tempint = animate_starburst3_data;
 				}
 				else if (entity_frames[index2] < 80)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
+					tempint = animate_starburst2_data;
 				}
 				else
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
+					tempint = animate_starburst1_data;
 					entity_frames[index2] = 0;
 				}
+				oam_meta_spr(temp_x, temp_y, tempint);
 			}
 			if (entity_type[index2] == ENTITY_WINE)
 			{
@@ -710,53 +684,60 @@ void draw_sprites(void)
 			if (entity_type[index2] == ENTITY_BREAD)
 			{
 				if (entity_frames[index2] < 20)
-					oam_meta_spr(temp_x, temp_y, animate_bread_data);
+					tempint = animate_bread2_data;
 				else if (entity_frames[index2] < 40)
-					oam_meta_spr(temp_x, temp_y, animate_bread2_data);
+					tempint = animate_bread2_data;
 				else
 				{
-					oam_meta_spr(temp_x, temp_y, animate_bread_data);
+					tempint = animate_bread_data;
 					entity_frames[index2] = 0;
 				}
+				oam_meta_spr(temp_x, temp_y, tempint);
 			}
 			if (entity_type[index2] == ENTITY_ROCK){
-				oam_meta_spr(temp_x, temp_y, animate_bouldersmall_data);
+				tempint = animate_bouldersmall_data;
+				oam_meta_spr(temp_x, temp_y, tempint);
 			}
 			if (entity_type[index2] == ENTITY_FRUIT)
 			{
 				if (entity_frames[index2] < 20)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
+					tempint = animate_starburst1_data;
 				}
 				else if (entity_frames[index2] < 40)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
+					tempint = animate_starburst2_data;
+					
 				}
 				else if (entity_frames[index2] < 60)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst3_data);
+					tempint = animate_starburst3_data;
+					
 				}
 				else if (entity_frames[index2] < 80)
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst2_data);
+					tempint = animate_starburst2_data;
+					
 				}
 				else
 				{
-					oam_meta_spr(temp_x, temp_y, animate_starburst1_data);
+					tempint = animate_starburst1_data;
 					entity_frames[index2] = 0;
 				}
+				oam_meta_spr(temp_x, temp_y, tempint);
 			}
 			if (entity_type[index2] == ENTITY_BUN)
 			{
 				if (entity_frames[index2] < 20)
-					oam_meta_spr(temp_x, temp_y, animate_bun_data);
+					tempint = animate_bun_data;
 				else if (entity_frames[index2] < 40)
-					oam_meta_spr(temp_x, temp_y, animate_bun2_data);
+					tempint = animate_bun2_data;
 				else
 				{
-					oam_meta_spr(temp_x, temp_y, animate_bun_data);
+					tempint = animate_bun_data;
 					entity_frames[index2] = 0;
 				}
+				oam_meta_spr(temp_x, temp_y, tempint);
 			}
 		}
 	}
@@ -1125,9 +1106,10 @@ void movement(void)
 		if (player_on_ladder)   
 		{
 			player_on_ladder = 0;  
+			player_on_ladder_top = 0;
 			player_in_air = 1;
 		}    
-		else if (bg_coll_D2() || multi_jump < multi_jump_max)
+		else if (bg_coll_D() || multi_jump < multi_jump_max)
 		{
 			++multi_jump;
 			BoxGuy1.vel_y = JUMP_VEL; // JUMP
@@ -1278,47 +1260,42 @@ void draw_screen_L(void)
 	switch (scroll_count)
 	{
 	case 0:
-		address = get_ppu_addr(nt, x, 0);
-		index = 0 + (x >> 4);
-		buffer_4_mt(address, index); // ppu_address, index to the data
-
-		address = get_ppu_addr(nt, x, 0x20);
-		index = 0x20 + (x >> 4);
-		buffer_4_mt(address, index); // ppu_address, index to the data
+		temp4 = 0;
+		drawMetatileBlock();
+		temp4 = 0x20;
+		drawMetatileBlock();
 		break;
 
 	case 1:
-		address = get_ppu_addr(nt, x, 0x40);
-		index = 0x40 + (x >> 4);
-		buffer_4_mt(address, index); // ppu_address, index to the data
-
-		address = get_ppu_addr(nt, x, 0x60);
-		index = 0x60 + (x >> 4);
-		buffer_4_mt(address, index); // ppu_address, index to the data
+		temp4 = 0x40;
+		drawMetatileBlock();
+		temp4 = 0x60;
+		drawMetatileBlock();
 		break;
 
 	case 2:
-		address = get_ppu_addr(nt, x, 0x80);
-		index = 0x80 + (x >> 4);
-		buffer_4_mt(address, index); // ppu_address, index to the data
-
-		address = get_ppu_addr(nt, x, 0xa0);
-		index = 0xa0 + (x >> 4);
-		buffer_4_mt(address, index); // ppu_address, index to the data
+		temp4 = 0x80;
+		drawMetatileBlock();
+		temp4 = 0xa0;
+		drawMetatileBlock();
 		break;
 
 	default:
-		address = get_ppu_addr(nt, x, 0xc0);
-		index = 0xc0 + (x >> 4);
-		buffer_4_mt(address, index); // ppu_address, index to the data
-
-		address = get_ppu_addr(nt, x, 0xe0);
-		index = 0xe0 + (x >> 4);
-		buffer_4_mt(address, index); // ppu_address, index to the data
+		temp4 = 0xc0;
+		drawMetatileBlock();
+		temp4 = 0xe0;
+		drawMetatileBlock();
 	}
 
 	--scroll_count;		 // Reverse the increment to scroll in the opposite direction
 	scroll_count &= 3; // mask off top bits, keep it 0-3
+}
+
+void drawMetatileBlock(void){
+	//gottta set temp4 first
+	address = get_ppu_addr(nt, x, temp4);
+	index = temp4 + (x >> 4);
+	buffer_4_mt(address, index); // ppu_address, index to the data
 }
 
 void draw_screen_R(void)
@@ -2404,6 +2381,7 @@ void sprite_collisions(void)
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_SNAIL_DAMAGE; // check for overflow
 						player_on_ladder = 0;									// hitting hits you off ladder
+						player_on_ladder_top =0;
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_SNAIL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_SNAIL_PLAYER_INVUL;
@@ -2418,6 +2396,7 @@ void sprite_collisions(void)
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_OWL_DAMAGE; // check for overflow
 						player_on_ladder = 0;								// hitting hits you off ladder
+						player_on_ladder_top = 0;
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_OWL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_OWL_PLAYER_INVUL;
@@ -2508,4 +2487,9 @@ void level_down_routine()
 		scroll_x = 0;
 		room_to_load = max_rooms;
 	}
+}
+
+void waitTen(){
+	ppu_wait_nmi();
+	ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();
 }
