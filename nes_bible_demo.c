@@ -2303,8 +2303,8 @@ void entity_collisions(void)
 					++death;
 					break;
 				case ENTITY_ROCK:
-				
 					BoxGuy1.health -= 8;
+					sfx_play(SFX_ENEMY_HITS, 0);
 					player_in_hitstun = ENEMY_SNAIL_PLAYER_HITSTUN;
 					invul_frames = ENEMY_SNAIL_PLAYER_INVUL;
 					entity_active[index] = 0;
@@ -2353,7 +2353,7 @@ void sprite_collisions(void)
 
 	for (index = 0; index < MAX_ENEMY; ++index)
 	{
-		if (enemy_active[index] != 0)
+		if (enemy_active[index] != 0 && enemy_health[index] > 0)
 		{
 			switch (enemy_type[index])
 			{
