@@ -19,7 +19,7 @@ TODO List:
 	[] add slide under things?
 	[] move rocks to random spots / heights
   [] get back to the start of the game after beating it? with all powers?
-	[] fix enemy hitting you after they're dead. (check health?)
+	[x] fix enemy hitting you after they're dead. (check health?)
 
 	[x] remove bear when he dies
 	[x] dying starts you on level you died on
@@ -406,22 +406,6 @@ void reset(void)
 	player_in_hitstun = 0;
 	invul_frames = 0;
 	nametable_to_load = 0;
-
-	// clear all projectiles
-	for (temp1 = 0; temp1 < MAX_PROJECTILES; ++temp1)
-	{
-		projectiles_list[temp1] = TURN_OFF;
-	}
-
-	// clear all enemies and entities
-	for (temp1 = 0; temp1 < MAX_ENTITY; ++temp1)
-	{
-		entity_y[temp1] = TURN_OFF;
-	}
-	for (temp1 = 0; temp1 < MAX_ENEMY; ++temp1)
-	{
-		enemy_y[temp1] = TURN_OFF;
-	}
 
 	ppu_mask(0); // grayscale mode
 	// load the palettes
@@ -1470,6 +1454,20 @@ void entity_obj_init(void)
 {
 	pointer = entity_list[level];
 
+	// clear all projectiles
+	// for (temp1 = 0; temp1 < MAX_PROJECTILES; ++temp1)
+	// {
+	// 	projectiles_list[temp1] = TURN_OFF;
+	// }
+
+	projectiles_list[0] = TURN_OFF;
+	projectiles_list[1] = TURN_OFF;
+	projectiles_list[2] = TURN_OFF;
+	projectiles_list[3] = TURN_OFF;
+
+
+	// clear all  entities
+
 	for (index = 0; index < MAX_ENTITY; ++index)
 	{
 		entity_y[index] = TURN_OFF; // turn off all objects
@@ -2167,6 +2165,11 @@ void enemy_owl_behavior(void)
 // broke them into 2 separate lines with temp1 as a passing variable
 void sprite_obj_init(void)
 {
+	//clear all
+	for (temp1 = 0; temp1 < MAX_ENEMY; ++temp1)
+	{
+		enemy_y[temp1] = TURN_OFF;
+	}
 
 	pointer = Enemy_list[level];
 	for (index = 0, index2 = 0; index < MAX_ENEMY; ++index)
