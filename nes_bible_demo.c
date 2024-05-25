@@ -9,18 +9,17 @@
 /*
 TODO List:
 	[] sign posts / text in game?
-
 	[] add lives / deaths / game over
-	[] clear all enemy and entity arrays at start of level
-	[] clear projectiles at start of level
 	[] too many enemies in some rooms
 	[] too many enemies as end of level for backtracking
 	[] add charge shot ? There's a bullet but nothing else
 	[] add slide under things?
 	[] move rocks to random spots / heights
   [] get back to the start of the game after beating it? with all powers?
+	
 	[x] fix enemy hitting you after they're dead. (check health?)
-
+	[x] clear all enemy and entity arrays at start of level
+	[x] clear projectiles at start of level
 	[x] remove bear when he dies
 	[x] dying starts you on level you died on
 	[x] add starting positions per level
@@ -67,14 +66,13 @@ void main(void)
 				waitTen();
 				pal_bright(0);
 				waitTen();
-				ppu_off();
 				waitTen();
 				waitTen();
 				// load game mode
 				game_mode = MODE_GAME;
 				load_room();
 
-				ppu_on_all();
+				
 				pal_bright(1);
 				waitTen();
 				pal_bright(2);
@@ -103,7 +101,7 @@ void main(void)
 			if (pad1_new & PAD_START)   
 			{
 				game_mode = MODE_PAUSE;
-				music_stop();
+				music_pause(1);
 				// color_emphasis(0x01);
 				ppu_mask(0b00011001); // grayscale mode
 
@@ -250,23 +248,17 @@ void main(void)
 			{
 				game_mode = MODE_GAME;
 				song = SONG_GAME;
-				music_play(song);
-				// color_emphasis(COL_EMP_NORMAL);
+				music_pause(0);
 				ppu_mask(0b00011000); // grayscale mode
 			}
 		}
 		while (game_mode == MODE_SWITCH)
 		{
 	
-			ppu_off();
 			oam_clear();
-			
 			load_room();
 			game_mode = MODE_GAME;
-			ppu_on_all();
 			pal_bright(4); // back to normal brighness
-
-
 		}
 		while (game_mode == MODE_END)
 		{
@@ -343,23 +335,24 @@ void load_gameover(void)
 	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 }
 
-#include "BG/Stage1/victory.h"
+// #include "BG/Stage1/victory.h"
 const unsigned char palette_victory[16] = {
 		0x21, 0x0f, 0x00, 0x10,
 		0x21, 0x21, 0x30, 0x21,
 		0x21, 0x30, 0x21, 0x30,
 		0x21, 0x0f, 0x0f, 0x29};  
+
 void load_victory(void)
 {
 	ppu_off(); // screen off
 
-	pal_bg(palette_victory);
+	// pal_bg(palette_victory);
 	vram_adr(NAMETABLE_A);
 	// this sets a start position on the BG, top left of screen
 	// vram_adr() and vram_unrle() need to be done with the screen OFF
 
 	level = 0;
-	vram_unrle(victory);
+	// vram_unrle(victory);
 	ppu_on_all();
 	music_stop();
 	sfx_play(SFX_VICTORY, 0);
@@ -371,7 +364,6 @@ void reset(void)
 {
 	oam_clear();
 	ppu_wait_nmi();
-	ppu_off();		 // screen off
 	pal_bright(4); // back to normal brightness
 	scroll_x = 0;
 	scroll_y = 0;
@@ -407,7 +399,7 @@ void reset(void)
 	invul_frames = 0;
 	nametable_to_load = 0;
 
-	ppu_mask(0); // grayscale mode
+	ppu_mask(0); // grayscale mode off
 	// load the palettes
 	pal_bg(palette_bg);  
 	pal_spr(palette_sp);
@@ -423,7 +415,6 @@ void reset(void)
 
 	set_scroll_y(0xff); // shift the bg down 1 pixel
 
-	ppu_on_all(); // turn on screen
 }
 
 void projectile_movement(void)
@@ -502,6 +493,7 @@ void handle_scrolling(void)
 
 void load_room(void)
 {
+	ppu_off();
 	offset = level_offsets[level];
 	offset += room_to_load;
 	set_data_pointer(stage1_levels_list[offset]);
@@ -521,7 +513,7 @@ void load_room(void)
 			break;
 	}
 
-	ppu_off();
+	
 	// a little bit in the next room
 	set_data_pointer(stage1_levels_list[offset + 1]);
 	for (y = 0;; y += 0x20)
@@ -572,6 +564,8 @@ void load_room(void)
 
 	sprite_obj_init();
 	entity_obj_init();
+
+	ppu_on_all();
 }
 
 void draw_sprites(void)
@@ -1524,12 +1518,14 @@ void enemy_moves(void)
 				projectiles_list[temp1] = TURN_OFF;
 				if(enemy_invul[index] > 0){
 					//no damage in invul
+					sfx_play(SFX_INVUL_HIT, 0);
 				} else {
+					sfx_play(SFX_SHOT_HITS, 0);
 					--enemy_health[index];
 					enemy_invul[index] = 15;
 				}
 				
-				sfx_play(SFX_SHOT_HITS, 0);
+				
 				if ((enemy_health[index] == 0 || enemy_health[index] > 240 ) && enemy_mode[index] != TURN_OFF) // check for overflow with 240
 				{
 					// delete the enemy

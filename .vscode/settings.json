@@ -7,6 +7,7 @@
     "neslib.h": "c",
     "title.h": "c",
     "title2.h": "c",
-    "gameover2.h": "c"
+    "gameover2.h": "c",
+    "victory.h": "c"
   }
 }

@@ -124,7 +124,8 @@ enum {
 	SFX_PLAYER_DIES,
 	SFX_JUMP,
 	SFX_START_LEVEL,
-	SFX_VICTORY
+	SFX_VICTORY,
+	SFX_INVUL_HIT
 };
 
 unsigned char game_mode;
