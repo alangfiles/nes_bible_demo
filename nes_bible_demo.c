@@ -16,8 +16,10 @@ TODO List:
 	[] too many enemies in some rooms
 	[] dying starts you on level you died on (need to add starting rooms to it)
 	[] add starting positions per level
-	[] add charge shot
+	[] add charge shot ? There's a bullet but nothing else
 	[] add slide under things?
+	[] move rocks to random spots / heights
+	[] remove bear when he dies
 */
 
 #include "LIB/neslib.h"
@@ -27,14 +29,12 @@ TODO List:
 #include "enemy_stats.h"
 #include "collision.c"
 #include "player_sprites.c"
-// #include "BG/Stage1/title.h"
-// #include "BG/Stage1/gameover.h"
 
 void main(void)
 {
 	// test
 
-	level = 0;
+	level = 7;
 	reset();
 
 	load_title();
@@ -87,7 +87,7 @@ void main(void)
 		}
 		while (game_mode == MODE_GAME)
 		{
-			gray_line();
+			// gray_line();
 			++frame_counter;
 			// infinite loop
 			ppu_wait_nmi(); // wait till beginning of the frame
@@ -268,6 +268,7 @@ void main(void)
 		{
 			ppu_wait_nmi();
 
+			level = 0;
 			pad1 = pad_poll(0); // read the first controller
 			pad1_new = get_pad_new(0);
 
@@ -353,6 +354,7 @@ void load_victory(void)
 	// this sets a start position on the BG, top left of screen
 	// vram_adr() and vram_unrle() need to be done with the screen OFF
 
+	level = 0;
 	vram_unrle(victory);
 	ppu_on_all();
 	music_stop();
@@ -396,7 +398,7 @@ void reset(void)
 	game_mode = MODE_GAME;         
 	// level = 0;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
-	debug = 0;
+	// debug = 0;
 	player_in_hitstun = 0;
 	invul_frames = 0;
 	nametable_to_load = 0;
@@ -1504,6 +1506,9 @@ void entity_obj_init(void)
 void enemy_moves(void)
 {
 	enemy_frames[index] += 1;
+	if(enemy_invul[index] > 0){
+		--enemy_invul[index];
+	}
 
 	// check enemy collision with projectiles
 	for (temp1 = 0; temp1 < MAX_PROJECTILES; ++temp1)
@@ -1515,10 +1520,11 @@ void enemy_moves(void)
 					(enemy_y[index] > projectiles_y[temp1] - 30 && enemy_y[index] < projectiles_y[temp1] + 30))
 			{
 				projectiles_list[temp1] = TURN_OFF;
-				if(enemy_type[index] == ENEMY_BEAR && enemy_mode[index] == BEAR_ATTACK){
-					
+				if(enemy_invul[index] > 0){
+					//no damage in invul
 				} else {
 					--enemy_health[index];
+					enemy_invul[index] = 15;
 				}
 				
 				sfx_play(SFX_SHOT_HITS, 0);
@@ -1663,26 +1669,23 @@ void enemy_bear_behavior(void)
 	{
 		if(frame_counter == 0){
 			//add falling rocks
-				entity_y[1] = 60;
-						entity_x[1] = 40;
-						entity_room[1] = enemy_room[index];
-						entity_active[1] = 1;
-						entity_type[1] = ENTITY_ROCK;
-						entity_actual_x[1] = 40;
+				enemy_invul[0] = 150; //bear gets frames of invul during this\
 
-						entity_y[2] = 40;
-						entity_x[2] = 100;
-						entity_room[2] = enemy_room[index];
-						entity_active[2] = 1;
-						entity_type[2] = ENTITY_ROCK;
-						entity_actual_x[2] = 100;
+				//between 28 and 224; some number mod 196 + 28?
 
-						entity_y[3] = 10;
-						entity_x[3] = 160;
-						entity_room[3] = enemy_room[index];
-						entity_active[3] = 1;
-						entity_type[3] = ENTITY_ROCK;
-						entity_actual_x[3] = 160;
+				entity_y[1] = 37;
+				entity_x[1] = (high_byte(BoxGuy1.x) >> 4) + 28;
+				entity_room[1] = enemy_room[index];
+				entity_active[1] = 1;
+				entity_type[1] = ENTITY_ROCK;
+				entity_actual_x[1] = high_byte(BoxGuy1.x);
+
+				entity_y[2] = 48;
+				entity_x[2] = high_byte(BoxGuy1.x);
+				entity_room[2] = enemy_room[index];
+				entity_active[2] = 1;
+				entity_type[2] = ENTITY_ROCK;
+				entity_actual_x[2] = high_byte(BoxGuy1.x) + 60;
 		}
 		if (frame_counter > 150)
 		{
