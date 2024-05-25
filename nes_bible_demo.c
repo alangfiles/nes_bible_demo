@@ -1530,6 +1530,13 @@ void enemy_moves(void)
 				sfx_play(SFX_SHOT_HITS, 0);
 				if ((enemy_health[index] == 0 || enemy_health[index] > 240 ) && enemy_mode[index] != TURN_OFF) // check for overflow with 240
 				{
+					// delete the enemy
+					// change enemy_mode to death
+					enemy_active[index] = 0;
+					enemy_mode[index] = TURN_OFF;
+					enemy_frames[index] = 0;
+
+
 					if (enemy_type[index] == ENEMY_BEAR)
 					{
 						// place an item there.
@@ -1561,11 +1568,7 @@ void enemy_moves(void)
 						entity_actual_x[index2] = enemy_actual_x[index];
 					}
 
-					// delete the enemy
-					// change enemy_mode to death
-					enemy_active[index] = 0;
-					enemy_mode[index] = TURN_OFF;
-					enemy_frames[index] = 0;
+
 				}
 			}
 		}
@@ -1607,6 +1610,9 @@ void enemy_bear_behavior(void)
 	Generic.height = ENEMY_BEAR_HEIGHT;
 
 	// determine bear mode
+	if(enemy_mode[index] == TURN_OFF){
+		enemy_implosion();
+	}
 
 	// if he's in walk mode he can change
 	// otherwise he completes his mode.
