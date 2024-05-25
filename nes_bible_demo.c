@@ -19,6 +19,7 @@ TODO List:
 	[] add slide under things?
 	[] move rocks to random spots / heights
   [] get back to the start of the game after beating it? with all powers?
+	[] fix enemy hitting you after they're dead. (check health?)
 
 	[x] remove bear when he dies
 	[x] dying starts you on level you died on
@@ -347,7 +348,7 @@ const unsigned char palette_victory[16] = {
 		0x21, 0x0f, 0x00, 0x10,
 		0x21, 0x21, 0x30, 0x21,
 		0x21, 0x30, 0x21, 0x30,
-		0x21, 0x0f, 0x0f, 0x29};
+		0x21, 0x0f, 0x0f, 0x29};  
 void load_victory(void)
 {
 	ppu_off(); // screen off

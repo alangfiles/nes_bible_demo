@@ -28,9 +28,9 @@ nes_bible_demo_music_data:
 @env0:
 	.byte $c0,$00,$00
 @env1:
-	.byte $c9,$cf,$cc,$cb,$c9,$c9,$c6,$c4,$c2,$c1,$c0,$00,$04
+	.byte $c9,$cf,$cc,$cb,$c9,$c9,$c6,$c4,$00,$07
 @env2:
-	.byte $cf,$cf,$cc,$c9,$c6,$c3,$c1,$c0,$00,$07
+	.byte $cf,$cf,$cc,$c9,$c6,$c3,$c1,$00,$06
 @env3:
 	.byte $cf,$ce,$cd,$cb,$c8,$c5,$c3,$c2,$c1,$c0,$00,$09
 @env4:
