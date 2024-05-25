@@ -14,12 +14,15 @@ TODO List:
 	[] clear all enemy and entity arrays at start of level
 	[] clear projectiles at start of level
 	[] too many enemies in some rooms
-	[] dying starts you on level you died on (need to add starting rooms to it)
-	[] add starting positions per level
+	[] too many enemies as end of level for backtracking
 	[] add charge shot ? There's a bullet but nothing else
 	[] add slide under things?
 	[] move rocks to random spots / heights
-	[] remove bear when he dies
+  [] get back to the start of the game after beating it? with all powers?
+
+	[x] remove bear when he dies
+	[x] dying starts you on level you died on
+	[x] add starting positions per level
 */
 
 #include "LIB/neslib.h"
@@ -29,17 +32,17 @@ TODO List:
 #include "enemy_stats.h"
 #include "collision.c"
 #include "player_sprites.c"
-
+    
 void main(void)
-{
+{    
 	// test
 
-	level = 7;
+	level = 0;
 	reset();
-
+  
 	load_title();
 
-	while (1)
+	while (1) 
 	{
 		while (game_mode == MODE_TITLE)
 		{
@@ -389,10 +392,10 @@ void reset(void)
 	sprite_frame_counter = 0;
 	r_scroll_frames = 0;  
 	l_scroll_frames = 0;
-	collision = 0;  
+	collision = 0;   
 	death = 0;   
-	BoxGuy1.x = 0x4000;
-	BoxGuy1.y = 0x8400;   
+	BoxGuy1.x = starting_x_place[level] << 8;
+	BoxGuy1.y = starting_y_place[level] << 8;   
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
 	game_mode = MODE_GAME;         

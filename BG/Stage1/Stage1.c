@@ -24,6 +24,13 @@ const unsigned char level_max_rooms[] = {
 const unsigned char level_offsets[] = {
     0, 8, 9, 13, 14, 19, 20, 22};
 
+const unsigned char starting_x_place[] = {
+    30, 60, 40, 200, 60, 180, 40, 180
+};
+const unsigned char starting_y_place[] = {
+    160, 180, 180, 100, 80, 190, 190, 180
+};
+
 enum
 {
     ENEMY_SNAIL,
