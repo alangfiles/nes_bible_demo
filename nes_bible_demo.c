@@ -37,7 +37,7 @@ void main(void)
 {    
 	// test
 
-	level = 7;
+	level = 0;
 	reset();
   
 	load_title();

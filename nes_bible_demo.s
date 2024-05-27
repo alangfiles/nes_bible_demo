@@ -23052,9 +23052,9 @@ L4058:	sta     _tempint
 .segment	"CODE"
 
 ;
-; level = 7;
+; level = 0;
 ;
-	lda     #$07
+	lda     #$00
 	sta     _level
 ;
 ; reset();
