@@ -139,7 +139,8 @@ enum
 	MODE_END,
 	MODE_GAME_OVER,
 	MODE_RESET,
-	BOSS_ENTRY
+	BOSS_ENTRY,
+	MODE_HALFWAY
 };
 
 unsigned char multi_jump_max;
@@ -278,6 +279,7 @@ void entity_obj_init(void);
 void init_death(void);
 void level_down_routine(void);
 void level_up_routine(void);
+void load_bear_victory(void);
 void enemy_snail_behavior(void);
 void enemy_owl_behavior(void);
 void enemy_bear_behavior(void);

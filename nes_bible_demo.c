@@ -252,6 +252,25 @@ void main(void)
 				ppu_mask(0b00011000); // grayscale mode
 			}
 		}
+	while(game_mode == MODE_HALFWAY){
+		ppu_wait_nmi();
+
+			level = 6;
+			pad1 = pad_poll(0); // read the first controller
+			pad1_new = get_pad_new(0);
+
+			// draw_sprites();
+
+			if (pad1_new & PAD_START)
+			{
+				reset();
+				++multi_jump_max;
+				++projectile_big;
+				load_room();
+				game_mode = MODE_GAME;
+			}
+	}
+
 		while (game_mode == MODE_SWITCH)
 		{
 	
@@ -273,6 +292,7 @@ void main(void)
 			if (pad1_new & PAD_START)
 			{
 				reset();
+				load_title();
 				game_mode = MODE_TITLE;
 			}
 		}
@@ -335,38 +355,61 @@ void load_gameover(void)
 	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 }
 
-// #include "BG/Stage1/victory.h"
+void clear_bg(void){
+	for (y = 0;; y += 0x20)
+	{
+		for (x = 0;; x += 0x20)
+		{
+			address = get_ppu_addr(nametable_to_load, x, y);
+			buffer_4_mt(address, 3); // ppu_address, index to the data
+			flush_vram_update2();
+			if (x == 0xe0)
+				break;
+		}
+		if (y == 0xe0)
+			break;
+	}
+}
 const unsigned char palette_victory[16] = {
 		0x21, 0x0f, 0x00, 0x10,
 		0x21, 0x21, 0x30, 0x21,
 		0x21, 0x30, 0x21, 0x30,
 		0x21, 0x0f, 0x0f, 0x29};  
 
+
+
 void load_bear_victory(void ){
+	nametable_to_load = 0;
 	ppu_off(); // screen off
-	//clear screen
-	//write message
+	pal_bg(palette_victory);
 	
-	//power up player
-	++multi_jump_max;
-	++projectile_big;
-	//level down player
-	++level_down;
-	level_down_routine();
-	load_room();
+	//clear screen
+	clear_bg();
+	//write message
+	multi_vram_buffer_horz("FOR DEFEATING THE BEAR", 23, NTADR_A(4, 8));
+	multi_vram_buffer_horz("GOD HAS BLESSED YOU WITH", 24, NTADR_A(4, 10));
+	multi_vram_buffer_horz("DOUBLE JUMP & POWER SHOT", 24, NTADR_A(4,12));
+	multi_vram_buffer_horz("NOW RETURN HOME", 15, NTADR_A(7, 18));
+
+	game_mode = MODE_HALFWAY;
+	
+	ppu_on_all();
 }
+
+#include "BG/Stage1/victory.h"
+
 
 void load_victory(void)
 {
 	ppu_off(); // screen off
 
-	// pal_bg(palette_victory);
+	pal_bg(palette_victory);
 	vram_adr(NAMETABLE_A);
 	// this sets a start position on the BG, top left of screen
 	// vram_adr() and vram_unrle() need to be done with the screen OFF
 
 	level = 0;
-	// vram_unrle(victory);
+	vram_unrle(victory);
 	ppu_on_all();
 	music_stop();
 	sfx_play(SFX_VICTORY, 0);
@@ -1428,11 +1471,12 @@ void entity_moves(void)
 		if (!collision_D)
 		{
 			++entity_y[index];
-			++entity_y[index];
-			++entity_y[index];
+			
 			
 			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || !entity_type[index] == ENTITY_STARBURST2)
 			{ // fruit/starburst moves slowly
+				++entity_y[index];
+				++entity_y[index];
 				++entity_y[index];
 			}
 		}
