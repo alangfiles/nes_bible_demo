@@ -162,6 +162,7 @@ unsigned char invul_frames;
 unsigned char projectile_cooldown;
 unsigned char projectile_count;
 unsigned char projectile_index;
+unsigned char projectile_big;
 unsigned char projectiles_list[] = {TURN_OFF, TURN_OFF, TURN_OFF, TURN_OFF};
 unsigned char projectiles_x[] = {0, 0, 0, 0};
 unsigned char projectiles_y[] = {0, 0, 0, 0};

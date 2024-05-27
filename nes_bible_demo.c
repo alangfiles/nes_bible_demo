@@ -8,14 +8,14 @@
 
 /*
 TODO List:
-	[] sign posts / text in game?
-	[] add lives / deaths / game over
 	[] too many enemies in some rooms
 	[] too many enemies as end of level for backtracking
+
 	[] add charge shot ? There's a bullet but nothing else
 	[] add slide under things?
 	[] move rocks to random spots / heights
   [] get back to the start of the game after beating it? with all powers?
+	[] fix enemy hitboxes (snail esp?)
 	
 	[x] fix enemy hitting you after they're dead. (check health?)
 	[x] clear all enemy and entity arrays at start of level
@@ -37,7 +37,7 @@ void main(void)
 {    
 	// test
 
-	level = 0;
+	level = 7;
 	reset();
   
 	load_title();
@@ -342,6 +342,20 @@ const unsigned char palette_victory[16] = {
 		0x21, 0x30, 0x21, 0x30,
 		0x21, 0x0f, 0x0f, 0x29};  
 
+void load_bear_victory(void ){
+	ppu_off(); // screen off
+	//clear screen
+	//write message
+	
+	//power up player
+	++multi_jump_max;
+	++projectile_big;
+	//level down player
+	++level_down;
+	level_down_routine();
+	load_room();
+}
+
 void load_victory(void)
 {
 	ppu_off(); // screen off
@@ -374,7 +388,11 @@ void reset(void)
 	player_running = 0;
 	short_jump_count = 0;
 	multi_jump = 0;
-	multi_jump_max = 1;
+	if(projectile_big){
+		multi_jump_max = 2;
+	} else {
+		multi_jump_max = 1;
+	}
 	projectile_cooldown = 0;
 	projectile_count = 0;
 	projectile_index = 0;
@@ -684,7 +702,7 @@ void draw_sprites(void)
 				tempint = animate_bouldersmall_data;
 				oam_meta_spr(temp_x, temp_y, tempint);
 			}
-			if (entity_type[index2] == ENTITY_FRUIT)
+			if (entity_type[index2] == ENTITY_STARBURST2)
 			{
 				if (entity_frames[index2] < 20)
 				{
@@ -1398,7 +1416,7 @@ void check_entity_objects(void)
 void entity_moves(void)
 {
 	// some entities drop til they're coliding with the ground.
-	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_FRUIT || entity_type[index] == ENTITY_ROCK)
+	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_STARBURST2 || entity_type[index] == ENTITY_ROCK)
 	{
 		// check for collision    
 		Generic.x = entity_x[index];
@@ -1410,7 +1428,10 @@ void entity_moves(void)
 		if (!collision_D)
 		{
 			++entity_y[index];
-			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || !entity_type[index] == ENTITY_FRUIT)
+			++entity_y[index];
+			++entity_y[index];
+			
+			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || !entity_type[index] == ENTITY_STARBURST2)
 			{ // fruit/starburst moves slowly
 				++entity_y[index];
 			}
@@ -1542,7 +1563,7 @@ void enemy_moves(void)
 						entity_x[0] = 120;
 						entity_room[0] = enemy_room[index];
 						entity_active[0] = 1;
-						entity_type[0] = ENTITY_FRUIT;
+						entity_type[0] = ENTITY_STARBURST2;
 						entity_actual_x[0] = 128;
 					}
 					// randomly decide to place something
@@ -2309,8 +2330,9 @@ void entity_collisions(void)
 					entity_active[index] = 0;
 					entity_y[index] = TURN_OFF;
 					break;
-				case ENTITY_FRUIT:
-					load_victory();
+				case ENTITY_STARBURST2:
+					// load_victory();
+					load_bear_victory();
 					break;
 				case ENTITY_BUN:
 					if (BoxGuy1.health < MAX_PLAYER_HEALTH)
