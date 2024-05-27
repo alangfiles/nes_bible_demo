@@ -23,6 +23,7 @@ TODO List:
 	[x] remove bear when he dies
 	[x] dying starts you on level you died on
 	[x] add starting positions per level
+	[] todo: add victory at start of game
 */
 
 #include "LIB/neslib.h"
@@ -34,7 +35,7 @@ TODO List:
 #include "player_sprites.c"
     
 void main(void)
-{    
+{        
 	// test
 
 	level = 0;
@@ -439,7 +440,7 @@ void reset(void)
 		multi_jump_max = 1;
 	}
 	projectile_cooldown = 0;
-	projectile_count = 0;
+	projectile_count = 0;  
 	projectile_index = 0;
 	player_shooting = 0;
 	direction = 1;
@@ -708,8 +709,11 @@ void draw_sprites(void)
 			++entity_frames[index2];
 			if (entity_type[index2] == ENTITY_STARBURST)
 			{
-				if(projectile_big){ 
-					return; //hack to stop drawing starburst after 
+				if(projectile_big && level == 6){
+						return; //hack for halfway
+				}
+				if(!projectile_big && level == 0){
+						return; // for beginning
 				}
 				if (entity_frames[index2] < 20)
 				{
@@ -2410,17 +2414,26 @@ void entity_collisions(void)
 					entity_y[index] = TURN_OFF;
 					break;
 				case ENTITY_STARBURST:
-					if(projectile_big){
-						break; //hack to fix halfway;
+					if(projectile_big && level == 0){
+						load_victory();
+						break;
 					}
-					pal_fade_to(4, 0);			 // fade to black
-					game_mode = MODE_SWITCH; // this handles loading the level
-					ppu_off();
-					scroll_x = 0;
-					++level;
-					level_up = 0;
-					room_to_load = 0;
-					nametable_to_load = 0;
+					if(projectile_big && level == 6){
+						break; //hack to fix halfway;
+					}  
+					if(level != 0){
+						//normal routine, levels up.
+						pal_fade_to(4, 0);			 // fade to black
+						game_mode = MODE_SWITCH; // this handles loading the level
+						ppu_off();
+						scroll_x = 0;
+						++level;
+						level_up = 0;
+						room_to_load = 0;
+						nametable_to_load = 0;
+					}
+					
+					
 					break;
 				default:
 					break;

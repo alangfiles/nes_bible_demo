@@ -119,8 +119,9 @@ const unsigned char *const Enemy_list[] = {
     level_3_enemies, level_4_enemies, level_5_enemies,
     level_6_enemies, level_7_enemies};
 
+// y, room, x, type,
 const unsigned char level_0_entities[] = {
-    //160, 0, 16, ENTITY_PLAYER_STARAT, 
+    160, 0, 20, ENTITY_STARBURST, 
 	LEVEL_BOTTOM, 2, 0, ENTITY_PIT_WIDE_64, // pit begins here; is 80 pixels wide
     LEVEL_BOTTOM, 2, 64, ENTITY_PIT_WIDE_64,
     LEVEL_BOTTOM, 4, 0, ENTITY_PIT_WIDE_64, // pit begins here; is 80 pixels wide
