@@ -8,14 +8,14 @@
 
 /*
 TODO List:
-	[] sign posts / text in game?
-	[] add lives / deaths / game over
 	[] too many enemies in some rooms
 	[] too many enemies as end of level for backtracking
+
 	[] add charge shot ? There's a bullet but nothing else
 	[] add slide under things?
 	[] move rocks to random spots / heights
   [] get back to the start of the game after beating it? with all powers?
+	[] fix enemy hitboxes (snail esp?)
 	
 	[x] fix enemy hitting you after they're dead. (check health?)
 	[x] clear all enemy and entity arrays at start of level
@@ -37,7 +37,7 @@ void main(void)
 {    
 	// test
 
-	level = 0;
+	level = 7;
 	reset();
   
 	load_title();
@@ -252,6 +252,27 @@ void main(void)
 				ppu_mask(0b00011000); // grayscale mode
 			}
 		}
+	while(game_mode == MODE_HALFWAY){
+		ppu_wait_nmi();
+
+			
+			
+			pad1 = pad_poll(0); // read the first controller
+			pad1_new = get_pad_new(0);
+
+			// draw_sprites();
+
+			if (pad1_new & PAD_START)
+			{
+				reset();
+				++multi_jump_max;
+				++projectile_big;
+				level = 6;
+				load_room();
+				game_mode = MODE_GAME;
+			}
+	}
+
 		while (game_mode == MODE_SWITCH)
 		{
 	
@@ -273,6 +294,7 @@ void main(void)
 			if (pad1_new & PAD_START)
 			{
 				reset();
+				load_title();
 				game_mode = MODE_TITLE;
 			}
 		}
@@ -335,24 +357,61 @@ void load_gameover(void)
 	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 }
 
-// #include "BG/Stage1/victory.h"
+void clear_bg(void){
+	for (y = 0;; y += 0x20)
+	{
+		for (x = 0;; x += 0x20)
+		{
+			address = get_ppu_addr(nametable_to_load, x, y);
+			buffer_4_mt(address, 3); // ppu_address, index to the data
+			flush_vram_update2();
+			if (x == 0xe0)
+				break;
+		}
+		if (y == 0xe0)
+			break;
+	}
+}
 const unsigned char palette_victory[16] = {
 		0x21, 0x0f, 0x00, 0x10,
 		0x21, 0x21, 0x30, 0x21,
 		0x21, 0x30, 0x21, 0x30,
 		0x21, 0x0f, 0x0f, 0x29};  
 
+
+
+void load_bear_victory(void ){
+	nametable_to_load = 0;
+	ppu_off(); // screen off
+	pal_bg(palette_victory);
+	
+	//clear screen
+	clear_bg();
+	//write message
+	multi_vram_buffer_horz("FOR DEFEATING THE BEAR", 23, NTADR_A(4, 8));
+	multi_vram_buffer_horz("GOD HAS BLESSED YOU WITH", 24, NTADR_A(4, 10));
+	multi_vram_buffer_horz("DOUBLE JUMP & POWER SHOT", 24, NTADR_A(4,12));
+	multi_vram_buffer_horz("NOW RETURN HOME", 15, NTADR_A(7, 18));
+
+	game_mode = MODE_HALFWAY;
+	
+	ppu_on_all();
+}
+
+#include "BG/Stage1/victory.h"
+
+
 void load_victory(void)
 {
 	ppu_off(); // screen off
 
-	// pal_bg(palette_victory);
+	pal_bg(palette_victory);
 	vram_adr(NAMETABLE_A);
 	// this sets a start position on the BG, top left of screen
 	// vram_adr() and vram_unrle() need to be done with the screen OFF
 
 	level = 0;
-	// vram_unrle(victory);
+	vram_unrle(victory);
 	ppu_on_all();
 	music_stop();
 	sfx_play(SFX_VICTORY, 0);
@@ -374,7 +433,11 @@ void reset(void)
 	player_running = 0;
 	short_jump_count = 0;
 	multi_jump = 0;
-	multi_jump_max = 1;
+	if(projectile_big){
+		multi_jump_max = 2;
+	} else {
+		multi_jump_max = 1;
+	}
 	projectile_cooldown = 0;
 	projectile_count = 0;
 	projectile_index = 0;
@@ -581,7 +644,12 @@ void draw_sprites(void)
 		if (projectiles_list[temp1] != TURN_OFF)
 		{
 			temp6 = projectiles_y[temp1]; //+ sine_wave[frame_counter % 10];
-			oam_meta_spr(projectiles_x[temp1], temp6, animate_orb0_data);
+			if(projectile_big){
+				oam_meta_spr(projectiles_x[temp1], temp6, animate_orbBig_data);
+			} else {
+				oam_meta_spr(projectiles_x[temp1], temp6, animate_orb0_data);
+			}
+			
 		}
 	}
 
@@ -640,6 +708,9 @@ void draw_sprites(void)
 			++entity_frames[index2];
 			if (entity_type[index2] == ENTITY_STARBURST)
 			{
+				if(projectile_big){ 
+					return; //hack to stop drawing starburst after 
+				}
 				if (entity_frames[index2] < 20)
 				{
 					tempint = animate_starburst1_data;
@@ -684,7 +755,7 @@ void draw_sprites(void)
 				tempint = animate_bouldersmall_data;
 				oam_meta_spr(temp_x, temp_y, tempint);
 			}
-			if (entity_type[index2] == ENTITY_FRUIT)
+			if (entity_type[index2] == ENTITY_STARBURST2)
 			{
 				if (entity_frames[index2] < 20)
 				{
@@ -1398,7 +1469,7 @@ void check_entity_objects(void)
 void entity_moves(void)
 {
 	// some entities drop til they're coliding with the ground.
-	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_FRUIT || entity_type[index] == ENTITY_ROCK)
+	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_STARBURST2 || entity_type[index] == ENTITY_ROCK)
 	{
 		// check for collision    
 		Generic.x = entity_x[index];
@@ -1410,8 +1481,12 @@ void entity_moves(void)
 		if (!collision_D)
 		{
 			++entity_y[index];
-			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || !entity_type[index] == ENTITY_FRUIT)
+			
+			
+			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || !entity_type[index] == ENTITY_STARBURST2)
 			{ // fruit/starburst moves slowly
+				++entity_y[index];
+				++entity_y[index];
 				++entity_y[index];
 			}
 		}
@@ -1521,7 +1596,13 @@ void enemy_moves(void)
 					sfx_play(SFX_INVUL_HIT, 0);
 				} else {
 					sfx_play(SFX_SHOT_HITS, 0);
-					--enemy_health[index];
+					if(projectile_big){
+						enemy_health[index] = 0;
+					}
+					else { 
+						--enemy_health[index];
+					}
+					
 					enemy_invul[index] = 15;
 				}
 				
@@ -1542,7 +1623,7 @@ void enemy_moves(void)
 						entity_x[0] = 120;
 						entity_room[0] = enemy_room[index];
 						entity_active[0] = 1;
-						entity_type[0] = ENTITY_FRUIT;
+						entity_type[0] = ENTITY_STARBURST2;
 						entity_actual_x[0] = 128;
 					}
 					// randomly decide to place something
@@ -2309,8 +2390,9 @@ void entity_collisions(void)
 					entity_active[index] = 0;
 					entity_y[index] = TURN_OFF;
 					break;
-				case ENTITY_FRUIT:
-					load_victory();
+				case ENTITY_STARBURST2:
+					// load_victory();
+					load_bear_victory();
 					break;
 				case ENTITY_BUN:
 					if (BoxGuy1.health < MAX_PLAYER_HEALTH)
@@ -2328,6 +2410,9 @@ void entity_collisions(void)
 					entity_y[index] = TURN_OFF;
 					break;
 				case ENTITY_STARBURST:
+					if(projectile_big){
+						break; //hack to fix halfway;
+					}
 					pal_fade_to(4, 0);			 // fade to black
 					game_mode = MODE_SWITCH; // this handles loading the level
 					ppu_off();

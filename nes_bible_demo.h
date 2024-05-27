@@ -139,7 +139,8 @@ enum
 	MODE_END,
 	MODE_GAME_OVER,
 	MODE_RESET,
-	BOSS_ENTRY
+	BOSS_ENTRY,
+	MODE_HALFWAY
 };
 
 unsigned char multi_jump_max;
@@ -162,6 +163,7 @@ unsigned char invul_frames;
 unsigned char projectile_cooldown;
 unsigned char projectile_count;
 unsigned char projectile_index;
+unsigned char projectile_big;
 unsigned char projectiles_list[] = {TURN_OFF, TURN_OFF, TURN_OFF, TURN_OFF};
 unsigned char projectiles_x[] = {0, 0, 0, 0};
 unsigned char projectiles_y[] = {0, 0, 0, 0};
@@ -277,6 +279,7 @@ void entity_obj_init(void);
 void init_death(void);
 void level_down_routine(void);
 void level_up_routine(void);
+void load_bear_victory(void);
 void enemy_snail_behavior(void);
 void enemy_owl_behavior(void);
 void enemy_bear_behavior(void);
