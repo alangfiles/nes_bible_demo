@@ -255,7 +255,8 @@ void main(void)
 	while(game_mode == MODE_HALFWAY){
 		ppu_wait_nmi();
 
-			level = 6;
+			
+			
 			pad1 = pad_poll(0); // read the first controller
 			pad1_new = get_pad_new(0);
 
@@ -266,6 +267,7 @@ void main(void)
 				reset();
 				++multi_jump_max;
 				++projectile_big;
+				level = 6;
 				load_room();
 				game_mode = MODE_GAME;
 			}
@@ -706,6 +708,9 @@ void draw_sprites(void)
 			++entity_frames[index2];
 			if (entity_type[index2] == ENTITY_STARBURST)
 			{
+				if(projectile_big){ 
+					return; //hack to stop drawing starburst after 
+				}
 				if (entity_frames[index2] < 20)
 				{
 					tempint = animate_starburst1_data;
@@ -1591,7 +1596,13 @@ void enemy_moves(void)
 					sfx_play(SFX_INVUL_HIT, 0);
 				} else {
 					sfx_play(SFX_SHOT_HITS, 0);
-					--enemy_health[index];
+					if(projectile_big){
+						enemy_health[index] = 0;
+					}
+					else { 
+						--enemy_health[index];
+					}
+					
 					enemy_invul[index] = 15;
 				}
 				
@@ -2399,6 +2410,9 @@ void entity_collisions(void)
 					entity_y[index] = TURN_OFF;
 					break;
 				case ENTITY_STARBURST:
+					if(projectile_big){
+						break; //hack to fix halfway;
+					}
 					pal_fade_to(4, 0);			 // fade to black
 					game_mode = MODE_SWITCH; // this handles loading the level
 					ppu_off();
