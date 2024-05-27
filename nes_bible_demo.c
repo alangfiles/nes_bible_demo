@@ -642,7 +642,12 @@ void draw_sprites(void)
 		if (projectiles_list[temp1] != TURN_OFF)
 		{
 			temp6 = projectiles_y[temp1]; //+ sine_wave[frame_counter % 10];
-			oam_meta_spr(projectiles_x[temp1], temp6, animate_orb0_data);
+			if(projectile_big){
+				oam_meta_spr(projectiles_x[temp1], temp6, animate_orbBig_data);
+			} else {
+				oam_meta_spr(projectiles_x[temp1], temp6, animate_orb0_data);
+			}
+			
 		}
 	}
 

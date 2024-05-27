@@ -80,7 +80,12 @@ const unsigned char animate_orb0_data[] = {
 
 		0, 0, 0x0c, 3,
 		0x80
+};
 
+const unsigned char animate_orbBig_data[] = {
+
+		0, 0, 0xcf, 3,
+		0x80
 };
 
 const unsigned char animate_meter28_data[] = {
