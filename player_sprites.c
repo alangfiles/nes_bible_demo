@@ -1,7 +1,7 @@
-#define PLAYER_RUN_1_FRAMES 9
-#define PLAYER_RUN_2_FRAMES 18
-#define PLAYER_RUN_3_FRAMES 27
-#define PLAYER_RUN_4_FRAMES 36
+#define PLAYER_RUN_1_FRAMES 12
+#define PLAYER_RUN_2_FRAMES 24
+#define PLAYER_RUN_3_FRAMES 36
+#define PLAYER_RUN_4_FRAMES 48
 
 #define PLAYER_LADDER_1_FRAMES 15
 #define PLAYER_LADDER_2_FRAMES 30
@@ -260,6 +260,32 @@ void draw_player_sprites()
       {
         if (player_shooting)
         {
+          tempint = animate_playerrunshoot1left_data;
+        }
+        else
+        {
+          tempint = animate_playerrun1left_data;
+        }
+      }
+      else
+      {
+
+        if (player_shooting)
+        {
+          tempint = animate_playerrunshoot1right_data;
+        }
+        else
+        {
+          tempint = animate_playerrun1right_data;
+        }
+      }
+    }
+    else if (sprite_frame_counter < PLAYER_RUN_2_FRAMES)
+    {
+      if (direction == LEFT)
+      {
+        if (player_shooting)
+        {
           tempint = animate_playerrunshoot2left_data;
         }
         else
@@ -280,7 +306,7 @@ void draw_player_sprites()
         }
       }
     }
-    else if (sprite_frame_counter < PLAYER_RUN_2_FRAMES)
+    else if (sprite_frame_counter < PLAYER_RUN_3_FRAMES)
     {
       if (direction == LEFT)
       {
@@ -306,7 +332,7 @@ void draw_player_sprites()
         }
       }
     }
-    else if (sprite_frame_counter < PLAYER_RUN_3_FRAMES)
+    else if (sprite_frame_counter < PLAYER_RUN_4_FRAMES)
     {
       if (direction == LEFT)
       {
@@ -329,32 +355,6 @@ void draw_player_sprites()
         else
         {
           tempint = animate_playerrun2right_data;
-        }
-      }
-    }
-    else if (sprite_frame_counter < PLAYER_RUN_4_FRAMES)
-    {
-      if (direction == LEFT)
-      {
-        if (player_shooting)
-        {
-          tempint = animate_playerrunshoot1left_data;
-        }
-        else
-        {
-          tempint = animate_playerrun1left_data;
-        }
-      }
-      else
-      {
-
-        if (player_shooting)
-        {
-          tempint = animate_playerrunshoot1right_data;
-        }
-        else
-        {
-          tempint = animate_playerrun1right_data;
         }
       }
     }

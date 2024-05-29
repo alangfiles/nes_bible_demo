@@ -38,7 +38,7 @@ void main(void)
 {        
 	// test
 
-	level = 0;
+	level = 7;
 	reset();
   
 	load_title();
@@ -350,7 +350,7 @@ void load_gameover(void)
 			if (x == 0xe0)
 				break;
 		}
-		if (y == 0xe0)
+		if (y == 0xe0)  
 			break;
 	};
 	multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 12));
@@ -359,12 +359,12 @@ void load_gameover(void)
 }
 
 void clear_bg(void){
-	for (y = 0;; y += 0x20)
+	for (y = 0;; y += 0x10)
 	{
-		for (x = 0;; x += 0x20)
+		for (x = 0;; x += 0x10)
 		{
 			address = get_ppu_addr(nametable_to_load, x, y);
-			buffer_4_mt(address, 3); // ppu_address, index to the data
+			buffer_1_mt(address, 0x50); // ppu_address, index to the data
 			flush_vram_update2();
 			if (x == 0xe0)
 				break;

@@ -72,7 +72,7 @@ const unsigned char level_0_enemies[] = {
 	48, 3, 144, ENEMY_OWL,
 	128, 5, 160,  ENEMY_SNAIL,
 	144, 6, 128,  ENEMY_SNAIL,
-	0, 7, 112, ENEMY_OWL,
+//	0, 7, 112, ENEMY_OWL,
 	64, 7, 144,  ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_1_enemies[] = {
@@ -84,25 +84,25 @@ const unsigned char level_2_enemies[] = {
 	160, 1, 64,  ENEMY_SNAIL,
 	96, 2, 96, ENEMY_SNAIL,
 	144, 2, 224,  ENEMY_SNAIL,
-	192, 3, 160, ENEMY_SNAIL,
+	192, 3, 96, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_3_enemies[] = {
-    48, 0, 48,  ENEMY_OWL,
-    128, 0, 176, ENEMY_SNAIL,
+    32, 0, 112,  ENEMY_OWL,
+    128, 0, 128, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_4_enemies[] = {
     0, 0, 160,  ENEMY_OWL,
     128, 0, 224, ENEMY_SNAIL,
     48, 0, 224,  ENEMY_OWL,
     192, 1, 176, ENEMY_SNAIL,
+	32, 4, 64, ENEMY_OWL,
     96, 4, 192, ENEMY_SNAIL,
-	32, 4, 208, ENEMY_OWL,
     TURN_OFF};
 const unsigned char level_5_enemies[] = {
 	144, 0, 80, ENEMY_SNAIL,
 	112, 0, 192, ENEMY_SNAIL,
 	80, 0, 32, ENEMY_SNAIL,
-	16,0,32, ENEMY_OWL,
+	16,0,128, ENEMY_OWL,
     TURN_OFF};
 const unsigned char level_6_enemies[] = {
 	16, 0, 96, ENEMY_OWL,

@@ -919,7 +919,7 @@ const unsigned char animate_playerstandshootright_data[] = {
 
 const unsigned char animate_playerrun1left_data[]={
 
-	 15,  8,0x46,0,
+	 16,  8,0x46,0,
 	  0,- 8,0x1a,0,
 	  8,- 8,0x1b,0,
 	  0,  0,0x32,0,
@@ -948,7 +948,7 @@ const unsigned char animate_playerrun2left_data[]={
 
 const unsigned char animate_playerrun3left_data[]={
 
-	 16,  9,0x46,0,
+	 16,  7,0x46,0,
 	  0,- 8,0x1a,0,
 	  8,- 8,0x1b,0,
 	  0,  0,0x34,0,
@@ -970,7 +970,7 @@ const unsigned char animate_playerrun1right_data[]={
 
 	  8,  8,0x42,0|OAM_FLIP_H,
 	  0,  8,0x43,0|OAM_FLIP_H,
-	- 7,  8,0x46,0|OAM_FLIP_H,
+	- 8,  8,0x46,0|OAM_FLIP_H,
 	  4,- 5,0x0b,2|OAM_FLIP_H,
 	0x80
 
@@ -999,7 +999,7 @@ const unsigned char animate_playerrun3right_data[]={
 
 	  8,  8,0x44,0|OAM_FLIP_H,
 	  0,  8,0x45,0|OAM_FLIP_H,
-	- 8,  9,0x46,0|OAM_FLIP_H,
+	- 8,  7,0x46,0|OAM_FLIP_H,
 	  4,- 5,0x0b,2|OAM_FLIP_H,
 	0x80
 
@@ -1014,7 +1014,7 @@ const unsigned char animate_playerrunshoot1left_data[]={
 
 	  0,  8,0x42,0,
 	  8,  8,0x43,0,
-	 15,  8,0x46,0,
+	 16,  8,0x46,0,
 	  4,- 5,0x0b,2,
 
 	- 8,  0,0x18,0,
@@ -1046,7 +1046,7 @@ const unsigned char animate_playerrunshoot3left_data[]={
 
 	  0,  8,0x44,0,
 	  8,  8,0x45,0,
-	 16,  9,0x46,0,
+	 16,  7,0x46,0,
 	  4,- 5,0x0b,2,
 
 	- 8,  0,0x18,0,
@@ -1063,7 +1063,7 @@ const unsigned char animate_playerrunshoot1right_data[]={
 
 	  8,  8,0x42,0|OAM_FLIP_H,
 	  0,  8,0x43,0|OAM_FLIP_H,
-	- 7,  8,0x46,0|OAM_FLIP_H,
+	- 8,  8,0x46,0|OAM_FLIP_H,
 	  4,- 5,0x0b,2|OAM_FLIP_H,
 
 	 16,  0,0x18,0|OAM_FLIP_H,
@@ -1095,13 +1095,14 @@ const unsigned char animate_playerrunshoot3right_data[]={
 
 	  8,  8,0x44,0|OAM_FLIP_H,
 	  0,  8,0x45,0|OAM_FLIP_H,
-	- 8,  9,0x46,0|OAM_FLIP_H,
+	- 8,  7,0x46,0|OAM_FLIP_H,
 	  4,- 5,0x0b,2|OAM_FLIP_H,
 
 	 16,  0,0x18,0|OAM_FLIP_H,
 	0x80
 
 };
+
 
 
 const unsigned char animate_playerjumpleft_data[] = {
