@@ -25,10 +25,10 @@ const unsigned char level_offsets[] = {
     0, 8, 9, 13, 14, 19, 20, 22};
 
 const unsigned char starting_x_place[] = {
-    30, 60, 40, 200, 60, 180, 40, 180
+    30, 60, 60, 200, 60, 180, 40, 180
 };
 const unsigned char starting_y_place[] = {
-    160, 180, 180, 100, 80, 190, 190, 180
+    160, 180, 160, 100, 80, 190, 190, 180
 };
 
 enum
@@ -73,7 +73,7 @@ const unsigned char level_0_enemies[] = {
 	128, 5, 160,  ENEMY_SNAIL,
 	144, 6, 128,  ENEMY_SNAIL,
 //	0, 7, 112, ENEMY_OWL,
-	64, 7, 144,  ENEMY_SNAIL,
+	64, 7, 114,  ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_1_enemies[] = {
 	96, 0, 128,  ENEMY_SNAIL,
@@ -91,22 +91,22 @@ const unsigned char level_3_enemies[] = {
     128, 0, 128, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_4_enemies[] = {
-    0, 0, 160,  ENEMY_OWL,
+    16, 0, 168,  ENEMY_OWL,
     128, 0, 224, ENEMY_SNAIL,
     48, 0, 224,  ENEMY_OWL,
     192, 1, 176, ENEMY_SNAIL,
 	32, 4, 64, ENEMY_OWL,
-    96, 4, 192, ENEMY_SNAIL,
+    96, 4, 160, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_5_enemies[] = {
 	144, 0, 80, ENEMY_SNAIL,
 	112, 0, 192, ENEMY_SNAIL,
-	80, 0, 32, ENEMY_SNAIL,
+	// 80, 0, 32, ENEMY_SNAIL,
 	16,0,128, ENEMY_OWL,
     TURN_OFF};
 const unsigned char level_6_enemies[] = {
 	16, 0, 96, ENEMY_OWL,
-    190, 0, 200, ENEMY_SNAIL,
+    192, 0, 200, ENEMY_SNAIL,
     TURN_OFF};
 const unsigned char level_7_enemies[] = {
     193, 0, 40, ENEMY_BEAR,
@@ -169,6 +169,7 @@ const unsigned char level_5_entities[] = {
     TURN_OFF};
 const unsigned char level_6_entities[] = {
 	LEVEL_BOTTOM, 0, 48, ENTITY_LEVEL_DOWN,
+    122, 0, 48, ENTITY_BREAD,
     190, 1, 200, ENTITY_STARBURST,
     TURN_OFF};  
 

@@ -22,7 +22,7 @@ enum
 	BEAR_PREP_RUN,
 	BEAR_RUN,
 	BEAR_PREP_ATTACK,
-	BEAR_ATTACK
+	BEAR_ROCK_ATTACK
 };
 
 //Collision + Extra
@@ -34,7 +34,7 @@ enum
 
 //SCROLL
 #define MAX_RIGHT 0x9000
-#define MAX_LEFT 0x4000
+#define MAX_LEFT 0x5000
 
 // needed for sprites
 #define B4 0
@@ -285,6 +285,7 @@ void enemy_owl_behavior(void);
 void enemy_bear_behavior(void);
 void waitTen(void);
 void drawMetatileBlock(void);
+void read_pad(void);
 
 char bg_coll_L(void);
 char bg_coll_R(void);

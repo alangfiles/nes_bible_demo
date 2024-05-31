@@ -6,6 +6,8 @@ const unsigned char palette_sp[16]={
 	0x21,0x0f,0x11,0x30,
 	0x21,0x17,0x3d,0x37 };
 
+	
+
 
 const unsigned char metatile[]={
 	123, 124, 139, 140,  0,

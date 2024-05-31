@@ -364,7 +364,7 @@
 	.export		_gameovertiled_0
 	.export		_palette_gameover
 	.export		_load_gameover
-	.export		_clear_bg
+	.export		_backtrack_bg
 	.export		_palette_victory
 	.export		_victory
 	.export		_enemy_implosion
@@ -18488,9 +18488,9 @@ L0009:	sta     _max_scroll
 	ldx     #>(_palette_victory)
 	jsr     _pal_bg
 ;
-; clear_bg();
+; backtrack_bg();
 ;
-	jsr     _clear_bg
+	jsr     _backtrack_bg
 ;
 ; multi_vram_buffer_horz("FOR DEFEATING THE BEAR", 23, NTADR_A(4, 8));
 ;
@@ -23989,12 +23989,12 @@ L0003:	jsr     decsp3
 .endproc
 
 ; ---------------------------------------------------------------
-; void __near__ clear_bg (void)
+; void __near__ backtrack_bg (void)
 ; ---------------------------------------------------------------
 
 .segment	"CODE"
 
-.proc	_clear_bg: near
+.proc	_backtrack_bg: near
 
 .segment	"CODE"
 

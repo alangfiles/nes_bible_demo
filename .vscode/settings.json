@@ -8,6 +8,7 @@
     "title.h": "c",
     "title2.h": "c",
     "gameover2.h": "c",
-    "victory.h": "c"
+    "victory.h": "c",
+    "enemy_stats.h": "c"
   }
 }

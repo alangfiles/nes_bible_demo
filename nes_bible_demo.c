@@ -8,23 +8,29 @@
 
 /*
 TODO List:
-	[] too many enemies in some rooms
-	[] too many enemies as end of level for backtracking
+	[x] fix hitboxes? 
+	[x] snail invul when facing away?
+	[x] fix invul hit sound
+	[x] remove extra enemies from level5
+	[x] fix screen scroll position on left
+	[x] rocks don't fall fast enough
+	[x] owl hitbox is a little wonky (could be lowered)
+	[x] add bread to turn around
+	[x] fix starting spot on level 2
+	[x] fix enemy locations for turn around
+	[x] fix bats not flying til you're close  
+	[x] backtrack level text
 
-	[] add charge shot ? There's a bullet but nothing else
-	[] add slide under things?
-	[] move rocks to random spots / heights
-  [] get back to the start of the game after beating it? with all powers?
-	[] fix enemy hitboxes (snail esp?)
-	
-	[x] fix enemy hitting you after they're dead. (check health?)
-	[x] clear all enemy and entity arrays at start of level
-	[x] clear projectiles at start of level
-	[x] remove bear when he dies
-	[x] dying starts you on level you died on
-	[x] add starting positions per level
-	[] todo: add victory at start of game
-*/
+
+	[] bear head can't get hit? (worth double?)
+	[] fix turnaround to start in right room 
+	[x] more rocks falling better.
+  
+
+	other:
+	[] better gameplay video (real)
+
+*/  
 
 #include "LIB/neslib.h"
 #include "LIB/nesdoug.h"
@@ -33,29 +39,27 @@ TODO List:
 #include "enemy_stats.h"
 #include "collision.c"
 #include "player_sprites.c"
-    
-void main(void)
-{        
-	// test
 
-	level = 7;
+void main(void)
+{
+
+	level = 0; 
 	reset();
-  
+
 	load_title();
 
-	while (1) 
+	while (1)
 	{
 		while (game_mode == MODE_TITLE)
 		{
 			// unused for title screen
-			ppu_wait_nmi();    
-
-			pad1 = pad_poll(0); // read the first controller
-			pad1_new = get_pad_new(0);
+			
+			read_pad();
 			if (pad1_new & PAD_START)
-			{  
+			{
 
-				if (pad1 & PAD_UP){
+				if (pad1 & PAD_UP)
+				{
 					multi_jump_max = 2;
 				}
 				sfx_play(SFX_START_LEVEL, 0);
@@ -73,7 +77,6 @@ void main(void)
 				game_mode = MODE_GAME;
 				load_room();
 
-				
 				pal_bright(1);
 				waitTen();
 				pal_bright(2);
@@ -93,13 +96,11 @@ void main(void)
 			// gray_line();
 			++frame_counter;
 			// infinite loop
-			ppu_wait_nmi(); // wait till beginning of the frame
-
-			pad1 = pad_poll(0); // read the first controller
-			pad1_new = get_pad_new(0);
+			
+			read_pad();
 			pad1_state = pad_state(0);
 
-			if (pad1_new & PAD_START)   
+			if (pad1_new & PAD_START)
 			{
 				game_mode = MODE_PAUSE;
 				music_pause(1);
@@ -175,13 +176,8 @@ void main(void)
 		}
 		while (game_mode == MODE_DEATH)
 		{
-			ppu_wait_nmi();
+			read_pad();
 
-			pad1 = pad_poll(0); // read the first controller
-			pad1_new = get_pad_new(0);
-
-			temp_x = 120;
-			temp_y = 195;
 			if (frame_counter < 250)
 			{
 				oam_clear();
@@ -189,7 +185,6 @@ void main(void)
 				if (frame_counter < 40)
 				{
 					tempint = animate_playerstandright_data;
-					
 				}
 				else if (frame_counter < 50)
 				{
@@ -223,7 +218,7 @@ void main(void)
 				{
 					tempint = animate_deathright8_data;
 				}
-				oam_meta_spr(temp_x, temp_y, tempint);
+				oam_meta_spr(120, 195, tempint);
 			}
 
 			if (pad1_new & PAD_START)
@@ -238,10 +233,7 @@ void main(void)
 
 		while (game_mode == MODE_PAUSE)
 		{
-			ppu_wait_nmi();
-
-			pad1 = pad_poll(0); // read the first controller
-			pad1_new = get_pad_new(0);
+			read_pad();
 
 			// draw_sprites();
 
@@ -253,13 +245,10 @@ void main(void)
 				ppu_mask(0b00011000); // grayscale mode
 			}
 		}
-	while(game_mode == MODE_HALFWAY){
-		ppu_wait_nmi();
-
-			
-			
-			pad1 = pad_poll(0); // read the first controller
-			pad1_new = get_pad_new(0);
+		while (game_mode == MODE_HALFWAY)
+		{
+			read_pad();
+			oam_clear();
 
 			// draw_sprites();
 
@@ -272,11 +261,11 @@ void main(void)
 				load_room();
 				game_mode = MODE_GAME;
 			}
-	}
+		}
 
 		while (game_mode == MODE_SWITCH)
 		{
-	
+
 			oam_clear();
 			load_room();
 			game_mode = MODE_GAME;
@@ -284,11 +273,9 @@ void main(void)
 		}
 		while (game_mode == MODE_END)
 		{
-			ppu_wait_nmi();
 
 			level = 0;
-			pad1 = pad_poll(0); // read the first controller
-			pad1_new = get_pad_new(0);
+			read_pad();
 
 			// draw_sprites();
 
@@ -300,6 +287,13 @@ void main(void)
 			}
 		}
 	}
+}
+
+void read_pad(void)
+{
+	ppu_wait_nmi();
+	pad1 = pad_poll(0);
+	pad1_new = get_pad_new(0);
 }
 
 #include "BG/Stage1/titletiled.c"
@@ -348,9 +342,9 @@ void load_gameover(void)
 			buffer_4_mt(address, index); // ppu_address, index to the data
 			flush_vram_update2();
 			if (x == 0xe0)
-				break;
+				break;  
 		}
-		if (y == 0xe0)  
+		if (y == 0xe0)
 			break;
 	};
 	multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 12));
@@ -358,13 +352,19 @@ void load_gameover(void)
 	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 }
 
-void clear_bg(void){
-	for (y = 0;; y += 0x10)
+// #include "BG/Stage1/backtrack.c"
+void backtrack_bg(void)
+{
+
+	set_data_pointer(titletiled_0);
+	set_mt_pointer(metatile);
+	for (y = 0;; y += 0x20)
 	{
-		for (x = 0;; x += 0x10)
+		for (x = 0;; x += 0x20)
 		{
 			address = get_ppu_addr(nametable_to_load, x, y);
-			buffer_1_mt(address, 0x50); // ppu_address, index to the data
+			index = (y & 0xf0) + (x >> 4);
+			buffer_4_mt(address, index); // ppu_address, index to the data
 			flush_vram_update2();
 			if (x == 0xe0)
 				break;
@@ -377,30 +377,30 @@ const unsigned char palette_victory[16] = {
 		0x21, 0x0f, 0x00, 0x10,
 		0x21, 0x21, 0x30, 0x21,
 		0x21, 0x30, 0x21, 0x30,
-		0x21, 0x0f, 0x0f, 0x29};  
+		0x21, 0x0f, 0x0f, 0x29};
 
-
-
-void load_bear_victory(void ){
+void load_bear_victory(void)
+{
 	nametable_to_load = 0;
+	oam_clear();
 	ppu_off(); // screen off
-	pal_bg(palette_victory);
 	
-	//clear screen
-	clear_bg();
-	//write message
-	multi_vram_buffer_horz("FOR DEFEATING THE BEAR", 23, NTADR_A(4, 8));
-	multi_vram_buffer_horz("GOD HAS BLESSED YOU WITH", 24, NTADR_A(4, 10));
-	multi_vram_buffer_horz("DOUBLE JUMP & POWER SHOT", 24, NTADR_A(4,12));
-	multi_vram_buffer_horz("NOW RETURN HOME", 15, NTADR_A(7, 18));
+	// clear screen
+	backtrack_bg();
+	// write message
+	multi_vram_buffer_horz("FOR DEFEATING THE", 17, NTADR_A(12, 6));
+	multi_vram_buffer_horz("BEAR, GOD BLESSES", 17, NTADR_A(12, 8));
+	multi_vram_buffer_horz("YOU WITH...", 11, NTADR_A(12, 10));
+	multi_vram_buffer_horz("DOUBLE JUMP AND", 15, NTADR_A(12, 12));
+	multi_vram_buffer_horz("POWER SHOT", 10, NTADR_A(12, 13));
+	multi_vram_buffer_horz("NOW RETURN HOME", 15, NTADR_A(11, 17));
 
 	game_mode = MODE_HALFWAY;
-	
+
 	ppu_on_all();
 }
 
 #include "BG/Stage1/victory.h"
-
 
 void load_victory(void)
 {
@@ -434,28 +434,31 @@ void reset(void)
 	player_running = 0;
 	short_jump_count = 0;
 	multi_jump = 0;
-	if(projectile_big){
+	if (projectile_big)
+	{
 		multi_jump_max = 2;
-	} else {
+	}
+	else
+	{
 		multi_jump_max = 1;
 	}
 	projectile_cooldown = 0;
-	projectile_count = 0;  
+	projectile_count = 0;
 	projectile_index = 0;
 	player_shooting = 0;
 	direction = 1;
 	direction_y = 0; // down default?
 	frame_counter = 0;
 	sprite_frame_counter = 0;
-	r_scroll_frames = 0;  
-	l_scroll_frames = 0;
-	collision = 0;   
-	death = 0;   
+	r_scroll_frames = 0;
+	l_scroll_frames = 0;    
+	collision = 0;     
+	death = 0;
 	BoxGuy1.x = starting_x_place[level] << 8;
-	BoxGuy1.y = starting_y_place[level] << 8;   
+	BoxGuy1.y = starting_y_place[level] << 8;
 	BoxGuy1.health = MAX_PLAYER_HEALTH;
 	invul_frames = 0;
-	game_mode = MODE_GAME;         
+	game_mode = MODE_GAME;
 	// level = 0;				// debug, change starting level
 	room_to_load = 0; // debug, hacky, change starting room
 	// debug = 0;
@@ -465,7 +468,7 @@ void reset(void)
 
 	ppu_mask(0); // grayscale mode off
 	// load the palettes
-	pal_bg(palette_bg);  
+	pal_bg(palette_bg);
 	pal_spr(palette_sp);
 
 	// use the second set of tiles for sprites
@@ -478,7 +481,6 @@ void reset(void)
 	load_room();
 
 	set_scroll_y(0xff); // shift the bg down 1 pixel
-
 }
 
 void projectile_movement(void)
@@ -577,7 +579,6 @@ void load_room(void)
 			break;
 	}
 
-	
 	// a little bit in the next room
 	set_data_pointer(stage1_levels_list[offset + 1]);
 	for (y = 0;; y += 0x20)
@@ -621,7 +622,7 @@ void load_room(void)
 		memcpy(c_map2, stage1_levels_list[offset], 240);
 		memcpy(c_map, stage1_levels_list[offset - 1], 240);
 	}
-
+  
 	// init the max_room and max_scroll
 	max_rooms = level_max_rooms[level] - 1;
 	max_scroll = (max_rooms * 0x100) - 1; // 11 rooms makes 0x0AFF as the max
@@ -630,6 +631,16 @@ void load_room(void)
 	entity_obj_init();
 
 	ppu_on_all();
+
+	// if(level == 7){
+	// 	//update to bear pallete
+	// 	// bear palette: 0x21,0x05,0x16,0x37,
+	// 	pal_col(20, 0x21);
+	// 	pal_col(21, 0x05);
+	// 	pal_col(22, 0x16);
+	// 	pal_col(23, 0x37);
+	// }
+
 }
 
 void draw_sprites(void)
@@ -645,12 +656,14 @@ void draw_sprites(void)
 		if (projectiles_list[temp1] != TURN_OFF)
 		{
 			temp6 = projectiles_y[temp1]; //+ sine_wave[frame_counter % 10];
-			if(projectile_big){
+			if (projectile_big)
+			{
 				oam_meta_spr(projectiles_x[temp1], temp6, animate_orbBig_data);
-			} else {
+			}
+			else
+			{
 				oam_meta_spr(projectiles_x[temp1], temp6, animate_orb0_data);
 			}
-			
 		}
 	}
 
@@ -709,11 +722,13 @@ void draw_sprites(void)
 			++entity_frames[index2];
 			if (entity_type[index2] == ENTITY_STARBURST)
 			{
-				if(projectile_big && level == 6){
-						return; //hack for halfway
+				if (projectile_big && level == 6)
+				{
+					return; // hack for halfway
 				}
-				if(!projectile_big && level == 0){
-						return; // for beginning
+				if (!projectile_big && level == 0)
+				{
+					return; // for beginning
 				}
 				if (entity_frames[index2] < 20)
 				{
@@ -745,7 +760,7 @@ void draw_sprites(void)
 			if (entity_type[index2] == ENTITY_BREAD)
 			{
 				if (entity_frames[index2] < 20)
-					tempint = animate_bread2_data;
+					tempint = animate_bread_data;
 				else if (entity_frames[index2] < 40)
 					tempint = animate_bread2_data;
 				else
@@ -755,7 +770,8 @@ void draw_sprites(void)
 				}
 				oam_meta_spr(temp_x, temp_y, tempint);
 			}
-			if (entity_type[index2] == ENTITY_ROCK){
+			if (entity_type[index2] == ENTITY_ROCK)
+			{
 				tempint = animate_bouldersmall_data;
 				oam_meta_spr(temp_x, temp_y, tempint);
 			}
@@ -768,17 +784,14 @@ void draw_sprites(void)
 				else if (entity_frames[index2] < 40)
 				{
 					tempint = animate_starburst2_data;
-					
 				}
 				else if (entity_frames[index2] < 60)
 				{
 					tempint = animate_starburst3_data;
-					
 				}
 				else if (entity_frames[index2] < 80)
 				{
 					tempint = animate_starburst2_data;
-					
 				}
 				else
 				{
@@ -881,7 +894,7 @@ void movement(void)
 
 	old_x = BoxGuy1.x;
 
-	if (pad1 & PAD_LEFT && !player_in_hitstun  && !player_is_sliding)
+	if (pad1 & PAD_LEFT && !player_in_hitstun && !player_is_sliding)
 	{
 		direction = LEFT;
 		player_is_running = 1;
@@ -940,12 +953,16 @@ void movement(void)
 			BoxGuy1.vel_x = 0;
 	}
 
-	if(player_is_sliding > 0){
+	if (player_is_sliding > 0)
+	{
 		--player_is_sliding;
 
-		if(direction == LEFT){
-				BoxGuy1.vel_x = -MAX_SLIDE_SPEED;
-		} else {
+		if (direction == LEFT)
+		{
+			BoxGuy1.vel_x = -MAX_SLIDE_SPEED;
+		}
+		else
+		{
 			BoxGuy1.vel_x = MAX_SLIDE_SPEED;
 		}
 	}
@@ -1142,7 +1159,6 @@ void movement(void)
 	{
 		--projectile_cooldown;
 	}
-	
 
 	if (pad1_new & PAD_UP || pad1_state & PAD_UP) // on trigger or hold
 	{
@@ -1158,18 +1174,20 @@ void movement(void)
 			BoxGuy1.vel_y = 0;
 			BoxGuy1.vel_x = 0;
 		}
-	} 
-  
-	if(pad1_state & PAD_DOWN && pad1_new & PAD_A && !player_on_ladder){
-		player_is_sliding = 25;
-	} else if (pad1_new & PAD_A && !player_in_hitstun && !player_is_sliding)
+	}
+
+	if (pad1_state & PAD_DOWN && pad1_new & PAD_A && !player_on_ladder)
 	{
-		if (player_on_ladder)   
+		player_is_sliding = 25;
+	}
+	else if (pad1_new & PAD_A && !player_in_hitstun && !player_is_sliding)
+	{
+		if (player_on_ladder)
 		{
-			player_on_ladder = 0;  
+			player_on_ladder = 0;
 			player_on_ladder_top = 0;
 			player_in_air = 1;
-		}    
+		}
 		else if (bg_coll_D() || multi_jump < multi_jump_max)
 		{
 			++multi_jump;
@@ -1352,8 +1370,9 @@ void draw_screen_L(void)
 	scroll_count &= 3; // mask off top bits, keep it 0-3
 }
 
-void drawMetatileBlock(void){
-	//gottta set temp4 first
+void drawMetatileBlock(void)
+{
+	// gottta set temp4 first
 	address = get_ppu_addr(nt, x, temp4);
 	index = temp4 + (x >> 4);
 	buffer_4_mt(address, index); // ppu_address, index to the data
@@ -1469,32 +1488,35 @@ void check_entity_objects(void)
 			entity_moves();
 		}
 	}
-}  
+}
 void entity_moves(void)
 {
 	// some entities drop til they're coliding with the ground.
 	if (entity_type[index] == ENTITY_BUN || entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_STARBURST2 || entity_type[index] == ENTITY_ROCK)
 	{
-		// check for collision    
+		// check for collision
 		Generic.x = entity_x[index];
 		Generic.y = entity_y[index] - 6; // mid point
 		Generic.width = 16;
 		Generic.height = 1;
-   
-		bg_collision_fast();  
+
+		bg_collision_fast();
 		if (!collision_D)
 		{
-			++entity_y[index];
-			
-			
-			if (entity_y[index] != TURN_OFF && !entity_type[index] == ENTITY_STARBURST || !entity_type[index] == ENTITY_STARBURST2)
-			{ // fruit/starburst moves slowly
-				++entity_y[index];
-				++entity_y[index];
+			entity_y[index] += 2;
+
+			if(entity_type[index] == ENTITY_ROCK){
 				++entity_y[index];
 			}
+
+			if (entity_y[index] != TURN_OFF && 
+			entity_type[index] == ENTITY_STARBURST || entity_type[index] == ENTITY_STARBURST2)
+			{ // fruit/starburst moves slowly
+				entity_y[index] -= 1;
+			}
 		}
-		if(collision_D && entity_type[index] == ENTITY_ROCK){
+		if (collision_D && entity_type[index] == ENTITY_ROCK)
+		{
 			entity_active[index] = 0;
 			entity_y[index] = TURN_OFF;
 		}
@@ -1538,7 +1560,6 @@ void entity_obj_init(void)
 	projectiles_list[2] = TURN_OFF;
 	projectiles_list[3] = TURN_OFF;
 
-
 	// clear all  entities
 
 	for (index = 0; index < MAX_ENTITY; ++index)
@@ -1581,7 +1602,8 @@ void entity_obj_init(void)
 void enemy_moves(void)
 {
 	enemy_frames[index] += 1;
-	if(enemy_invul[index] > 0){
+	if (enemy_invul[index] > 0)
+	{
 		--enemy_invul[index];
 	}
 
@@ -1592,33 +1614,54 @@ void enemy_moves(void)
 		{
 			if (
 					(enemy_x[index] > projectiles_x[temp1] - 5 && enemy_x[index] < projectiles_x[temp1] + 5) &&
-					(enemy_y[index] > projectiles_y[temp1] - 30 && enemy_y[index] < projectiles_y[temp1] + 30))
+					(enemy_y[index] > projectiles_y[temp1] - 12 && enemy_y[index] < projectiles_y[temp1] + 8))
 			{
 				projectiles_list[temp1] = TURN_OFF;
-				if(enemy_invul[index] > 0){
-					//no damage in invul
+				if (enemy_invul[index] > 0)
+				{
+					// no damage in invul
 					sfx_play(SFX_INVUL_HIT, 0);
-				} else {
-					sfx_play(SFX_SHOT_HITS, 0);
-					if(projectile_big){
+				}
+				else
+				{
+					if (projectile_big)
+					{
 						enemy_health[index] = 0;
 					}
-					else { 
-						--enemy_health[index];
+					else if (enemy_type[index] == ENEMY_SNAIL)
+					{
+						if (enemy_dir[index] == LEFT && enemy_x[index] <= projectiles_x[temp1])
+						{
+							sfx_play(SFX_INVUL_HIT, 0);
+						}
+						else if (enemy_dir[index] == RIGHT && enemy_x[index] >= projectiles_x[temp1])
+						{
+							sfx_play(SFX_INVUL_HIT, 0);
+						}
+						else
+						{
+							sfx_play(SFX_SHOT_HITS, 0);
+							--enemy_health[index];
+							// enemy_invul[index] = 5;
+
+							// shot in back of shell, it's invul
+						}
 					}
-					
-					enemy_invul[index] = 15;
+					else
+					{
+						sfx_play(SFX_SHOT_HITS, 0);
+						--enemy_health[index];
+						// enemy_invul[index] = 5;
+					}
 				}
-				
-				
-				if ((enemy_health[index] == 0 || enemy_health[index] > 240 ) && enemy_mode[index] != TURN_OFF) // check for overflow with 240
+
+				if ((enemy_health[index] == 0 || enemy_health[index] > 240) && enemy_mode[index] != TURN_OFF) // check for overflow with 240
 				{
 					// delete the enemy
 					// change enemy_mode to death
 					enemy_active[index] = 0;
 					enemy_mode[index] = TURN_OFF;
 					enemy_frames[index] = 0;
-
 
 					if (enemy_type[index] == ENEMY_BEAR)
 					{
@@ -1628,20 +1671,20 @@ void enemy_moves(void)
 						entity_room[0] = enemy_room[index];
 						entity_active[0] = 1;
 						entity_type[0] = ENTITY_STARBURST2;
-						entity_actual_x[0] = 128;
+						entity_actual_x[0] = 120;
 					}
 					// randomly decide to place something
 					else if (frame_counter % 2 == 0)
-					{ 
-						//ITEM DROP CODE;
-						// find an empty entity slot
+					{
+						// ITEM DROP CODE;
+						//  find an empty entity slot
 						for (index2 = 0; index2 <= MAX_ENTITY; ++index2)
 						{
 							if (entity_y[index2] == TURN_OFF)
 							{
 								break;
 							}
-						}   
+						}
 						// place an item there.
 						entity_y[index2] = enemy_y[index];
 						entity_x[index2] = enemy_x[index];
@@ -1650,8 +1693,6 @@ void enemy_moves(void)
 						entity_type[index2] = ENTITY_BUN;
 						entity_actual_x[index2] = enemy_actual_x[index];
 					}
-
-
 				}
 			}
 		}
@@ -1671,19 +1712,26 @@ void enemy_moves(void)
 	}
 }
 
-void enemy_implosion(void){
-		if(enemy_frames[index] < 4){
-			enemy_anim[index] = animate_implosion1_data;
-		} else if (enemy_frames[index] < 8){
-			enemy_anim[index] = animate_implosion2_data;
-		} else if (enemy_frames[index] < 12){
-			enemy_anim[index] = animate_implosion3_data;
-		} else{
-			enemy_y[index] = TURN_OFF;
-			enemy_mode[index] = 0;
-		}
+void enemy_implosion(void)
+{
+	if (enemy_frames[index] < 4)
+	{
+		enemy_anim[index] = animate_implosion1_data;
+	}
+	else if (enemy_frames[index] < 8)
+	{
+		enemy_anim[index] = animate_implosion2_data;
+	}
+	else if (enemy_frames[index] < 12)
+	{
+		enemy_anim[index] = animate_implosion3_data;
+	}
+	else
+	{
+		enemy_y[index] = TURN_OFF;
+		enemy_mode[index] = 0;
+	}
 }
-
 
 void enemy_bear_behavior(void)
 {
@@ -1693,7 +1741,8 @@ void enemy_bear_behavior(void)
 	Generic.height = ENEMY_BEAR_HEIGHT;
 
 	// determine bear mode
-	if(enemy_mode[index] == TURN_OFF){
+	if (enemy_mode[index] == TURN_OFF)
+	{
 		enemy_implosion();
 	}
 
@@ -1711,15 +1760,15 @@ void enemy_bear_behavior(void)
 		// 	enemy_frames[index] = 0;
 		// }
 
-		
 		// every 200 frames, do a roar/rock
-		if(frame_counter > 250){
+		if (frame_counter > 250)
+		{
 			enemy_mode[index] = BEAR_PREP_ATTACK;
 			frame_counter = 0;
 		}
 		// if player is far away, bear will run
 		else if ((enemy_actual_x[index] >= Generic2.x && ((enemy_actual_x[index] - Generic2.x) > 100)) ||
-				(enemy_actual_x[index] < Generic2.x && ((Generic2.x - enemy_actual_x[index]) > 100)))
+						 (enemy_actual_x[index] < Generic2.x && ((Generic2.x - enemy_actual_x[index]) > 100)))
 		{
 			enemy_mode[index] = BEAR_PREP_RUN;
 		}
@@ -1735,11 +1784,11 @@ void enemy_bear_behavior(void)
 		}
 	}
 
-	if(enemy_mode[index] == BEAR_PREP_ATTACK)
+	if (enemy_mode[index] == BEAR_PREP_ATTACK)
 	{
 		if (enemy_frames[index] > 60)
 		{
-			enemy_mode[index] = BEAR_ATTACK;
+			enemy_mode[index] = BEAR_ROCK_ATTACK;
 			enemy_frames[index] = 0;
 			frame_counter = 0;
 		}
@@ -1754,27 +1803,28 @@ void enemy_bear_behavior(void)
 		}
 	}
 
-	if(enemy_mode[index] == BEAR_ATTACK)
+	if (enemy_mode[index] == BEAR_ROCK_ATTACK)
 	{
-		if(frame_counter == 0){
-			//add falling rocks
-				enemy_invul[0] = 150; //bear gets frames of invul during this\
+		if (frame_counter == 0)
+		{
+			// add falling rocks
+			enemy_invul[0] = 150; //bear gets frames of invul during this\
 
-				//between 28 and 224; some number mod 196 + 28?
+			temp_x = high_byte(BoxGuy1.x)%2 == 0 ? 50 : 180;
+			
+			entity_y[1] = 60;
+			entity_x[1] = high_byte(BoxGuy1.x);
+			entity_room[1] = enemy_room[index];
+			entity_active[1] = 1;
+			entity_type[1] = ENTITY_ROCK;
+			entity_actual_x[1] = high_byte(BoxGuy1.x);
 
-				entity_y[1] = 37;
-				entity_x[1] = (high_byte(BoxGuy1.x) >> 4) + 28;
-				entity_room[1] = enemy_room[index];
-				entity_active[1] = 1;
-				entity_type[1] = ENTITY_ROCK;
-				entity_actual_x[1] = high_byte(BoxGuy1.x);
-
-				entity_y[2] = 48;
-				entity_x[2] = high_byte(BoxGuy1.x);
-				entity_room[2] = enemy_room[index];
-				entity_active[2] = 1;
-				entity_type[2] = ENTITY_ROCK;
-				entity_actual_x[2] = high_byte(BoxGuy1.x) + 60;
+			entity_y[2] = 48;
+			entity_x[2] = temp_x;
+			entity_room[2] = enemy_room[index];
+			entity_active[2] = 1;
+			entity_type[2] = ENTITY_ROCK;
+			entity_actual_x[2] = temp_x;
 		}
 		if (frame_counter > 150)
 		{
@@ -1783,11 +1833,10 @@ void enemy_bear_behavior(void)
 		}
 	}
 
-
 	switch (enemy_mode[index])
 	{
-		case BEAR_WALK:
-		#pragma region bear_walk
+	case BEAR_WALK:
+#pragma region bear_walk
 		if (enemy_frames[index] < 10)
 		{
 			if (enemy_dir[index] == LEFT)
@@ -1844,39 +1893,44 @@ void enemy_bear_behavior(void)
 			}
 			enemy_frames[index] = 0;
 		}
-		#pragma endregion
+#pragma endregion
 		break;
-		case BEAR_PREP_RUN:
-			if (enemy_dir[index] == LEFT)
-			{
-				enemy_anim[index] = animate_beararms_data;
-			}
-			else
-			{
-				enemy_anim[index] = animate_beararmsright_data;
-			}
-		break;
-		case BEAR_PREP_ATTACK:
-			if(frame_counter < 20){
-				enemy_anim[index] = animate_bearroarright_data;
-			} else if(frame_counter < 40) {
-				enemy_anim[index] = animate_bearroarleft_data;
-			} else {
-				enemy_anim[index] = animate_bearroarright_data;
-			}
-		break;
-		case BEAR_ATTACK:
+	case BEAR_PREP_RUN:
 		if (enemy_dir[index] == LEFT)
-			{
-				enemy_anim[index] = animate_beararms_data;
-			}
-			else
-			{
-				enemy_anim[index] = animate_beararmsright_data;
-			}
-			break;
-		case BEAR_RUN:
-			if (enemy_frames[index] < 5)
+		{
+			enemy_anim[index] = animate_beararms_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_beararmsright_data;
+		}
+		break;
+	case BEAR_PREP_ATTACK:
+		if (frame_counter < 20)
+		{
+			enemy_anim[index] = animate_bearroarright_data;
+		}
+		else if (frame_counter < 40)
+		{
+			enemy_anim[index] = animate_bearroarleft_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_bearroarright_data;
+		}
+		break;
+	case BEAR_ROCK_ATTACK:
+		if (enemy_dir[index] == LEFT)
+		{
+			enemy_anim[index] = animate_beararms_data;
+		}
+		else
+		{
+			enemy_anim[index] = animate_beararmsright_data;
+		}
+		break;
+	case BEAR_RUN:
+		if (enemy_frames[index] < 5)
 		{
 			if (enemy_dir[index] == LEFT)
 			{
@@ -1933,38 +1987,36 @@ void enemy_bear_behavior(void)
 			enemy_frames[index] = 0;
 		}
 		break;
-		default: 
+	default:
 		break;
 	}
 
+	// actual movement
+	switch (enemy_mode[index])
+	{
+	case BEAR_WALK:
 
-	//actual movement
-	switch(enemy_mode[index]){
-		case BEAR_WALK:
-
-		
-
-			if (enemy_frames[index] % 3 == 0)
-			{
-				if (enemy_x[index] > Generic2.x) // enemy is right of player
+		if (enemy_frames[index] % 3 == 0)
 		{
-			--enemy_actual_x[index];
-			enemy_dir[index] = LEFT;
-		}
-		else if (enemy_x[index] < Generic2.x) // enemy is left of player
-		{
-
-			++enemy_actual_x[index];
-			enemy_dir[index] = RIGHT;
-		}
-			}
-		break;
-		case BEAR_PREP_RUN:
-			//bear stands still
-			break;
-		case BEAR_RUN:
-			// note, Generic2 is the hero's x position
 			if (enemy_x[index] > Generic2.x) // enemy is right of player
+			{
+				--enemy_actual_x[index];
+				enemy_dir[index] = LEFT;
+			}
+			else if (enemy_x[index] < Generic2.x) // enemy is left of player
+			{
+
+				++enemy_actual_x[index];
+				enemy_dir[index] = RIGHT;
+			}
+		}
+		break;
+	case BEAR_PREP_RUN:
+		// bear stands still
+		break;
+	case BEAR_RUN:
+		// note, Generic2 is the hero's x position
+		if (enemy_x[index] > Generic2.x) // enemy is right of player
 		{
 			--enemy_actual_x[index];
 			enemy_dir[index] = LEFT;
@@ -1975,11 +2027,10 @@ void enemy_bear_behavior(void)
 			++enemy_actual_x[index];
 			enemy_dir[index] = RIGHT;
 		}
-		default: 
+	default:
 		break;
 	}
 }
-
 
 void enemy_snail_behavior(void)
 {
@@ -1988,8 +2039,6 @@ void enemy_snail_behavior(void)
 	Generic.y = enemy_y[index] + 6; // mid point
 	Generic.width = ENEMY_SNAIL_WIDTH;
 	Generic.height = ENEMY_SNAIL_HEIGHT;
-
-	
 
 	// set animation:
 	if (enemy_frames[index] < 10)
@@ -2037,7 +2086,8 @@ void enemy_snail_behavior(void)
 		}
 		enemy_frames[index] = 0;
 	}
-	if(enemy_mode[index] == TURN_OFF){
+	if (enemy_mode[index] == TURN_OFF)
+	{
 		enemy_implosion();
 	}
 
@@ -2104,7 +2154,8 @@ void enemy_owl_behavior(void)
 	// no collision for owl, he just swoops down and out.
 	// mode 0 is idle, mode 1 is attacking
 
-	if(enemy_mode[index] == TURN_OFF){
+	if (enemy_mode[index] == TURN_OFF)
+	{
 		enemy_implosion();
 		return;
 	}
@@ -2246,10 +2297,11 @@ void enemy_owl_behavior(void)
 // broke them into 2 separate lines with temp1 as a passing variable
 void sprite_obj_init(void)
 {
-	//clear all
+	// clear all
 	for (temp1 = 0; temp1 < MAX_ENEMY; ++temp1)
 	{
 		enemy_y[temp1] = TURN_OFF;
+		enemy_mode[temp1] = 0;
 	}
 
 	pointer = Enemy_list[level];
@@ -2414,15 +2466,18 @@ void entity_collisions(void)
 					entity_y[index] = TURN_OFF;
 					break;
 				case ENTITY_STARBURST:
-					if(projectile_big && level == 0){
+					if (projectile_big && level == 0)
+					{
 						load_victory();
 						break;
 					}
-					if(projectile_big && level == 6){
-						break; //hack to fix halfway;
-					}  
-					if(level != 0){
-						//normal routine, levels up.
+					if (projectile_big && level == 6)
+					{
+						break; // hack to fix halfway;
+					}
+					if (level != 0)
+					{
+						// normal routine, levels up.
 						pal_fade_to(4, 0);			 // fade to black
 						game_mode = MODE_SWITCH; // this handles loading the level
 						ppu_off();
@@ -2432,8 +2487,7 @@ void entity_collisions(void)
 						room_to_load = 0;
 						nametable_to_load = 0;
 					}
-					
-					
+
 					break;
 				default:
 					break;
@@ -2493,7 +2547,7 @@ void sprite_collisions(void)
 						// enemy_health[index] -= 1;  // hit the enemy running into it?
 						BoxGuy1.health -= ENEMY_SNAIL_DAMAGE; // check for overflow
 						player_on_ladder = 0;									// hitting hits you off ladder
-						player_on_ladder_top =0;
+						player_on_ladder_top = 0;
 						sfx_play(SFX_ENEMY_HITS, 0);
 						player_in_hitstun = ENEMY_SNAIL_PLAYER_HITSTUN;
 						invul_frames = ENEMY_SNAIL_PLAYER_INVUL;
@@ -2601,7 +2655,16 @@ void level_down_routine()
 	}
 }
 
-void waitTen(){
+void waitTen()
+{
 	ppu_wait_nmi();
-	ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();ppu_wait_nmi();
+	ppu_wait_nmi();
+	ppu_wait_nmi();
+	ppu_wait_nmi();
+	ppu_wait_nmi();
+	ppu_wait_nmi();
+	ppu_wait_nmi();
+	ppu_wait_nmi();
+	ppu_wait_nmi();
+	ppu_wait_nmi();
 }

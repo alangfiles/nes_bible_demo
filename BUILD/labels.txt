@@ -171,7 +171,7 @@ al 000413 ._c_map2
 al 008775 ._check_collision
 al 00A1B3 ._check_entity_objects
 al 00A15A ._check_spr_objects
-al 00C407 ._clear_bg
+al 00C407 ._backtrack_bg
 al 00875B ._clear_vram_buffer
 al 000038 ._collision
 al 000044 ._collision_D
