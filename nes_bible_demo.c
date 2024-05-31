@@ -260,6 +260,7 @@ void main(void)
 				level = 6;
 				load_room();
 				game_mode = MODE_GAME;
+				music_pause(0);
 			}
 		}
 
@@ -296,14 +297,8 @@ void read_pad(void)
 	pad1_new = get_pad_new(0);
 }
 
-#include "BG/Stage1/titletiled.c"
-void load_title(void)
-{
-	ppu_off();
-
-	pal_bg(palette_bg);
-	set_data_pointer(titletiled_0);
-	set_mt_pointer(metatile);
+void load_bg_after_pointer(void){
+	//needs setdatapointer and setmtpointer done first
 	for (y = 0;; y += 0x20)
 	{
 		for (x = 0;; x += 0x20)
@@ -318,6 +313,18 @@ void load_title(void)
 		if (y == 0xe0)
 			break;
 	}
+}
+
+#include "BG/Stage1/titletiled.c"
+void load_title(void)
+{
+	ppu_off();
+
+	pal_bg(palette_bg);
+	set_data_pointer(titletiled_0);
+	set_mt_pointer(metatile);
+	load_bg_after_pointer();
+	
 	ppu_on_all();
 	game_mode = MODE_TITLE;
 	multi_vram_buffer_horz("CORGS DEMO", 10, NTADR_A(14, 6));
@@ -333,22 +340,9 @@ void load_gameover(void)
 
 	pal_bg(palette_gameover);
 	set_data_pointer(gameovertiled_0);
-	for (y = 0;; y += 0x20)
-	{
-		for (x = 0;; x += 0x20)
-		{
-			address = get_ppu_addr(0, x, y);
-			index = (y & 0xf0) + (x >> 4);
-			buffer_4_mt(address, index); // ppu_address, index to the data
-			flush_vram_update2();
-			if (x == 0xe0)
-				break;  
-		}
-		if (y == 0xe0)
-			break;
-	};
-	multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 12));
+	load_bg_after_pointer();
 
+	multi_vram_buffer_horz("GAME OVER", 10, NTADR_A(11, 12));
 	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 }
 
@@ -381,6 +375,8 @@ const unsigned char palette_victory[16] = {
 
 void load_bear_victory(void)
 {
+	music_pause(1);
+	sfx_play(SFX_VICTORY, 0);
 	nametable_to_load = 0;
 	oam_clear();
 	ppu_off(); // screen off
@@ -391,7 +387,7 @@ void load_bear_victory(void)
 	multi_vram_buffer_horz("FOR DEFEATING THE", 17, NTADR_A(12, 6));
 	multi_vram_buffer_horz("BEAR, GOD BLESSES", 17, NTADR_A(12, 8));
 	multi_vram_buffer_horz("YOU WITH...", 11, NTADR_A(12, 10));
-	multi_vram_buffer_horz("DOUBLE JUMP AND", 15, NTADR_A(12, 12));
+	multi_vram_buffer_horz("DOUBLE JUMP &", 13, NTADR_A(12, 12));
 	multi_vram_buffer_horz("POWER SHOT", 10, NTADR_A(12, 13));
 	multi_vram_buffer_horz("NOW RETURN HOME", 15, NTADR_A(11, 17));
 
@@ -564,6 +560,7 @@ void load_room(void)
 	offset += room_to_load;
 	set_data_pointer(stage1_levels_list[offset]);
 	set_mt_pointer(metatile);
+	// load_bg_after_pointer could work to save space if we set nametable on other usages to 0
 	for (y = 0;; y += 0x20)
 	{
 		for (x = 0;; x += 0x20)
