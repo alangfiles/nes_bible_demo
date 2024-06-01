@@ -8,7 +8,7 @@ file	id=4,name="MUSIC/famitone2.s",size=27594,mtime=0x6654B3EE,mod=0
 file	id=5,name="MUSIC/nes_bible_demo.s",size=3414,mtime=0x6654B3EE,mod=0
 file	id=6,name="MUSIC/nes_bible_demo_sfx.s",size=7773,mtime=0x6659C9EF,mod=0
 file	id=7,name="BG/Stage1/stage1.chr",size=8192,mtime=0x6655498E,mod=0
-file	id=8,name="nes_bible_demo.s",size=326422,mtime=0x665A3589,mod=1
+file	id=8,name="nes_bible_demo.s",size=326422,mtime=0x665A3AF1,mod=1
 file	id=9,name="/usr/local/Cellar/cc65/2.19/share/cc65/asminc/longbranch.mac",size=2632,mtime=0x5ED2ADF3,mod=1
 file	id=10,name="/private/tmp/cc65-20211029-72602-uqb2uc/cc65-2.19/asminc/cpu.mac",size=843,mtime=0x5ED2ADF3,mod=7+8+10+13
 file	id=11,name="/private/tmp/cc65-20211029-72602-uqb2uc/cc65-2.19/asminc/zeropage.inc",size=721,mtime=0x5ED2ADF3,mod=17

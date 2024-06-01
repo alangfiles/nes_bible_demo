@@ -1623,6 +1623,7 @@ void enemy_moves(void)
 				{
 					if (projectile_big)
 					{
+						sfx_play(SFX_SHOT_HITS, 0);
 						enemy_health[index] = 0;
 					}
 					else if (enemy_type[index] == ENEMY_SNAIL)
