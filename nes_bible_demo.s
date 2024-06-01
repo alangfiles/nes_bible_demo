@@ -23047,9 +23047,9 @@ L400C:	sta     _tempint
 .segment	"CODE"
 
 ;
-; level = 7;
+; level = 0;
 ;
-	lda     #$07
+	lda     #$00
 	sta     _level
 ;
 ; reset();
@@ -23644,6 +23644,11 @@ L2CF6:	jsr     _read_pad
 	and     #$10
 	beq     L4040
 ;
+; level = 6;
+;
+	lda     #$06
+	sta     _level
+;
 ; reset();
 ;
 	jsr     _reset
@@ -23655,11 +23660,6 @@ L2CF6:	jsr     _read_pad
 ; ++projectile_big;
 ;
 	inc     _projectile_big
-;
-; level = 6;
-;
-	lda     #$06
-	sta     _level
 ;
 ; load_room();
 ;

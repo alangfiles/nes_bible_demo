@@ -25,6 +25,8 @@ TODO List:
 	[] bear head can't get hit? (worth double?)
 	[] fix turnaround to start in right room 
 	[x] more rocks falling better.
+	
+	[] there's some issue with nametable to use.
   
 
 	other:
@@ -43,7 +45,7 @@ TODO List:
 void main(void)
 {
 
-	level = 7;
+	level = 0;
 	// projectile_big = 1;   
 	reset();
 
@@ -256,10 +258,12 @@ void main(void)
 
 			if (pad1_new & PAD_START)
 			{
+				
+				
+				level = 6;
 				reset();
 				++multi_jump_max;
 				++projectile_big;
-				level = 6;
 				load_room();
 				game_mode = MODE_GAME;
 				music_pause(0);
