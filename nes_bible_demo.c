@@ -43,7 +43,8 @@ TODO List:
 void main(void)
 {
 
-	level = 0; 
+	level = 7;
+	// projectile_big = 1;   
 	reset();
 
 	load_title();
@@ -61,6 +62,7 @@ void main(void)
 				if (pad1 & PAD_UP)
 				{
 					multi_jump_max = 2;
+					projectile_big_cheat = 1;
 				}
 				sfx_play(SFX_START_LEVEL, 0);
 				pal_bright(3);
@@ -275,6 +277,7 @@ void main(void)
 		while (game_mode == MODE_END)
 		{
 
+			oam_clear();
 			level = 0;
 			read_pad();
 
@@ -283,6 +286,7 @@ void main(void)
 			if (pad1_new & PAD_START)
 			{
 				reset();
+				projectile_big = 0;
 				load_title();
 				game_mode = MODE_TITLE;
 			}
@@ -346,17 +350,19 @@ void load_gameover(void)
 	multi_vram_buffer_horz("PRESS START", 12, NTADR_A(10, 14));
 }
 
-// #include "BG/Stage1/backtrack.c"
+#include "BG/Stage1/endscreen.c"
 void backtrack_bg(void)
 {
 
-	set_data_pointer(titletiled_0);
+	pal_bg(palette_gameover);
+
+	set_data_pointer(endscreen_0);
 	set_mt_pointer(metatile);
 	for (y = 0;; y += 0x20)
 	{
 		for (x = 0;; x += 0x20)
 		{
-			address = get_ppu_addr(nametable_to_load, x, y);
+			address = get_ppu_addr(0, x, y);
 			index = (y & 0xf0) + (x >> 4);
 			buffer_4_mt(address, index); // ppu_address, index to the data
 			flush_vram_update2();
@@ -384,31 +390,38 @@ void load_bear_victory(void)
 	// clear screen
 	backtrack_bg();
 	// write message
-	multi_vram_buffer_horz("FOR DEFEATING THE", 17, NTADR_A(12, 6));
-	multi_vram_buffer_horz("BEAR, GOD BLESSES", 17, NTADR_A(12, 8));
-	multi_vram_buffer_horz("YOU WITH...", 11, NTADR_A(12, 10));
-	multi_vram_buffer_horz("DOUBLE JUMP &", 13, NTADR_A(12, 12));
-	multi_vram_buffer_horz("POWER SHOT", 10, NTADR_A(12, 13));
-	multi_vram_buffer_horz("NOW RETURN HOME", 15, NTADR_A(11, 17));
+	multi_vram_buffer_horz("FOR DEFEATING THE BEAR,", 23, NTADR_A(4, 8));
+	multi_vram_buffer_horz("GOD BLESSES YOU WITH...", 23, NTADR_A(4, 10));
+	multi_vram_buffer_horz("DOUBLE JUMP & POWER SHOT", 24, NTADR_A(4, 13));
+	multi_vram_buffer_horz("NOW RETURN HOME", 15, NTADR_A(7, 19));
 
 	game_mode = MODE_HALFWAY;
 
 	ppu_on_all();
 }
 
-#include "BG/Stage1/victory.h"
+// #include "BG/Stage1/victory.h"
 
 void load_victory(void)
 {
+	
 	ppu_off(); // screen off
+	
 
-	pal_bg(palette_victory);
-	vram_adr(NAMETABLE_A);
+	// pal_bg(palette_victory);
+	backtrack_bg();
+	// vram_adr(NAMETABLE_A);
 	// this sets a start position on the BG, top left of screen
 	// vram_adr() and vram_unrle() need to be done with the screen OFF
+	multi_vram_buffer_horz("YOU WIN!", 8, NTADR_A(12, 8));
+	multi_vram_buffer_horz("YOUR SKILLS ARE DIVINE", 22, NTADR_A(5, 10));
+	multi_vram_buffer_horz("BUY THE FULL VERSION", 20, NTADR_A(6, 14));
+	multi_vram_buffer_horz("NEXT YEAR", 9, NTADR_A(11, 16));
+	multi_vram_buffer_horz("PRESENTED BY", 12, NTADR_A(9, 19));
+	multi_vram_buffer_horz("BRIAN & ALAN GAMES", 18, NTADR_A(6, 21));
 
 	level = 0;
-	vram_unrle(victory);
+	// vram_unrle(victory);
 	ppu_on_all();
 	music_stop();
 	sfx_play(SFX_VICTORY, 0);
@@ -430,7 +443,7 @@ void reset(void)
 	player_running = 0;
 	short_jump_count = 0;
 	multi_jump = 0;
-	if (projectile_big)
+	if (projectile_big || projectile_big_cheat)
 	{
 		multi_jump_max = 2;
 	}
@@ -653,7 +666,7 @@ void draw_sprites(void)
 		if (projectiles_list[temp1] != TURN_OFF)
 		{
 			temp6 = projectiles_y[temp1]; //+ sine_wave[frame_counter % 10];
-			if (projectile_big)
+			if (projectile_big || projectile_big_cheat)
 			{
 				oam_meta_spr(projectiles_x[temp1], temp6, animate_orbBig_data);
 			}
@@ -1621,7 +1634,7 @@ void enemy_moves(void)
 				}
 				else
 				{
-					if (projectile_big)
+					if (projectile_big || projectile_big_cheat)
 					{
 						sfx_play(SFX_SHOT_HITS, 0);
 						enemy_health[index] = 0;
